@@ -83,7 +83,65 @@ $ git log --oneline -2 # 한줄로 최근 n개만
 
 
 
+![img](git/Untitled.png)
+
+![img](git/Untitled.png)
 
 
 
+## 깃헙 프로젝트
 
+1. open source 프로젝트 - Tensor flow
+2. 개발자의 이력서 && 경험 1일 1commit - 잔디밭 쌓기
+
+git 은 github과 다르다.
+
+비유 하자면 마치 핸드폰의 사진첩 갤러리와 네이버 클라우드 구글 클라우드 등
+
+## 깃헙 원격 remote origin 추가하기
+
+```bash
+$git remote add origin <https://github.com/K-Dongil/TIL.git>
+```
+
+## 깃헙 원격 remote origin 삭제하기
+
+`````
+$git remote rm origin
+`````
+
+## push
+
+``````
+$git push origin master
+``````
+
+![img](git/Untitled.png)
+
+![img](git/Untitled.png)
+
+![img](git/Untitled.png)
+
+## 연결 확인
+
+``````
+$git remote -v
+``````
+
+
+
+## 원격 저장소 등록
+
+``````
+$git remote add origin 주소
+``````
+
+![img](git/Untitled.png)
+
+## staging area
+
+버전을 나눠서 commit하고 싶을 때 필요한 영역
+
+![img](git/Untitled.png)
+
+![img](git/Untitled.png)
