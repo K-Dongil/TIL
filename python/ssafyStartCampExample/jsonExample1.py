@@ -5,7 +5,7 @@ import requests
 url = 'https://api.agify.io?name=michael'
 
 #저장하는데, 이거 json이라서 리스트-딕셔너리 구조로 바꿔줘!
-response = requests.get(url).json() #JSON 데이터는 이렇게 쓰면 파이썬 자료구조로 바꿔준다
+response = requests.get(url).json() #JSON 데이터는 이렇게 쓰면 파이썬 자료구조로 바꿔준다 #requests.get -> get방식으로 url 가져온다
 print(response)
 print(type(response))
 

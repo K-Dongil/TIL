@@ -239,3 +239,64 @@ b = list(range(1000))
 print(a)
 print(b)
 ```
+
+## 파이썬 내에서 json 구조 정렬하기
+
+- pprint.pprint(json구조 담긴 변수)
+
+## 문자열 길게 쓸 때
+
+- """ """
+
+## f-string
+
+
+
+## 기본주소와 메서드
+
+- 기본주소에 메서드가 붙은 것 : 내가 조작할 내용
+
+```
+# https://api.telegram.org/bot1881066428:AAHGZvkEe2DHTr9tft5G4RRRzINiyrszr-E/ (기본주소)
+# https://api.telegram.org/bot1881066428:AAHGZvkEe2DHTr9tft5G4RRRzINiyrszr-E/getMe (요청URL)
+```
+
+
+
+## 배포
+
+- pythonanywhere (https://www.pythonanywhere.com/) 
+- heroku
+- Amazon Web Service (AWS EC2)
+
+![image-20210716160400694](python.assets/image-20210716160400694.png)
+
+## Flask
+
+- pythonanywhere에서 Files-> mysite/ flask_app.py에서 실습하였음.
+
+```
+# 응답
+# 사용자가 요청 보낼 URL 패턴 만들고
+@app.route('/lotto') #주소
+#함수를 만들어서
+def hello_world():
+    pick = random.sample(range(1,46), 6)
+    return f'{pick}' #반환하는 것
+```
+
+- 위에 코드에서의 웹 주소 : http://kdongil1569.pythonanywhere.com/lotto 
+  - app.route에 적는 부분이 http://kdongil1569.pythonanywhere.com 에 추가된다.
+  - kdongil1569는 플라스크에서 ID부분
+
+
+
+
+
+## 참고
+
+(https://hphk.notion.site/3-cc150ad7c7db47a2a27c9bfe35199075)
+
+(https://github.com/edutak/TIL-gj)
+
+(https://www.notion.so/ff144edf41044fb789ea4c3e7b478fe8?v=38e1799d52724a269df8b4252e7684a3)

@@ -1,7 +1,7 @@
 import requests
 #1. url 요청을 보내서 저장
 url = 'https://api.nationalize.io/?name=michael'
-response = requests.get(url)
+response = requests.get(url) #requests.get -> get방식으로 url 가져온다
 print(response)
 #2. json()을 통해서 파이썬 자료구조화
 result = response.json()
