@@ -1,3 +1,9 @@
+## 프로그래밍 언어 : 3형식
+
+1. 저장
+2. 조건
+3. 반복
+
 ## 특징
 
 - 특징
@@ -66,6 +72,7 @@
 - variable = 숫자, 문자, 객체 등 값을 넣을 수 있는 공간
 - 사전적 의미 : "변화를 줄 수 있는" or  "변할 수 있는 수"
 - 프로그래밍에서는 데이터를 담을 수 있는 공간(숫자, 문자, 객체)
+- 변수 활용 이유 : 유지보수 관리 용이
 
 
 
@@ -149,9 +156,11 @@
 
   - float : 정수가 아닌 모든 실수
 
+    - 314e - 2 = 3.14
+
   - 부동소수점에서 실수인경우 주의필요
 
-    - 두 실수의 차이가 임의의 매우 작은 수보다 작은지를 확인, math 모듈 활용
+    - 두 실수의 차이가 임의의 매우 작은 수(1e-10)보다 작은지를 확인, math 모듈 활용
 
     ```python
     abs(x - y) <= le-10  #le - 10는 사용자가 정한 임의의 수
@@ -171,6 +180,10 @@
   - 실수부와 허수부로 구성된 복소수는 complex 타입
 
     - 허수부는 j로 표현가능
+    
+  - round(값, 표현할 소수점자릿수) 
+
+    -  round()는 0~4내림, 5 (짝수에서 5는 내림, 홀수에서 5는 올림)
 
 - 문자열 자료형 :  'Hello, World!', "123"
 
@@ -188,17 +201,23 @@
 
 - Boolean: True, False 참과 거짓 (논리자료형)
 
+  - 계산식에 쓰일 때는 True는 1, False는 0으로 형변환
+
 - type()
 
   - 변수에 할당된 값의 타입 확인
 
-
+- 2진수 : 0b숫자
+- 8진수 : 0o숫자
+- 10진수 : 숫자
+- 16진수 : 0x숫자
 
 ##### * 변수의 주소
 
 - id()
   - 변수에 할당된 값(객체)의 고유한 아이덴티티 값이며, 메모리 주소를 확인
   - 변수에 저장된 값 == 사람, 메모리 주소 == 사람이 있는 위치(집)
+  - 변수에 새로운 값을 초기화 시키면 주소도 바뀐다
 
 
 
@@ -251,7 +270,11 @@
   - %-formatting
 
     ```python
-    print('안녕, %s', % name) 
+    print('안녕, %s' % name) 
+    ```
+
+    ```
+    print('안녕, %s %d' %(name, 5) 
     ```
 
   - str.format()
@@ -284,6 +307,7 @@
   | /      | 나눗셈   |
   | //     | 몫       |
   | **     | 거듭제곱 |
+  | %      | 나머지   |
 
 - divmod(x, y)
   - 몫과 나머지를 출력
@@ -353,12 +377,30 @@
 ##### * 복합 연산자
 
 - 연산과 대입이 함께 이뤄짐
+- +=, -=, *=, /=, //=, %= 등등
 
 
 
 ##### * Concatenation
 
 - +는 숫자가 아닌 자료형에서도 사용가능
+
+  - 리스트, 튜플, 문자열 사용 가능
+  - range는 사용 불가능
+
+- *는 숫자가 아닌 자료형에서도 사용가능
+
+  - 리스트, 튜플, 문자열 사용 가능
+
+  - range는 사용 불가능
+
+    ```
+    'hi' *3 #출력 : 'hihihi'
+    (1, 2) * 3 #출력 : (1, 2, 1, 2, 1, 2)
+    ```
+
+    
+
 - 컨테이너, OOP에서 연산자의 다양한 활용을 확인
 
 
@@ -384,6 +426,25 @@
 
 - []를 통해 값을 접근하고, [:]를 통해 슬라이싱 가능함
 - 문자열은 0부터 Indexing번호를 가진다.
+- Indexing : 리스트, 튜플, range, 문자열 사용 가능
+- Sliciing : 리스트, 튜플, range, 문자열 사용 가능
+  - [x:y]일 때 x포함 y불포함 
+
+
+
+##### *연산자 우선순위
+
+1. `()`을 통한 grouping
+2. Slicing
+3. Indexing
+4. 제곱연산자 `**`
+5. 단항연산자 `+`, `-` (음수/양수 부호)
+6. 산술연산자 `*`, `/`, `%`
+7. 산술연산자 `+`, `-`
+8. 비교연산자, `in`, `is`
+9. `not`
+10. `and`
+11. `o`
 
 
 
@@ -391,22 +452,27 @@
 
 ---
 
-## 표현식/문장
+## 표현식(Expression)/문장(Statement)
 
 - 표현식
+  - 하나의 값(value)으로 환원(reduce)될 수 있는 문장을 의미
   - 값이 평가되고 있는 부분
     - ex) x  < 100
   - 식별자(변수명), 값, 연산자로 구성
   - 표현식은 평가(evaluate)되고, 값으로 변경
   - 하나의 값으로 환원(reduce)될 수 있는 문장
     - 식: 값이 될수 있냐 없냐?
-
+  -  표현식 => evaluate => 값
+    - 표현식은 결과적으로 값이 나온다.
+    - 표현식에 함수호출(값을 return해주는 함수)이 올 수도 있다.
+  - 하나의 값(value)도 표현식이 될 수 있다
 - 문장
   - 값, 표현식
   - 파이썬이 실행가능한 최소한의 코드 단위
   - 모든 표현식은 문장
     - 표현식이 아닌 문장이 존재
       - ex) del5
+  - 
 
 ```
 if a > 3:
@@ -423,16 +489,29 @@ if a > 3:
 
 ## 컨테이너
 
-- 여러 개의 값을 저장할 수 있는 것(객체)
+- 컨테이너 : 여러 개의 값을 저장할 수 있는 것(객체)
+
+  - 시퀀스형, 비 시퀀스형
+  - string, list, tuple, range, set, dictionary
+
 - 시퀀스(sequence)형 : 순서가 있는(ordered) 데이터
   - 순서가 있다 != 정렬되어 있다
   - 리스트(list), 튜플(tuple), 레인지(range), 문자형(string), 바이너리(binary)
+  - 시퀀스의 길이 : len()
+  - 최소/최대 : min(), max()
+    - 문자열은 ascii 코드에 따름
+  
+  - 시퀀스에서의 특정 원소의 개수 : .count(찾고 싶은 원소)
+    - 시퀀스에 등장하지 않는 경우 0 반환
+  - 시퀀스 포함 여부 확인
+    - in, not in
+  
 - 비 시퀀스형 : 순서가 없는(unordered) 데이터
   - 세트(set), 딕셔너리(dictionary)
 
+### 1. 시퀀스
 
-
-## 리스트
+##### *리스트
 
 - 리스트는 순서가 있는 시퀀스로 인덱스를 통해 접근
   - (시퀀스: 순서가 있다.)
@@ -443,7 +522,7 @@ if a > 3:
 
 
 
-## 튜플
+##### *튜플
 
 - 튜플은 수정 불가능한(immutable) 시퀀스로 인덱스로 접근
 
@@ -466,7 +545,7 @@ if a > 3:
 
 
 
-## range
+##### *range
 
 - range는 숫자의 시퀀스를 나타내기 위해 사용
   - 기본형 : range(n)
@@ -483,9 +562,187 @@ list(range(4)) #출력 : [0, 1, 2, 3] list로 형변환해서 출력
 print(type(range(4))) #출력 : range
 ```
 
+```py
+# range 기본
+range(5)
+range(0, 5) # => 0, 1, 2, 3, 4?????
+print(range(5)) # => range(0, 5)
+print(list(range(5))) # => [0, 1, 2, 3, 4] / 내용을 보려면 list로 바꿔서!
+
+a = range(1000)
+b = list(range(1000))
+print(a)
+print(b)
+```
+
+- range(?,?) 와 list(range(?,?)) 차이
+  - http://pythontutor.com/visualize.html#code=a%20%3D%20range%281000%29%0Ab%20%3D%20list%28range%281000%29%29&cumulative=false&curInstr=2&heapPrimitives=nevernest&mode=display&origin=opt-frontend.js&py=3&rawInputLstJSON=%5B%5D&textReferences=false
+
+### 2. 비 시퀀스
+
+##### * 세트
+
+- 순서가 없는 자료구조
+  - 중괄호{} 혹은 set()을 통해 생성
+    - 빈 세트를 만들기 위해서는 set()을 반드시 활용
+    - 빈 중괄호는 딕셔너리!!
+  - 순서가 없어 별도의 값에 접근할 수 없음
+- 수학에서의 집합과 동일한 구조를 가짐
+  - 집합 연산이 가능
+  - 중복된 값이 존재X
+    - 만들 때 중복된 값이 존재하면 중복 값 제거한다.
+- 집합 연산자 : 차집합, 합집합, 교집합
+  - 차집합 : -
+  - 합집합 : |
+    - 합칠 때 중복 제거
+  - 교집합 : &
+
+- 세트를 활용하면 다른 컨테이너에서 중복된 값을 쉽게 제거할 수 있음
+  - 단, 이후 순서가 무시되므로 순서가 중요한 경우 사용X
 
 
-## for문
+
+##### * 딕셔너리 {key : value}
+
+- key와 value가 쌍으로 이뤄진 자료구조
+  - 중괄호{} 혹은 dict()을 통해 생성
+  - key를 통해 value에 접근
+- key와 value가 쌍으로 이뤄진 자료구조
+  - key는 변경 불가능한 데이터(immutable)만 활용 가능
+    - string, integer, float, boolean, tuple, range
+  - value는 모든 값으로 설정 가능(리스트, 딕셔너리 등)
+
+
+
+### 3. 변경 불가능(immutable)한 데이터
+
+- 리터럴(literal) - 숫자(Number), 문자열(String), 참/거짓(Bool)
+- range
+- tuple
+- 변경 불가능한 데이터의 복사
+  - 공유X ,재할당
+  - b = a를 하면 같은 값이 공유
+
+### 4. 변경 가능(mutable)한 데이터
+
+- list, set, dictionary
+- 변경이 가능한 데이터를 복사하면 주소를 공유
+  - 동일한 리스트(객체)의 주소를 참조
+
+
+
+---
+
+---
+
+## 제어문
+
+- 파이썬은 기본적으로 위에서부터 아래로 순차적으로 명령수행
+- 특정 상황에 따라 코드를 선택적으로 실행(분기/조건)하거나 계속하여 실행(반복)하는 제어가 필요
+- 제어문은 순서도(flow chart)로 표현가능
+
+
+
+### 1. 조건문(Conditional Statement)
+
+- if문은 참/거짓을 판단할 수 있는 조건식과 함께 사용
+
+  - if <expression>:
+
+    ​	# Code block (문장들의 block)
+
+  - expression에는 참/거짓에 대한 조건식
+
+  - 조건이 참인 경우 이후 들여쓰기 되어있는 코드 블록을 실행
+
+  - 이외의 else 이후 들여쓰기 되어있는 코드 블록을 실행
+
+    - else는 선택적으로 활용 가능함
+
+  - if의 조건식이 참이면 이 후 조건문(elif, else)문은 실행X
+
+    - 조건식이 거짓이면 바로 다음의 조건문 실행
+
+- if, elif, else는 순차적으로 실행된다.
+- 중첩 조건문(Nested Conditional Statement)
+  - 조건문은 다른 조건문에 중첩되어 사용 될 수 잇음 (들여쓰기 유의)
+- 조건 표현식(Conditional Expression)
+  - 조건 표현식은 일반적으로 조건에 따라 값을 정할 때 활용
+  - 삼항 연산자(Ternary Operator)로 부르기도 함
+  - <true인 경우 값> if < expression> else <false인 경우 값>
+
+
+
+### 2. 반복문(Loop Statement)
+
+- while문
+
+  - 종료 조건에 해당하는 코드를 통해 반복문을 종료시켜야 함
+
+  - 조건식이 참인 경우 반복적으로 코드를 실행(조건이 False가 될때까지 반복)
+
+  - 코드 블록이 모두 실행되고, 다시 조건식을 검사하며 반복적으로 실행
+
+  - 무한 루프를 하지 않도록 종료 조건이 반드시 필요
+
+  - while <expression> :
+
+    ​	# Code block
+
+- for문
+
+  - 반복 가능(iterable)한 객체를 모두 순회하면 종료(별도의 종료 조건이 필요 없음)
+
+  - for문은 시퀀스(string, tuple, list, range)를 포함한  iterable한 객체 요소를 모두 순회함
+
+    - 처음부터 끝까지 모두 순회하므로 별도의 종료 조건 필요X
+
+  - for <변수명> in <순회가능한 데이터(iterable)>:
+
+    ​	# Code block
+
+  - iterable한 객체에서 차례대로 변수에 담겨져서 Code block이 실행되며 순회한다.
+
+  - 변수명을 단수형 itreable에는 복수형을 이용해서 쓰자
+
+    ```
+    chars = 'happy'
+    for char in chars:
+    	print(char)
+    #출력:
+    h
+    a
+    p
+    p
+    y
+    ```
+
+- 반복 제어
+
+  - break, continue, for-else
+  - break : 반복문을 강제종료
+  - continue : continue 아래 있는 block(코드) 실행X, 다음 반복을 수행
+  - for-else : 끝까지 반복문을 실행한 이후에 else문 실행
+    - break를 통해 중간에 종료되는 경우 else문은 실행X
+
+- pass문
+
+  - 아무것도 하지 않음
+
+    - 특별히 할 일이 없을 때 자리를 채우는 용도로 사용
+
+      - 문법적으로 오류나는 것을 방지할 때
+
+      ```
+      for i in rage(5):
+      	if i == 3:
+      		pass
+      	print(i)
+      ```
+
+    - 반복문 아니여도 사용 가능
+
+- ex 1) 
 
 ```py
 # 반복문 while 
@@ -520,56 +777,14 @@ for lunch in lunch_box:
 # 2) lunch_box의 길이를 바탕으로 0부터 하나씩 접근하기
 for i in range(len(lunch_box)):
   print(lunch_box[i])
+  
+#리스트 순회하기 -enumerate
+members=['a', 'b', 'c']
+for i, member in members:
+	print(i, member)
 ```
 
-## range
-
-```py
-# range 기본
-range(5)
-range(0, 5) # => 0, 1, 2, 3, 4?????
-print(range(5)) # => range(0, 5)
-print(list(range(5))) # => [0, 1, 2, 3, 4] / 내용을 보려면 list로 바꿔서!
-
-a = range(1000)
-b = list(range(1000))
-print(a)
-print(b)
-```
-
-- range(?,?) 와 list(range(?,?)) 차이
-  - http://pythontutor.com/visualize.html#code=a%20%3D%20range%281000%29%0Ab%20%3D%20list%28range%281000%29%29&cumulative=false&curInstr=2&heapPrimitives=nevernest&mode=display&origin=opt-frontend.js&py=3&rawInputLstJSON=%5B%5D&textReferences=false
-
-## 프로그래밍 언어 : 3형식
-
-1. 저장
-2. 조건
-3. 반복
-
-### **변수 활용 이유**
-
-⇒ 유지보수 관리가 용이함
-
-## 딕셔너리 {key : value}
-
-```python
-dust = {'영등포구':58, '강남구':40}
-print(dust['영등포구']) = 58
-```
-
-# 반복문
-
-- **while** : 조건이 True인 동안 반복적으로 실행 **종료조건이 반드시 필요**
-- **for** : 정해진 범위를 반복하기에 **종료조건 필요없음**
-
-```python
-for i in range(3): 
-	print('hello')
-```
-
-→ 3번 반복
-
-## 1) lunch_box를 다 돌기
+- ex 2) lunch_box를 다 돌기
 
 ```python
 # 리스트를 모두 반복하는 법 (for)
@@ -581,7 +796,7 @@ for lunch in lunch_box:
 
 → lunch라는 변수에 계속 햄버거 피자 치킨 순서로 넣어주는 것
 
-## 2) lunch_box의 길이만큼 돌기_len
+- ex 3) lunch_box의 길이만큼 돌기_len
 
 ```python
 for i in range(len(lunch_box)):
@@ -597,6 +812,34 @@ print(range(0,5))
 # 1이상 46 미만!
 print(range(1,46))
 ```
+
+
+
+---
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # 함수
 
