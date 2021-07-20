@@ -1,3 +1,7 @@
+## 파이썬 라이브러리
+
+[doc.python.org]('https://docs.python.org/ko/3/library/index.html')
+
 ## 프로그래밍 언어 : 3형식
 
 1. 저장
@@ -509,23 +513,26 @@ if a > 3:
 
 ## 컨테이너(데이터 타입?)
 
-- 컨테이너 : 여러 개의 값을 저장할 수 있는 것(객체)
+![image-20210720151951163](python.assets/image-20210720151951163.png)
 
+
+
+- 컨테이너 : 여러 개의 값을 저장할 수 있는 것(객체)
   - 시퀀스형, 비 시퀀스형
   - string, list, tuple, range, set, dictionary
-
 - 시퀀스(sequence)형 : 순서가 있는(ordered) 데이터
   - 순서가 있다 != 정렬되어 있다
+  - 특정 위치의 데이터를 가리킬 수 있다.
   - 리스트(list), 튜플(tuple), 레인지(range), 문자형(string), 바이너리(binary)
   - 시퀀스의 길이 : len()
   - 최소/최대 : min(), max()
     - 문자열은 ascii 코드에 따름
-  
   - 시퀀스에서의 특정 원소의 개수 : .count(찾고 싶은 원소)
     - 시퀀스에 등장하지 않는 경우 0 반환
   - 시퀀스 포함 여부 확인
     - in, not in
-  
+  - indexing : s[ i ]
+  - slicing : s[ i : j ]
 - 비 시퀀스형 : 순서가 없는(unordered) 데이터
   - 세트(set), 딕셔너리(dictionary)
 
@@ -534,11 +541,81 @@ if a > 3:
 ##### *리스트
 
 - 리스트는 순서가 있는 시퀀스로 인덱스를 통해 접근
-  - (시퀀스: 순서가 있다.)
+  - (시퀀스: 순서가 있다. But 정렬X)
+  
 - 인덱스는 0부터 시작
+
 - 대괄호[] 혹은 list()를 통해 생성
+
 - 값에 대한 접근은 list[숫자]
+
 - 서로 다른 타입의 데이터를 저장할 수 있다.
+
+- 리스트 오름차순 정렬
+
+  ```
+  numbers = [
+           85, 72, 38, 80, 69, 65, 68, 96, 22, 49, 67,
+           51, 61, 63, 87, 66, 24, 80, 83, 71, 60, 64,
+           52, 90, 60, 49, 31, 23, 99, 94, 11, 25, 24,
+       ]
+  
+  # 아래에 코드를 작성하시오.
+  
+  number = []
+  min_num = 0
+  for i in range(len(numbers)):
+      for j in range(i+1, len(numbers)):
+          if numbers[i] < numbers[j]:
+              pass
+          elif numbers[i] > numbers[j]:
+              min_num = numbers[i]
+              numbers[i] = numbers[j]
+              numbers[j] = min_num
+  print(numbers)
+  ---
+  numbers = [
+           85, 72, 38, 80, 69, 65, 68, 96, 22, 49, 67,
+           51, 61, 63, 87, 66, 24, 80, 83, 71, 60, 64,
+           52, 90, 60, 49, 31, 23, 99, 94, 11, 25, 24,
+       ]
+  
+  # 아래에 코드를 작성하시오.
+  
+  number = []
+  min_num = 0
+  for i in range(len(numbers)):
+      for j in range(i+1, len(numbers)):
+          if numbers[i] > numbers[j]:
+              min_num = numbers[i]
+              numbers[i] = numbers[j]
+              numbers[j] = min_num
+  print(numbers)
+  ---
+  numbers = [
+           85, 72, 38, 80, 69, 65, 68, 96, 22, 49, 67,
+           51, 61, 63, 87, 66, 24, 80, 83, 71, 60, 64,
+           52, 90, 60, 49, 31, 23, 99, 94, 11, 25, 24,
+       ]
+  
+  # 아래에 코드를 작성하시오.
+  
+  number = []
+  min_num = 0
+  for i in range(len(numbers)):
+      for j in range(i+1, len(numbers)):
+          if numbers[i] < numbers[j]:
+              pass
+          elif numbers[i] > numbers[j]:
+              min_num = numbers[i]
+              numbers[i] = numbers[j]
+              numbers[j] = min_num
+          if j == len(numbers) - 1:
+              number.append(numbers[i])
+  print(number)
+  ```
+
+  
 
 
 
@@ -611,7 +688,7 @@ print(b)
   - 집합 연산이 가능
   - 중복된 값이 존재X
     - 만들 때 중복된 값이 존재하면 중복 값 제거한다.
-- 집합 연산자 : 차집합, 합집합, 교집합
+- 활용 가능 (집합)연산자 : 차집합, 합집합, 교집합
   - 차집합 : -
   - 합집합 : |
     - 합칠 때 중복 제거
@@ -651,6 +728,10 @@ print(b)
 
 
 
+![image-20210720151717178](python.assets/image-20210720151717178.png)
+
+
+
 ---
 
 ---
@@ -660,6 +741,7 @@ print(b)
 - 파이썬은 기본적으로 위에서부터 아래로 순차적으로 명령수행
 - 특정 상황에 따라 코드를 선택적으로 실행(분기/조건)하거나 계속하여 실행(반복)하는 제어가 필요
 - 제어문은 순서도(flow chart)로 표현가능
+- 순차적인 코드의 흐름을 제어하는 것을 제어문이라고 하고, 제어문은 크게 **조건문**과 **반복문**
 
 
 
@@ -708,6 +790,11 @@ print(b)
   - while <expression> :
 
     ​	# Code block
+    
+  - EOF : End Of File
+
+    - 더이상 읽을 자료가 없다는 뜻
+    - try except으로 오류 해결가능
 
 - for문
 
@@ -717,14 +804,26 @@ print(b)
 
     - 처음부터 끝까지 모두 순회하므로 별도의 종료 조건 필요X
 
-  - for <변수명> in <순회가능한 데이터(iterable)>:
+  - for <임시변수> in <순회가능한 데이터(iterable)>:
 
     ​	# Code block
+
+    - for 문 안에서 임시 변수에 다른 값을 할당해도 반복구문에 영향을 주지 않습니다.
+
+      ```
+      for i in range(10):
+      	print(i)
+      	i = 5
+      ```
+
+      
 
   - iterable한 객체에서 차례대로 변수에 담겨져서 Code block이 실행되며 순회한다.
 
   - 변수명을 단수형 itreable에는 복수형을 이용해서 쓰자
 
+    - 문자열도 iterable가능한 데이터다
+    
     ```
     chars = 'happy'
     for char in chars:
@@ -744,6 +843,33 @@ print(b)
   - continue : continue 아래 있는 block(코드) 실행X, 다음 반복을 수행
   - for-else : 끝까지 반복문을 실행한 이후에 else문 실행
     - break를 통해 중간에 종료되는 경우 else문은 실행X
+    
+    - for-else에서 else는 for랑 연관이 있다
+    
+      - 간혹 for문 안에 if가 있을 때 주의!!
+    
+      ```
+      for i in range(10):
+          print(i)
+          if i == 100:
+              print(f'{i}에서 break 실행됨.')
+              break
+      else:
+          print("break 실행안됨.")
+      0
+      1
+      2
+      3
+      4
+      5
+      6
+      7
+      8
+      9
+      break 실행안됨.
+      ```
+    
+      
 
 - pass문
 
@@ -761,6 +887,15 @@ print(b)
       ```
 
     - 반복문 아니여도 사용 가능
+
+- enumerate()
+
+  - enumerate(순회가능한 데이터(iterable))
+    - index와 (순회가능한 데이터에서 index맞는 위치의 데이터)
+  - index와 value를 함께 활용 가능
+  - enumerate() 에 의해 반환되는 인덱스가 0으로 시작
+    - 인덱스가 1로 시작할 수 있음
+      - enumerate(순회가능한 데이터(iterable), 1)
 
 - ex 1) 
 
@@ -800,7 +935,7 @@ for i in range(len(lunch_box)):
   
 #리스트 순회하기 -enumerate
 members=['a', 'b', 'c']
-for i, member in members:
+for i, member in enumerate(members):
 	print(i, member)
 ```
 

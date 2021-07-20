@@ -1,6 +1,6 @@
 import sys
 N, X = map(int, input().split())
+A = sys.stdin.readline().split()
 for i in range(N):
-    A = map(int, sys.stdin.readline().split())
-    if X > A:
-        print(A+' \0')
+    if X > int(A[i]):
+        print(A[i], end=' ')
