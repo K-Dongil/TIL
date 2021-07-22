@@ -1,11 +1,10 @@
 import sys
 A, B, V = map(int, sys.stdin.readline().split())
 def snail(A, B, V):
-    V - A*x +B*x < = A
+    day = V//(A-B)+1 if A-B !=1 else V//(A-B)-A+1
     return day
 print(snail(A, B, V))
-
-
+#V - A*x +B*x <= A
 #=================================================================
 # import sys
 # afternoon, night, height = map(int, sys.stdin.readline().split())

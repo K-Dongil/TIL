@@ -29,3 +29,7 @@
 
   - [지식in]('https://kin.naver.com/qna/detail.nhn?d1id=1&dirId=10402&docId=381872141&qb=c3lzLnN0ZGluLnJlYWRsaW5lIGlucHV0&enc=utf8&section=kin.ext&rank=2&search_sort=0&spq=0')
 
+##### * upper(), lower()
+
+- upper()함수는 문자열의 모든 문자들을 대문자로 바꿔 줌
+- lower()함수는 문자열의 모든 문자들을 소문자로 바꿔 줌

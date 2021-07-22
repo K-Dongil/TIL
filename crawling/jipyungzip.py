@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup as bs
 #ㄹ방
 driver =wb.Chrome() #실행시키면 크롬 빈창이 나옴, chromedriver이 실행파일과 동일한 위치 상에 있는지, 아니라면 경로조정
 url = "http://jipyungzip.com/reservation?idx=11&day=2021-11-13" #url 변수에 가져오고 싶은 페이지 주소 문자형태로 넣은 것 뿐 
-driver.get(url)  #driver변수에 url집어 넣어줌
+driver.get(url)  # get방식으로 url 불러옴
 
 while True:
     try:
