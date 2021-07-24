@@ -1,9 +1,14 @@
+# 판매하는 메뉴의 개수 반환
 import json
 
+# def menu_count(restorant):
+#     return len(restorant['menus'])
 
 def menu_count(restorant):
-    pass
-    # 여기에 코드를 작성합니다.
+    num = 0
+    for i in restorant['menus']:
+        num += 1
+    return num
     
 
 # 아래의 코드는 수정하지 않습니다.

@@ -1,8 +1,12 @@
+# 60점 이상인 과목의 개수 계산
 import json
 
-
 def over(scores):
-    pass
+    num = 0
+    for score in scores:
+        if score >= 60:
+            num +=1
+    return num
     # 여기에 코드를 작성합니다.
 
 

@@ -1,6 +1,14 @@
+# 유저 아이디의 마지막 글자가 0~9라면 True 아니라면 False반환
 def is_id_valid(user_data):
-    pass
-    # 여기에 코드를 작성합니다.
+    userId = user_data['id']
+    result = ''
+    for i in range(10):
+        if userId[len(userId)-1] == str(i):
+            result = True
+            break
+    else:
+        result = False
+    return result
 
 
 # 아래의 코드는 수정하지 않습니다.

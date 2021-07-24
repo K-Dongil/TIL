@@ -1,5 +1,11 @@
+# id와 pw중 하나라도 비어있는 문자열이면 False, 아니라면 True
 def is_user_data_valid(user_data):
-    pass
+    result = ''
+    if user_data['id'] == '' or user_data['password'] == '':
+        result = False
+    else:
+        result = True
+    return result
     # 여기에 코드를 작성합니다.
 
 
