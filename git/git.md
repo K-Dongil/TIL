@@ -153,9 +153,9 @@ $git remote add origin 주소
 
 ``````
 $ git push origin master
-To https://lab.ssafy.com/yyyyy01179/test.git
+To https://lab.ssafy.com/kdi1569/test.git
  ! [rejected]        master -> master (fetch first)
-error: failed to push some refs to 'https://lab.ssafy.com/yyyyy01179/test.git'
+error: failed to push some refs to 'https://lab.ssafy.com/kdi1569/test.git'
 hint: Updates were rejected because the remote contains work that you do
 hint: not have locally. This is usually caused by another repository pushing
 hint: to the same ref. You may want to first integrate the remote changes

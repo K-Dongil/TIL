@@ -1275,8 +1275,8 @@ print(range(1,46))
     - Built-in scope : 파이썬 안에 내장되어 있는 함수 또는 속성
 
       ```
-      print = 'ssafy' 라고 저장을 해버리면
-      print는 global에서 'ssafy'
+      print = 'Dongil' 라고 저장을 해버리면
+      print는 global에서 'Dongil'
       		Built-in 에서 함수로 2개가 저장되어 있다
       이 때문에 global에 저장되어있는 문자열이 호출된다.
       ```
@@ -1475,9 +1475,9 @@ g [1, 100, 3]
 
     ```
     # 무한정 자기 자신 호출
-    def ssafy() :
-    	ssafy()
-    ssafy()
+    def Dongil() :
+    	Dongil()
+    Dongil()
     ```
 
 - 피보나치 수열 : 첫째 및 둘째 항이 1이며 그 뒤의 모든 항은 바로 앞 두항의 합인 수열
