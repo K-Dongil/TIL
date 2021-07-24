@@ -558,9 +558,10 @@ if a > 3:
     - 시퀀스에 등장하지 않는 경우 0 반환
   - 시퀀스 포함 여부 확인
     - in, not in
+      - a in b : a가 b안에 있는지 여부
   - indexing : s[ i ]
   - slicing : s[ i : j ]
-  - .index(숫자) : 인덱스 번호에 위치한 값 출력
+  - literable한데이터.index(몇번째 위치한지 알아낼 데이터 값) : 몇번 째 인덱스인지 위치값 출력
 - 비 시퀀스형 : 순서가 없는(unordered) 데이터
   - 세트(set), 딕셔너리(dictionary)
 
