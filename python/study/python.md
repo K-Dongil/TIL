@@ -546,22 +546,63 @@ if a > 3:
 - 컨테이너 : 여러 개의 값을 저장할 수 있는 것(객체)
   - 시퀀스형, 비 시퀀스형
   - string, list, tuple, range, set, dictionary
+  
 - 시퀀스(sequence)형 : 순서가 있는(ordered) 데이터
   - 순서가 있다 != 정렬되어 있다
+
   - 특정 위치의 데이터를 가리킬 수 있다.
+
   - 리스트(list), 튜플(tuple), 레인지(range), 문자형(string), 바이너리(binary)
+
   - 데이터의 길이(갯수) : len()
     - 시퀀스(문자열, 바이트열, 튜플, 리스트, range) 또는 컬렉션(딕셔너리, 집합 또는 불변 집합)
+    
   - 최소/최대 : min(), max()
     - 문자열은 ascii 코드에 따름
+    
   - 시퀀스에서의 특정 원소의 개수 : .count(찾고 싶은 원소)
     - 시퀀스에 등장하지 않는 경우 0 반환
+    
   - 시퀀스 포함 여부 확인
     - in, not in
       - a in b : a가 b안에 있는지 여부
+    
   - indexing : s[ i ]
+
   - slicing : s[ i : j ]
-  - literable한데이터.index(몇번째 위치한지 알아낼 데이터 값) : 몇번 째 인덱스인지 위치값 출력
+
+  - iterable한데이터.index(몇번째 위치한지 알아낼 데이터 값) : 몇번 째 인덱스인지 위치값 출력
+
+    [iterable정리 블로그]('https://jiminsun.github.io/2018-05-11/Iteration/')
+
+    - 컨테이너는 대부분 iterable
+    
+    - 컨테이너라고 안부르는 것중에서도 iterable이 존재함  :stirng
+    
+    - for in 뒤에 오는 건 iterable만 가능
+    
+    - iterable이 아닌 것: int float boolean
+    - 데이터가 반복적인 의미를 갖는다 : iterable?
+      - 데이터 한개가 의미를 갖는다???
+
+    ```
+    파이썬의 iterable과 iterator은 특별한 의미를 가지고 있다.
+    
+    Iterable의 특징은 일단 내부 원소에 하나씩 차례로 접근할 수 있다는 점이다. 따라서 이터러블은 for item in iterable: ...의 문법을 사용할 수 있다. 그런데 이러한 문법을 수행할 수 있는 것은 이터러블이 __iter__ 메소드를 가지고 있는 객체이기 때문이다. 이것이 이터러블의 좀 더 엄밀한 정의이다. 그리고 이 __iter__ 메소스가 하는 일은 iterator를 반환하는 것이다.
+    
+    Iterator는 __next__ 메소드로 데이터를 순차적으로 호출할 수 있는 객체이다. 즉 실제로 루프를 돌면서 반복 도중에 현재 위치가 어디인지를 기억하는 것은 이터레이터이다. 이터레이터는 __iter__ 메소드도 가지고 있는데, 실행할 경우 자기자신이 반환된다.
+    
+    보통은 파이썬에서 for 루프나, map, list comprehension을 사용하면, Iterator의 __next__ 메소드가 자동으로 호출되고 iteration 과정을 수행한다.
+    ```
+    
+    ```
+    iterable (이터러블)
+    멤버들을 한 번에 하나씩 돌려줄 수 있는 객체. 이터러블의 예로는 모든 (list, str, tuple 같은) 시퀀스 형들, dict 같은 몇몇 비시퀀스 형들, 파일 객체들, __iter__() 나 시퀀스 개념을 구현하는 __getitem__() 메서드를 써서 정의한 모든 클래스의 객체들이 있다. 이터러블은 for 루프에 사용될 수 있고, 시퀀스를 필요로 하는 다른 많은 곳 (zip(), map(), …) 에 사용될 수 있다. 이터러블 객체가 내장 함수 iter()에 인자로 전달되면, 그 객체의 이터레이터를 돌려준다. 이 이터레이터는 값들의 집합을 한 번 거치는 동안 유효하다. 이터러블을 사용할 때, 보통은 iter()를 호출하거나, 이터레이터 객체를 직접 다룰 필요는 없다. for 문은 이것들을 여러분을 대신해서 자동으로 해주는데, 루프를 도는 동안 이터레이터를 잡아둘 이름 없는 변수를 만든다.
+    
+    iterator (이터레이터)
+    데이터의 스트림을 표현하는 객체. 이터레이터의 __next__() 메서드를 반복적으로 호출하면 (또는 내장 함수 next() 로 전달하면) 스트림에 있는 항목들을 차례대로 돌려준다. 더 이상의 데이터가 없을 때는 대신 StopIteration 예외를 일으킨다. 이 지점에서, 이터레이터 객체는 소진되고, 이후의 모든 __next__() 메서드 호출은 StopIteration 예외를 다시 일으키기만 한다. 이터레이터는 이터레이터 객체 자신을 돌려주는 __iter__() 메서드를 가질 것이 요구되기 때문에, 이터레이터는 이터러블이기도 하고 다른 이터러블들을 받아들이는 대부분의 곳에서 사용될 수 있다. 중요한 예외는 여러 번의 이터레이션을 시도하는 코드다. (list 같은) 컨테이너 객체는 iter() 함수로 전달하거나 for 루프에 사용할 때마다 새 이터레이터를 만든다. 이런 것을 이터레이터에 대해서 수행하려고 하면, 지난 이터레이션에 사용된 이미 소진된 이터레이터를 돌려줘서, 빈 컨테이너처럼 보이게 만든다.
+    ```
+  
 - 비 시퀀스형 : 순서가 없는(unordered) 데이터
   - 세트(set), 딕셔너리(dictionary)
 
@@ -590,7 +631,7 @@ if a > 3:
        ]
   
   # 아래에 코드를 작성하시오.
-  
+  #버블정렬
   number = []
   min_num = 0
   for i in range(len(numbers)):
@@ -737,6 +778,9 @@ print(b)
   - key는 변경 불가능한 데이터(immutable)만 활용 가능
     - string, integer, float, boolean, tuple, range
   - value는 모든 값으로 설정 가능(리스트, 딕셔너리 등)
+- dictionary.items() : 딕셔너리 키와 값을 리스트안에 튜플형태로 불러옴
+- dictionary.keys() : 딕셔너리의 키만 리스트에 저장하여 불러옴
+- dictionary.values() : 딕셔너리의 값만 리스트에 저장하여 불러옴
 
 
 
@@ -827,7 +871,9 @@ print(b)
 
 - for문
 
-  - 반복 가능(iterable)한 객체를 모두 순회하면 종료(별도의 종료 조건이 필요 없음)
+  - 반복 가능(iterable)한 객체요소를 모두 순회하면 종료(별도의 종료 조건이 필요 없음)
+
+    - 어떤 객체의 원소에 하나씩 차례로 접근하는 것. 명시적으로든 암묵적으로든 반복문을 사용해 객체의 여러 원소에 하나하나 접근하면 그것은 이터레이션(iteration)이다.
 
   - for문은 시퀀스(string, tuple, list, range)를 포함한  iterable한 객체 요소를 모두 순회함
 
@@ -1214,8 +1260,12 @@ print(range(1,46))
 - 인자들은 딕셔너리로 묶여 처리되며, 매개변수에 **를 붙여 표현
 
   ```
+  def family(**kwargs):
+  	for key, vlaue in kwargs:
+  		print(key, ":", vlaue)
+  family(father='Sungmo', mother='Haengran', me='Dongil')
   ```
-
+  
   
 
 ##### - 함수 정의 주의사항
@@ -1339,7 +1389,19 @@ print(range(1,46))
 
     ```
     #nonlocal 예시
-    
+    x = 0
+    def func0():
+    	x = 5
+    	def func1():
+    		nonlocal x
+    		x = 10
+    	func1()
+    	print(x)
+    func0()
+    print(x)
+    #출력
+    2
+    0
     ```
 
 
@@ -1494,7 +1556,7 @@ g [1, 100, 3]
     ```
     def fibo(n):
         if n < 2:
-            return nㅇ
+            return n
         a, b =0, 1
     
         for i in range(n-1):
@@ -1654,7 +1716,414 @@ g [1, 100, 3]
   	pass
   ```
 
+
+
+
+---
+
+---
+
+## 데이터 구조
+
+- 문자열, 리스트, 세트. 딕셔너리
+- 데이터에 편리하게 접근하고, 변경하기 위해 데이터를 저장하거나 조작하는 법
+  - 자료구조 라고도 함
+- 순서가 있는 데이터 구조 - 시퀀스
+  - 문자열(String), 리스트(List)
+- 순서가 없는 데이터 구조 - 비 시퀀스
+  - 딕셔너리, 세트
+
+
+
+##### * 문자열
+
+- 문자들의 나열
+
+- 특징 : 변경할 수 없고(Immutable) 순서가 있고(Ordered) 순회 가능한(Iterable)
+
+  - Immutable
+
+    ```
+    # 변경 불가능
+    a = 'my string'
+    a[-1] = '!'
+    ```
+
+  - Iterable
+
+    ```
+    a = '123'
+    for char in a:
+    	print(char)
+    ```
+
+- 문자열 인덱스
+
+  - 파이썬에서 문자열은 맨 앞 문자부터 0부터 시작, 맨 뒷 문자부터 -1 시작
+    - 만약 문자열을 넘어선 index 범위를 사용하면 오류가 뜸 : index out of range
+
+- 문자열 자르기(Slicing)
+
+  - 문자열[start인덱스번호 : stop 인덱스번호 : step]
+    - step > 0 : 양의 방향으로
+    - step < 0 : 음의 방향으로
+  - 슬라이싱은 해당되는 값이 없다면 빈 문자열을 출력해준다
+  - start인덱스번호는 기본값이 0
+  - stop인덱스번호는 기본값이 len(문자열)
+  - s[ : :-1] : s[-1: -(len(s)+1): -1]
+
+- 문자열 조회/탐색 메서드
+
+  - 문자열.find(x)
+
+    - x의 첫번째 위치를 반환, 없으면 -1을 반환
+
+  - 문자열.idex(x)
+
+    - x의 첫번째 위치를 반환, 없으면 VauleError 일으킴
+
+  - 문자열replace(old, new[ , count])
+
+    - 바꿀 대상 글자(old)를 새로운 글자(new)로 바꿔서 반환 (복사본을 반환해줌)
+
+    - count를 지정하면, 해당 개수만큼만 시행
+
+      - 배커스-나우르 표기법 (문서상의 표기법)
+        - [  ] => 선택적 인자
+
+      ```
+      'wooooowoo'.replace('o', '!', '2')
+      #출력
+      'w!!ooowoo'
+      ```
+
+  - 문자열. strip( [chars]=문자열 )
+
+    - 특정한 문자들을 지정하면 양쪽을 제거하거나(strip), 왼쪽을 제거하거나(lstrip), 오른쪽을 제거(rstrip)하여 복사본 반환
+    - 문자열을 지정하지 않으면 공백을 제거
+
+    - []인 선택적 인자 안에 chars라고 써져 있어서 iterable 의미를 갖는다
+
+      ```
+      'hehhhhhello chhdddd!!!'.lstrip('he')
+      # 출력 : 'llo chhdddd!!!'
+      # 다시 물어보자..?
+      #iterable의 의미를 갖ㄱ........
+      ```
   
+  - 문자열.split( sep=None, maxsplit=-1 )
+  
+    - 문자열을 특정한 단위로 나눠 리스트로 반환
+    - 인자가 iterable 의미를 갖지 않는다!!
+  
+  - 'separator'.join( iterable )
+
+    - 반복가능한(iterable) 컨테이너 요소들을 separator(구분자)로 합쳐 문자열 반환
+
+    - join은 문자열 메소드 -> iterbale한 컨테이너가 들어갈 수 잇으나 요소가 문자열이여야 함
+
+      ```
+      ' '.join(['3', '5'])
+      #출력
+      '3 5'
+      ```
+
+  - 문자열.capitalize()
+
+    - 첫 문자을 대문자, 나머지는 소문자
+
+  - 문자열.title()
+
+    - '나 공백 이후의 단어 첫 문자를 대문자로
+
+  - 문자열.upper()
+
+    - 문자를 전부 대문자로
+
+  - 문자열.lower()
+  
+    - 문자를 전부 소문자로
+  
+  - 문자열.swapcase
+  
+    - 대 <-> 소문자 변경
+  
+  - 메서드 이름 앞에 is가 있으면 반환 값은 보통 True, False 반환
+  
+    - 문자열.isalpah() : 알파벳 문자 여부 (유니코드 상  Letter)
+    - 문자열.isupper() : 대문자 여부
+    - 문자열.islower() : 소문자 여부
+    - 문자열.istitle() : 현재 문자열이 타이틀 형식 여부
+      - 문자열.title() : 단어가 대문자로 시작 나머지는 소문자
+    - 문자열.isdecimal(), 문자열.isdigit(), 문자열.idnumeric()
+
+
+
+##### * 리스트
+
+- 순서가 있는 시퀀스, 인덱스로 접근
+
+- 변경 가능(Mutable), 순서가 있고(ordered), 순회가 가능(iterable)
+
+- 값 추가 및 삭제
+  - 리스트.append(x)
+
+    - 리스트의 끝에 값을 추가
+
+  - 리스트.extend( iterable )
+
+    - iterable에 있는 항목이 풀려서 들어감
+
+      ```
+      cafe = ['starbucks', 'tomntoms', 'hollys']
+      print(cafe) # ['starbucks', 'tomntoms', 'hollys'] 
+      cafe.extend( ['coffee'] )
+      print(cafe) # ['starbucks', 'tomntoms', 'hollys', 'coffee']
+      cafe.extend('coffee')
+      print(cafe) # ['starbucks', 'tomntoms', 'hollys', 'coffee', 'c', 'o', 'f', 'f', 'e', 'e']
+      ```
+
+  - 리스트.insert(i, x)
+
+    - 정해진 위치 i에 값 x를 추가함 (i를 리스트 길이보다 길게 설정할 경우 끝에 추가)
+
+  - 리스트.remove(x)]
+
+    - 리스트에서 값이 x인 첫번째 항목 삭제
+    - 없는 값을 삭제할 경우 ValueError
+
+  - 리스트.pop(i)
+
+    -  정해진 위치 i에 있는 값을 삭제하고 삭제된 값을 반환
+    - i가 지정되지 않으면, 마지막 항목을 삭제하고 반환함
+
+  - 리스트.clear()
+
+    - 모든 항목을 삭제함
+
+- 탐색 및 정렬
+
+  - 리스트.index(x)
+    - 첫번째 x값을 찾아 해당 idnex를 반환
+  - 리스트.count(x)
+    - 원하는 값 x의 개수를 반환함
+  - 리스트.sort()
+    - 원본 리스트를 정렬함. None반환
+    - 리스트.sorted 함수는 정렬된 복사본을 반환
+  - 리스트.reverse()
+    - 순서를 반대로 뒤집음 (정렬X)
+
+- 리스트 복사
+
+  - 리스트의 복사는 같은 리스트의 주소를 참조
+
+  - 해당 주소의 일부 값을
+
+    ```
+    original_list = [1, 2, 3]
+    copy_list = original_list
+    print(original_list, copy_list) # [1, 2, 3], [1, 2, 3]
+    copy_list[0] = 'hello'
+    print(original_list, copy_list) # ['hello', 2, 3], ['hello', 2, 3]
+    ```
+
+  - 얕은 복사(shallow copy)
+
+    - Slice 연산자 활용하여 같은 원소를 가진 리스트지만 결과를 복사(다른 주소)
+
+    - list() 활용하여 같은 원소를 가진 리스트지만 연산된 결과를 복사(다른 주소)
+
+    - 주의사항
+
+      - 복사하는 리스트의 원소가주소를 참조하는 경우
+
+        - 안에 있는 리스트는 복사가 아니라 주소를 참조하게 된다
+
+        ```
+        a = [1, 2, ['a', 'b']]
+        b = a[:]
+        print(a, b) # [1, 2, ['a', 'b']] [1, 2, ['a', 'b']]
+        b[2][0] = 0
+        print(a, b) # [1, 2, [0, 'b']] [1, 2, [0, 'b']]
+        ```
+
+  - 깊은 복사(deep copy)
+
+    - copy 라이브러리를 이용하여 복사
+    - copy.deepcopy(복사할 리스트) # 복사한 리스트를 반환
+
+- List comprehension
+
+  - 표현식과 제어문을 통해 특정한 값을 가진 리스트를 생성하는 법
+
+  - [<expression> for <변수> in <iterable>]
+
+  - [<expression> for <변수> in <iterable> if  <조건식>]
+
+    - 조건식에서 else문이 추가되면 뒤에있던 조건식이 맨 앞으로 간다
+
+    ```
+    # 1~3의 세제곱의 결과가 담긴 리스트를 만드시오
+    cubic_list = []
+    for number in ragne(1, 4):
+    	cubic_list.append(number ** 3)
+    cubic_list # 출력 [1, 8, 27]
+    
+    #List comprehension이용
+    [number**3 for number in range(1,4)]
+    
+    ## 1~3까지의 숫자중 짝수만 담긴 리스트를 만드시오
+    [x for x in range(1, 4) if x%2 == 0]
+    ```
+
+    ```
+    # 다음의 반복문을 List comprehension으로 표현
+    girls = ['jane', 'ashley']
+    boys = ['justin', 'eric']
+    
+    pair = []
+    for boy in boys:
+    	for girl in girls:
+    		pair.append((boy, girl))
+    		
+    #comprehension
+    [(boy, girl) for boy in boys for girl in girls]
+    ```
+
+- Built-in Function
+
+  - map
+
+    - map(function, iterable)
+
+    - 순회 가능한 데이터 구조(iterable)의 모든 요소에 함수(function)적용하고, 그 결과를  map object로 반환
+
+      - 리스트 형변환을 통해 결과 확인
+
+      ```
+      numbers = [1, 2, 3]
+      result = map(str, numbers)
+      print(result, type(result)) # <map object at 0x10e2ca100> <class 'map'>
+      ```
+
+    - 알고리즘 문제 풀이시 input 값들을 숫자로 바로 활용하고 싶을 때 사용
+
+      ```
+      n, m = map(int, input().split()) # 3 5 입력
+      print(n, m) # 3 5
+      print(type(n), type(m)) # <class 'int'> <class 'int'>
+      ```
+
+  - filter
+
+    - filter(function, iterable)
+
+    - 순회 가능한 데이터 구조의 모든 요소에 함수적용하고, 그 결과가 True인 것들을 filter object로 반환
+
+      ```
+      def odd(n):
+      	return n % 2
+      numbers = [1, 2, 3]
+      result = filter(odd, numbers)
+      list(result) # [1, 3]
+      ```
+
+  - zip
+
+    - zip(*iterables)
+
+    - 복수의 iterable을 모아 튜플을 원소로 하는 zip object를 반환
+
+      ```
+      girls = ['jane', 'ashley']
+      boys = ['justin', 'eric']
+      pairt = zip(girls, boys)
+      list(pair) # [('jane', 'justin'), ('ashley', 'eric')]
+      ```
+
+
+
+##### * set
+
+- 중복 없이 순서가 없는 데이터 구조
+- 변경가능(mutable), 순서가 없고(unordered), 순회 가능(iterable)
+- set.add(element)
+  - 세트에 값을 추가
+- set.update(*ohters)
+  - 여러 값을 추가, 중복되는 값은 추가 안 된다
+- set.remove(element)
+  - 세트에서 삭제하고, 없으면 KeyError
+- set.discart(element)
+  - 세트에서 삭제하고 없어도 에러가 발생하지 않음
+- set.pop()
+  - 임의의 원소를 제거해 반환. 세트가 비어있는 경우 KeyError
+
+
+
+##### * 딕셔너리
+
+- key와 value로 구성된 데이터 구조
+
+- 변경가능(mutable) 순서가 없고(unordered) 순회가능(iterable)
+
+- 조회
+
+  - 딕셔너리.get(key[ ,default])
+
+    - key에 대응하는 value를 가져옴
+
+    - key가 딕셔너리에 없어도 KeyError 발생X, default(기본: None)를 돌려줌
+
+      ```
+      my_dict = {'apple':사과, 'banana':바나나}
+      print(my_dect.get('pineaaple', 0)) # 0
+      ```
+
+- 추가 및 삭제
+
+  - 딕셔너리.pop(key[ ,default])
+
+    - key가 딕셔너리에 있으면 제거하고 해당 값을 반환
+
+    - key가 딕녀서리에 없으면 KeyError, default값을 주면 기본값 반환
+
+      ```
+      my_dict = {'apple':사과, 'banana':바나나}
+      data = my_dict.pop('pineapple', 0)
+      print(data, my_dict) # 0 {'apple':사과, 'banana':바나나}
+      ```
+
+  - 딕셔너리.update('key'=vlaue값)
+
+    - 값을 제공하는 key, value로 갱신(기존 key는 덮어씀)
+
+- 딕셔너리 순회
+
+  - 딕셔너리는 기본적으로 key를 순회하며, key를 통해 값을 활용
+  - 추가 메소드를 활용하여 순회할 수 잇음
+    - 딕셔너리.keys() : Key로 구성된 결과
+    - 딕셔너리.values() : Value로 구성된 결과
+    - 딕셔너리.items() : (Key, Value)의 튜플로 구성된 결과
+
+- Dictionary comprehension
+
+  - {key: value for <변수> in <iterable>}
+
+  - {key: value for <변수> in <iterable> if  <조건식>}
+
+    ```
+    dusts = {'서울':72, '대전':82, '구미':29, '광주':45}
+    result = {}
+    for key, value in dusts.item():
+    	if value > 70:
+    		result[key] = value
+    print(result) # {'서울':72, '대전':82}
+    
+    # Dictionary comprehension
+    {key: value for key, value in dusts.item() if value > 70}
+    ```
+
+    
 
 # 함수
 
