@@ -1800,22 +1800,30 @@ g [1, 100, 3]
   - 문자열. strip( [chars]=문자열 )
 
     - 특정한 문자들을 지정하면 양쪽을 제거하거나(strip), 왼쪽을 제거하거나(lstrip), 오른쪽을 제거(rstrip)하여 복사본 반환
+
     - 문자열을 지정하지 않으면 공백을 제거
+
+    - 인자로 들어가는 문자열은 iterable하다. 
+
+      - 인자에서 받는 문자열의 문자 한개씩 기존 문자열의 문자 한개와 비교하여 다른 값이 나올 때까지 제거
 
     - []인 선택적 인자 안에 chars라고 써져 있어서 iterable 의미를 갖는다
 
       ```
       'hehhhhhello chhdddd!!!'.lstrip('he')
       # 출력 : 'llo chhdddd!!!'
-      # 다시 물어보자..?
-      #iterable의 의미를 갖ㄱ........
+      # 'h'와 'e'가 각각 한개의 문자로 들어가 'h' or 'e'가 아닌 값이 나올때 까지 제거
+      #iterable의 의미를 갖는다
+      #====================================
+      b = 'tytytyhihihihahahahihihhhhhhhhhhhhddddh'
+      print(b.rstrip('hi')) # 출력 : tytytyhihihihahahahihihhhhhhhhhhhhdddd
       ```
-  
+
   - 문자열.split( sep=None, maxsplit=-1 )
-  
+
     - 문자열을 특정한 단위로 나눠 리스트로 반환
     - 인자가 iterable 의미를 갖지 않는다!!
-  
+
   - 'separator'.join( iterable )
 
     - 반복가능한(iterable) 컨테이너 요소들을 separator(구분자)로 합쳐 문자열 반환
@@ -1826,7 +1834,31 @@ g [1, 100, 3]
       ' '.join(['3', '5'])
       #출력
       '3 5'
+      ============
+      word = '배고파'
+      words = ['안녕', 'hello']
+      print('!'.join(word)) # 출력 : 배!고!파
+      print('!'.join(words)) # 출력 : 안녕!hello
       ```
+
+      ```
+      <응용>
+      #문장에서 모음(a, e, i, o, u)를 모두 제거
+      vowels = 'aeiou'
+      words = 'Life is too short, you need python!'
+      #words 안에 모음이 있으면 지운다 => words 안에 자음이면 result에 추가한다.
+      result = []
+      for c in words:
+          if c not in vowels:
+              result.append(c)
+      
+      print(result) 
+      # 출력 : ['L', 'f', ' ', 's', ' ', 't', ' ', 's', 'h', 'r', 't', ',', ' ', 'y', ' ', 'n', 'd', ' ', 'p', 'y', 't', 'h', 'n', '!']
+      
+      print(''.join(result)) # 출력 : Lf s t shrt, y nd pythn!
+      ```
+
+      
 
   - 문자열.capitalize()
 
@@ -1841,15 +1873,16 @@ g [1, 100, 3]
     - 문자를 전부 대문자로
 
   - 문자열.lower()
-  
+
     - 문자를 전부 소문자로
-  
+
   - 문자열.swapcase
-  
+
     - 대 <-> 소문자 변경
-  
+
   - 메서드 이름 앞에 is가 있으면 반환 값은 보통 True, False 반환
-  
+
+    - dir(데이터타입)으로 데이터타입이 갖고있는 메서드 확인가능
     - 문자열.isalpah() : 알파벳 문자 여부 (유니코드 상  Letter)
     - 문자열.isupper() : 대문자 여부
     - 문자열.islower() : 소문자 여부
@@ -1882,34 +1915,48 @@ g [1, 100, 3]
       cafe.extend('coffee')
       print(cafe) # ['starbucks', 'tomntoms', 'hollys', 'coffee', 'c', 'o', 'f', 'f', 'e', 'e']
       ```
+      
+    - += 연산자로 리스트에 literable한 데이터 추가 가능
 
   - 리스트.insert(i, x)
 
     - 정해진 위치 i에 값 x를 추가함 (i를 리스트 길이보다 길게 설정할 경우 끝에 추가)
 
   - 리스트.remove(x)]
-
+  
     - 리스트에서 값이 x인 첫번째 항목 삭제
     - 없는 값을 삭제할 경우 ValueError
 
   - 리스트.pop(i)
-
+  
     -  정해진 위치 i에 있는 값을 삭제하고 삭제된 값을 반환
-    - i가 지정되지 않으면, 마지막 항목을 삭제하고 반환함
+    -  i가 지정되지 않으면, 마지막 항목을 삭제하고 반환함
 
   - 리스트.clear()
 
     - 모든 항목을 삭제함
-
+  
 - 탐색 및 정렬
 
   - 리스트.index(x)
     - 첫번째 x값을 찾아 해당 idnex를 반환
+    - index는 찾는 값이 없으면 오류가 발생
   - 리스트.count(x)
     - 원하는 값 x의 개수를 반환함
+
+      ```
+      # 원하는 값을 모두 삭제하려면 다음과 같이 응용가능
+      a = [1, 2, 1, 3, 5, 8, 8]
+      target_value = 8
+      for i in range(a.count(target_value)):
+          a.remove(target_value)
+      print(a)
+      ```
   - 리스트.sort()
     - 원본 리스트를 정렬함. None반환
     - 리스트.sorted 함수는 정렬된 복사본을 반환
+    - reverse 옵션이 있다. (함수 정의할 때 reverse = False가 기본값임)
+      - 인자에 reverse = True주면 역순이 된다
   - 리스트.reverse()
     - 순서를 반대로 뒤집음 (정렬X)
 
@@ -1917,11 +1964,13 @@ g [1, 100, 3]
 
   - 리스트의 복사는 같은 리스트의 주소를 참조
 
-  - 해당 주소의 일부 값을
+  - 해당 주소의 일부 값을 변경하는 경우 이를 참조하는 모든 변수에 영향0
+
+    ![image-20210727104329246](python.assets/image-20210727104329246.png)
 
     ```
     original_list = [1, 2, 3]
-    copy_list = original_list
+    copy_list = original_list # 두 변수의 id값이 같아졌다.
     print(original_list, copy_list) # [1, 2, 3], [1, 2, 3]
     copy_list[0] = 'hello'
     print(original_list, copy_list) # ['hello', 2, 3], ['hello', 2, 3]
@@ -1935,10 +1984,12 @@ g [1, 100, 3]
 
     - 주의사항
 
-      - 복사하는 리스트의 원소가주소를 참조하는 경우
+      - 복사하는 리스트의 원소가 주소를 참조하는 경우
 
         - 안에 있는 리스트는 복사가 아니라 주소를 참조하게 된다
 
+          ![image-20210727105255312](python.assets/image-20210727105255312.png)
+        
         ```
         a = [1, 2, ['a', 'b']]
         b = a[:]
@@ -2032,7 +2083,7 @@ g [1, 100, 3]
 
     - zip(*iterables)
 
-    - 복수의 iterable을 모아 튜플을 원소로 하는 zip object를 반환
+    - 복수의 iterable을 모아 튜플의 모음으로 구성된 zip object를 반환
 
       ```
       girls = ['jane', 'ashley']
@@ -2040,8 +2091,17 @@ g [1, 100, 3]
       pairt = zip(girls, boys)
       list(pair) # [('jane', 'justin'), ('ashley', 'eric')]
       ```
-
-
+      
+      ```
+      # 가장 작은 iterable데이터를 기준으로 튜플을 생성
+      girls = ['jane', 'ashley', 'mary', 'bbb']
+      boys = ['justin', 'eric', 'david', 'aaa']
+      c= 'abc'
+      pair = list(zip(girls, boys, c))
+      print(pair) # 출력 : [('jane', 'justin', 'a'), ('ashley', 'eric', 'b'), ('mary', 'david', 'c')]
+      ```
+      
+      
 
 ##### * set
 
@@ -2123,7 +2183,52 @@ g [1, 100, 3]
     {key: value for key, value in dusts.item() if value > 70}
     ```
 
-    
+
+
+
+##### * 변경 불가능한(immutable) 데이터의 복사
+
+- 리터럴(literal) : 숫자, 글자, 참/거짓  | range() | tuple() | frozenset() 
+- 값만 복사가 된다 (Frames)
+
+
+
+##### * 변경 가능한(mutable) 데이터의 복사
+
+- list, dict, set
+
+- 복사할 때 이경우에는 주소 공유가 아니다 
+
+  - (list, dictionary, set함수로 list, dictionary, set 데이터 복사하여 다른 변수에 저장)
+
+    ```
+    a = [1, 2, 3, 4, 5]
+    b = list(a)
+    b[0] = 5
+    print(a) # 출력 : [1, 2, 3, 4, 5]
+    ```
+
+  - 일부 상황에서 얕은 복사
+    - 복사하는mutable데이터의 원소가 주소를 참조하는 경우
+
+      - 안에 있는 주소를 참조하는 데이터는 복사가 아니라 주소를 참조하게 된다
+    - 리스트 안에 리스트, 딕셔너리 안에 딕셔너리
+
+- Objects 주소를 공유하게 된다
+
+  ![image-20210727114749588](python.assets/image-20210727114749588.png)
+
+  ```
+  a= {'a':1,'b':1}
+  b = a
+  b['a'] = 5
+  print(a)
+  print(b)
+  ```
+
+  
+
+
 
 # 함수
 
