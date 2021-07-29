@@ -1548,11 +1548,15 @@ g [1, 100, 3]
 
     ```
     def fibonacci(n):
-    
+        #base case가 필요
+        if n < 2:
+            return n
+        else:
+            return fibonacci(n-1) + fibonacci(n-2)
     ```
-
+  
   - 반복으로 풀어보기
-
+  
     ```
     def fibo(n):
         if n < 2:
