@@ -18,7 +18,7 @@
     - 내가 쓰고자하는 HTML기술이 브라우저에서 사용가능한지 확인가능
     - 쓰고자하는 기술이 다양한 브라우저에서 공통적으로 쓰일 수 있는지 확인
 
-![image-20210802110630678](HTML%20&%20CSS.assets/image-20210802110630678.png)
+![image-20210802110630678](../../HTML%20&%20CSS.assets/image-20210802110630678.png)
 
 - Elements - Dom 탐색 및 CSS확인 및 변경
   - styles : 요소에 적용된 CSS 확인
@@ -249,7 +249,7 @@
 
 - [CSS 연습]('https://flukeout.github.io/')
 
-![image-20210802112833338](HTML%20&%20CSS.assets/image-20210802112833338.png)
+![image-20210802212727310](HTML%20&%20CSS.assets/image-20210802212727310-16279072504021.png)
 
 - 선택자 (Selector)
   - HTML문서에서 특정한 요소를 선택하여 스타일링 하기위해서는 반드시 선택자라는 개념이 필요
@@ -359,7 +359,7 @@
   - Box model 관련요소(width, height, margin, padding, border, box-sizing, display)
   - position 관련요소 (position, top/right/bottom/left, z-index) 등
 
-  ![image-20210802143503865](HTML%20&%20CSS.assets/image-20210802143503865.png)
+  ![image-20210802212804580](HTML%20&%20CSS.assets/image-20210802212804580.png)
 
 
 
@@ -445,7 +445,7 @@
 
   - content, padding, border, margin
 
-  ![image-20210802150258696](HTML%20&%20CSS.assets/image-20210802150258696.png)
+  ![image-20210802212831985](HTML%20&%20CSS.assets/image-20210802212831985.png)
 
 - 영역은 상하좌우로 나뉜다
 
@@ -456,7 +456,7 @@
     - 상하좌우, 상하/좌우, 상/좌우/하 , 상/우/하/좌
     - 0 auto 값을 주면 상하:0 좌우는 가운데정렬이 된다
 
-    ![image-20210802151014444](HTML%20&%20CSS.assets/image-20210802151014444.png)
+    ![image-20210802212849894](HTML%20&%20CSS.assets/image-20210802212849894-16279073304722.png)
 
 - box-sizing
 
@@ -473,7 +473,7 @@
     }
     ```
 
-    ![image-20210802152428332](HTML%20&%20CSS.assets/image-20210802152428332.png)
+    ![image-20210802212909517](HTML%20&%20CSS.assets/image-20210802212909517-16279073520743.png)
 
 - 마진(margin) 상쇄
 
@@ -512,7 +512,7 @@
 
   - inline은 text-align을 이용하여 정렬
 
-    ![image-20210802153619333](HTML%20&%20CSS.assets/image-20210802153619333.png)
+    ![image-20210802212926907](HTML%20&%20CSS.assets/image-20210802212926907.png)
 
 
 
@@ -536,7 +536,7 @@
 
       - 이동은 했지만 기존 위치를 다른 요소들이 쓸 수 없음
 
-      ![image-20210802155412962](HTML%20&%20CSS.assets/image-20210802155412962.png)
+      ![image-20210802213013130](HTML%20&%20CSS.assets/image-20210802213013130.png)
 
   - position: absolute (절대적)
 
@@ -552,12 +552,11 @@
 
       - body에 붙으면 좋지 않으므로 미리 기준(부모/조상)을 만들어놔야 좋다
 
-        ![image-20210802155441237](HTML%20&%20CSS.assets/image-20210802155441237.png)
+        ![image-20210802213028942](HTML%20&%20CSS.assets/image-20210802213028942.png)
 
-    - 
-
+  
   - position: fixed (고정)
-
+  
     - 요소를 일반적인 문서 흐름에서 제거 후 Layout에 공간을 차지하지 않음
     - 부모요소와 관계없이 viewport를 기준으로 이동(우리가 보는 화면을 기준으로)
     - 스크롤 움직여도 항상 같은 곳에 위치함
