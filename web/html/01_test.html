@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <header>
+    <h1>
+      SSAFY 6기 건강설문
+    </h1>
+    <a href="https://www.ssafy.com">
+      <img class="fit-picture" src="ssafy.png" alt="SSAFY로 이동">
+    </a>
+  </header>
+  <section>
+    <form> <!-- <form action='설문에 작성한 값을 보내줄 주소'> -->
+      <!-- 이름 입력 -->
+      <div>
+        <label for="name">이름을 기재해주세요</label>
+        <input type="text" id="name" autofocus>
+      </div>
+      <!-- 지역 선택 -->
+      <div>
+        <label for="area">지역을 선택해주세요</label>
+        <select id="area">
+          <option>서울</option>
+          <option>대전</option>
+          <option>광주</option>
+          <option>구미</option>
+          <option>부산,울산,대구</option>
+        </select>
+      </div>
+      <!-- 체온 선택 -->
+      <div>
+        <p>오늘의 체온을 선택해주세요.</p>
+        <input type="radio" id="normal" name="body_heat" value="noraml" checked>
+        <label for="normal">37.0 이하</label>
+        <input type="radio" id="hot" name="body_heat" value="hot">
+        <label for="hot">37.0 초과</label>
+      </div>
+      <input type="submit" value="전송">
+    </form>
+  </section>
+  <footer>
+    설문에 참여해주셔서 감사합니다.
+  </footer>
+</body>
+</html>
