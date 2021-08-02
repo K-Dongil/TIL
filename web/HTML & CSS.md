@@ -18,7 +18,7 @@
     - 내가 쓰고자하는 HTML기술이 브라우저에서 사용가능한지 확인가능
     - 쓰고자하는 기술이 다양한 브라우저에서 공통적으로 쓰일 수 있는지 확인
 
-![image-20210802110630678](../../HTML%20&%20CSS.assets/image-20210802110630678.png)
+![image-20210802222646356](HTML%20&%20CSS.assets/image-20210802222646356.png)
 
 - Elements - Dom 탐색 및 CSS확인 및 변경
   - styles : 요소에 적용된 CSS 확인
@@ -88,7 +88,7 @@
     - 2spaces를 기준으로 들여쓰기
     - 문서를 접근할 때 객체단위로 접근하여 접근/수정
 
-    ![image-20210802092928671](C:/Users/Administrator/AppData/Roaming/Typora/typora-user-images/image-20210802092928671.png)
+    ![image-20210802222855253](HTML%20&%20CSS.assets/image-20210802222855253.png)
 
 - 요소(element)
 
