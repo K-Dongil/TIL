@@ -132,6 +132,8 @@
 
     - 검색엔진 최적화(SEO)를 위해서 메타태그, 시맨틱 태그등을 통한 마크업을 효과적으로 할 필요가 있다
 
+  - 시맨틱 태그는 각 용도에 맞게 쓰는 것이 좋다
+
   - div는 의미를 가지고 있지 않으나 문서의 구조(block)를 잡기 위해서 사용하는 태그
 
   - 단순히 구역을 나누는 것 뿐만아니라 의미를 가지는 태그들을 활용하기 위한 노력
@@ -372,6 +374,7 @@
   - %
     - 백분율 단위
     - 가변적인 레이아웃에서 자주 사용
+    - 부모의 영향을 받는 단위
   -  em
     - (바로 위, 부모 요소에 대한)상속의 영향을 받음
     - 배수 단위, 요소에 지정된 사이즈에 상대적인 사이즈를 가짐
@@ -382,8 +385,9 @@
     - 웹 페이지를 방문한 유저에게 바로 보이게 되는 웹 컨텐츠의 영역
     - 스마트폰, 태블릿 디바이스의 화면을 일컫는 용어로 사용
     - 글자 그대로 디바이스의 viewport를 기준으로 상대적인 사이즈가 결정
+    - 디바이스마다 화면의 크기가 다른 것을 고려하여 쓰는 단위
     - vw, vh, vmin, vmax
-
+  
 - 색상 단위
 
   1. 색상 키워드
@@ -419,6 +423,10 @@
 
 ##### Selectors 심화
 
+- 형제 요소
+  - HTML 요소의 계층 구조에서 같은 부모 요소를 가지고 있는 요소들
+    - 동위 관계에 있는 요소들을 형제 요소라 한다.
+
 - 결합자
 
   - 자손 결합자
@@ -428,10 +436,18 @@
   - 일반 형제 결합자
     - selecotrA ~ selectorB 
     - selecotrA의 형제 요소 중 **뒤**에 위치하는  selectorB 요소를 **모두** 선택
-
   - 인접 형제 결합자
     - selecotrA+selectorB 
     - selecotrA의 형제 요소 중 **바로 뒤**에 위치하는  selectorB 요소를 선택
+  - :only-child
+    - 만약 컨테이너에서 자식이 하나라면 그 요소를 선택(자식요소 선택)
+
+  - :last-child
+    - 형제요소 중마지막 요소인 것
+  - :nth-of-type(n)
+    - 부모 요소의 특정 자식 요소 중 n번째 선택
+  - :last-of-type
+    - 각 타입의 마지막 요소를 선택한다
 
 
 
@@ -443,7 +459,7 @@
 
 - 하나의 박스는 네 부분(영역)으로 이루어짐
 
-  - content, padding, border, margin
+  - content, padding(영역 안), border(선), margin(영역 바깥)
 
   ![image-20210802212831985](HTML%20&%20CSS.assets/image-20210802212831985.png)
 
@@ -554,9 +570,55 @@
 
         ![image-20210802213028942](HTML%20&%20CSS.assets/image-20210802213028942.png)
 
-  
+
   - position: fixed (고정)
-  
+
     - 요소를 일반적인 문서 흐름에서 제거 후 Layout에 공간을 차지하지 않음
     - 부모요소와 관계없이 viewport를 기준으로 이동(우리가 보는 화면을 기준으로)
     - 스크롤 움직여도 항상 같은 곳에 위치함
+    
+  - postion: sticky (relative와 fixed 혼합형)
+
+
+    - 브라우저의 스크롤 위치에 영향을 받는다
+    
+    - 스크롤을 할 때 내가 지정한 위치에서 고정(부모요소가 화면에 사라질 때까지만 고정)
+
+
+      - Top, Bottom, Left ,Right 중 한 값이라도 꼭 지정해줘야 한다.
+    
+      ![image-20210803104347232](HTML%20&%20CSS.assets/image-20210803104347232.png)
+    
+      ```
+      <head>
+      	section {
+            background-color: beige;
+            height: 100vh;
+            width: 70vh;
+            padding: 0px 30px;
+          }
+          aside {
+            position: sticky;
+            background-color:green;
+            height: 50px;
+            width: 100%;
+            top: 100px;
+            text-align: center;
+            color: white;
+            border: 1px solid black;
+          }
+      </head>
+      <body>
+      	<div>
+          <section>
+            <aside>aside1</aside>
+          </section>
+          <section>
+            <aside>aside2</aside>
+          </section>
+        </div>
+      </body>
+      ```
+
+
+​      
