@@ -1487,7 +1487,10 @@ g [1, 100, 3]
   - 알고리즘 중 재귀 함수로 로직을 표현하기 쉬운 경우가 있음(ex - 점화식)
   - 변수의 사용 줄어듬, 코드의 가독성 높아짐
   
+- 재귀함수를 이용할 때는 base 코드(빠져나가는 부분), 일반적으로 재귀가 호출되는 부분이 명확하게 나뉘어지게 코드를 구성해야한다.
+
 - 1개 이상의 base cse(종료되는 상황)가 존재하고, 수렴하도록 작성
+
   - 같은 문제를 다른 Input 값을 통해서 해결하는 과정
     - 큰 문제를 해결하기 위해 작은 문제로 좁히고, 작은 문제의 해답을 이용하여 해결
   - 작은 문제는 base case에 도달하여 재귀함수가 끝날 수 있도록 함
@@ -1569,7 +1572,75 @@ g [1, 100, 3]
     print(fibo(4))
     ```
 
+- Collatz추측
 
+  - 주어진 수가 1이 될때까지 다음 작업 반복 (함수를 몇 번 반복했는지 반환하여라)
+
+    1. 입력된 수가 짝수라면 2로 나눈다.
+    2. 입력된 수가 홀수라면 3을 곱하고 1을 더한다.
+    3. 결과로 나온 수에 같은 작업을 1이 될 때까지 반복한다.
+
+  - while 문으로 풀 때
+
+    ```
+    # base와 재귀가 호출되는 부분이 명확하게 구분지어져 있지 않은 코드
+    def collatz(num):
+        cnt = 0
+        while num != 1:
+            if cnt >= 500:
+                cnt = -1
+                break
+            if num % 2:
+                num = num*3 +1
+            else:
+                num /= 2
+            cnt += 1
+        return cnt
+    # base와 재귀호출이 명확하게 구분되어져 있는 코드
+    def collatz(num):
+        # base 조건
+        if num ==1:
+            return 0
+        
+        # 재귀 호출
+        if num % 2:
+            num = num*3 +1
+        else:
+            num //= 2 # num //2 로 하는게 좋다 (float이 되버리니깐 정확한 횟수가 안나올 수 있다)
+        return 1 + collatz(num)
+    # base 코드 (빠져나가는 부분), 일반적으로 재귀가 호출되는 부분 
+    # 둘이 명확하게 구분되면 되겠다
+    ```
+
+  - 재귀함수가 base함수까지 몇 번 호출되었는지 알고 싶을 때
+
+    - 함수의 매개변수 부분에 counting을 해주는 변수를 키워드 변수로 넣어준다. 
+      - 반환하는 구간에서 함수를 호출할 때 couting해주는 변수에 +1씩 해준다 
+    - 또 다른 방법으로는 함수밖에 counting해주는 변수를 지정해주고 함수안에서 global을 이용하여 지역변수에서 전역변수로 바꿔주고 counting한다
+
+    ```
+    def collatz(num, cnt =0):
+        if num ==1:
+            return cnt
+        elif cnt >500:
+            return -1
+        else:
+            if num % 2:
+                num = num*3 +1
+            else:
+                num /= 2
+            return collatz(num, cnt+1)
+    print(collatz(6)) # 8
+    print(collatz(16)) # 4
+    print(collatz(27)) # 111
+    print(collatz(626331)) # 508
+    ```
+
+    
+
+  
+
+  
 
 ---
 
