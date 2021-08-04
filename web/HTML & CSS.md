@@ -2,6 +2,8 @@
 
 [MDN(학습)]('https://developer.mozilla.org/ko/')
 
+vscode
+
 ---
 
 ##### * Web
@@ -620,5 +622,221 @@
       </body>
       ```
 
-
 ​      
+
+
+
+## CSS Layout
+
+- 웹페이지에 포함되는 요소들을 어떻게 취합하고 그것들이 어느 위치에 놓일 것인지를 제어
+- Display, Position, Float, Flexcox, Bootstrap Grid System, Table Layout, Multiple-column layout
+
+
+
+##### * Float
+
+- 한 요소가 정상 흐름으로부터 빠져 **텍스트** 및 **인라인 요소**가 그 **주위를 감싸** 요소의 좌, 우측을 따라 배치되어야 함을 지정
+
+- 이미지를 한쪽으로 띄우고 텍스트를 둘러싸는 레이아웃을 위해 도입
+
+- 이미지가 아닌 다른 요소들에도 적용해 웹 사이트의 전체 레이아웃을 만드느는 것까지 발전(배치에 사용)
+
+  ![image-20210804090920543](HTML%20&%20CSS.assets/image-20210804090920543.png)
+
+- 속성
+
+  - none : 기본값
+
+  - left : 요소를 왼쪽으로 띄움
+
+  - right : 요소를 오른쪽으로 띄움
+
+    ![image-20210804091044262](HTML%20&%20CSS.assets/image-20210804091044262.png)
+
+- Float clear
+
+  - float된 요소의 부모 요소에 floatclear작업을 한다
+
+  - 선택한 요소의 맨 마지막 자식으로 가상 요소를 하나 생성
+
+  - content 속성과 함께 짝지어, 요소에 장식용 콘텐츠를 추가할 때 사용
+
+  - 기본값은 inline
+
+  - clear
+
+    - 선행 floating 요소 다음 일 수 있는지 or 그 아래로 내려가(해제되어, cleared)야 하는지를 지정
+    - clear속성은 float 및 비 float 요소 모두에 적용됨
+
+    ```
+    .clearfix::after{ #클래스 이름이 clearfix인 요소 뒤(밑)에 # ::after : 가상요소(의사요소) 설정
+    	content: ""; # 내용은 필요없기 때문에 비어있다
+    	display: block; # 아래쪽에 있는 layout이 못 올라오기 위해
+    	clear: both; # 앞의 요소가 float가 된 것을 무시?
+    				# flot을 무시하지 못하면 가상요소 또한 float되어 버린다.
+    }
+    ```
+
+    
+
+##### * flexbox(CSS Flexible Box Layout)
+
+- 오랫동안 CSS Layout을 작성할 수 있는 도구는 float 및 positioning 뿐
+  - 정교한 작업 불가능(제한적이고 한계)
+- Flexbox라 불리는 Flexible Box module은 Flexbox 인터페이스 내의 아이템(요소) 간 "**공간배분**"과  "**정렬**" 기능을 제공하기 위한 1차원 Layout model로 설계
+- 요소 간 공간 배분과 정렬 기능을 위한 **1차원(단방향) Layout**
+
+![image-20210804095739484](HTML%20&%20CSS.assets/image-20210804095739484.png)
+
+- **요소**
+  - Flex Container(부모 요소)
+    - 정렬 대상이 되는 요소들을 포함하는 부모(바깥) 요소
+    - Flexbox 레이아웃을 형성하는 가장 기본적인 모델
+    - Flex Item들이 놓여있는 영역
+    - 생성하려면 display 속성을 flex 혹은 inline-flex로 지정
+    - 부모가 정렬될 자식들을 Controll
+  - Flex Item(자식요소)
+    - 정렬의 대상이 되는 요소들
+    - 컨테이너의 컨텐츠
+
+- **축**
+  - main axis(메인축)
+    - x축이라고 착각X , 방향 설정에 따라 X축 Y축 나뉜다
+  - cross axis(교차축)
+
+1. 부모 요소에 display:flex 혹은 inline-flex를 작성하는 것부터 시작
+
+   ```
+   .flex-containter{
+   	display: flex;
+   }
+   ```
+
+2. Flex에 적용하는 속성
+
+   - 배치 방향 설정
+     - 메인축 방향만 설정하면 된다(교차축은 메인축에 의해 정해진다)
+
+       - 메인축 방향 총 4가지
+
+     - flex-direction
+
+       ![image-20210804100816282](HTML%20&%20CSS.assets/image-20210804100816282.png)
+
+   - 메인축 방향 정렬
+     - justify-content
+
+       - flex-strat(기본 값)
+       - center(중앙), flex-end(끝)
+       - space-between, space-around(내부간격이 외부간격의 2배)
+       - space-evenly(내부간격과 외부간격이 균등)
+
+       ![image-20210804101035009](HTML%20&%20CSS.assets/image-20210804101035009.png)
+
+   - 교차축 방향 정렬
+     - aligin-content (메인축 기준 여러 줄)
+     - align-items(메인축 기준 한 줄 정렬)
+     - aligin-self(메인축 기준 flex item 개별요소)
+       - 부모요소 밖에서 Controll
+   - 기타
+   - flex-wrap
+     - 요소들이 강제로 한 줄로 배치될 것인지에 대한 여부 결정
+       - 공간을 벗어나면 바깥으로 튀어나감
+     - nowrap이 기본값 (한줄로 배치되게끔 하는 속성값)
+   - flex-flow
+     - flex-direction + flex-wrap의 shorthand
+   - flex-grow
+     - 메인 축(주축)에서 남은 공간을 각 항목에게 분배 (남은 공간에 대한 배분)
+       - 각 요소의 상대적 비율을 정하는 것X
+     - 기본 값은 0
+   - order
+     - 정렬된 순서를 바꿀 수 있다
+     - 숫자가 작을 수록 start 쪽으로 온다.(앞으로 정렬)
+     - 기본 값은 0
+
+
+
+
+
+
+
+##### * Bootstrap 
+
+- 트위터에서 시작된 오픈 소스 Frontend 라이브러리
+
+- 웹 페이지에서 많이 쓰이는 요소 거의 전부를 내장하고 있음
+- 별도의 디자인을 할 시간이 크게 줄어들고, 여러 웹 브라우저를 지원하기 위한 크로스 브라우징에 불필요한 시간을 사용하지 않도록 함
+  - 크로스 부라우징 : 최대한 많은 종류의 웹 브라우저에서 정상적으로 작동하는 웹페이지를 만드는 방법
+    - 모든 브라우저가 동일X, 표준과 동등해져야하는 개념
+
+- one source multi use(반응형 웹 디자인)
+  - 웹 과 모바일
+
+- Reset CSS
+  - 모든 HTML 요소 스타일을 일관된 기준으로 재설정하는 간결하고 압축된 규칙 세트
+  - HTML5 Element, Typograph, Table List등의 요소들에 일관성있게 스타일을 적용 시키는 기본 단계
+  - 사용배경
+    - 모든 브라우저는 각자의 user agent stylesheet를 가지고 있다
+      - 웹 사이트를 보다 읽기 편하게 하기 위해
+      - user agent stylesheet : 브라우저가 기본적으로 가지고 있는 스타일
+    - 문제 : 각자의 user agent stylesheet 설정이 다르다
+      - 모든 브라우저에서 웹 사이트를 동일하게 보이게 만들어야하는 개발자에게 골치거리
+  - 종류
+    1. Normalize CSS (gentle solution)
+       - W3C의 표준을 기준으로 브라우저 중 하나가 불일치 한다면 차이가 있는 브라우저를 수정
+       - 경우에 따라 IE 또는 EDGE는 표준에 따라 수정이 불가
+         - Normalize는 IE 또는 EDGE의 스타일을 나머지 브라우저에 적용 (Downgrade)
+       - 실제 bootstrap 에서는 normalize.css를 자체적으로 커스텀해서 bootstrap-reboot.css라는 이름으로 사용
+    2. Reset CSS (aggressive solution) - 반환 스타일
+       - 브라우저의 기본 스타일이 전혀 필요 없다는 방식
+         - 브라우저의 기본 스타일 다 없애버린다
+       - 브라우저의 user agent와 함께 제공되는 모든 스타일을 재설정
+       - Reset CSS의 문제점은 너무나 많은 선택자가 엉켜있고, 불필요한 오버라이드가 많이 발생하며 디버깅 시 제대로 읽을 수 없다.
+
+- Bootstrap 적용(파일 다운받아 적용하기)
+  1. Bootstrap 홈페이지에서 파일 다운받기
+  2. bootstrap.css파일을 head태그 안에서 link태그에서 경로를 지정해 불러온다
+  3. bootstrap.bundle.js파일을 body태그 끝자락에서  script태그에서 경로를 지정하여 불러온다
+
+- Bootstrap 적용(CDN)
+
+  - 온라인 상에 올려져있는 파일을 불러오는 것
+  - Content Delivery(Distribution) Network
+
+  - 컨텐츠(CSS, JS, Image, Text 등)을 효율적으로 전달하기 위해, 서버와 사용자 사이의 물리적 거리를 줄여 컨텐츠 로드 지연을 최소화
+    - 세계 곳곳에 서버가 분산되어 있음
+
+  - 분산 된 서버로 이루어진 플랫폼
+
+    - 전 세계 사용자들이 로딩 시간을 늦추지 않고 동일한 품질의 컨텐츠를 사용할 수 있음
+
+  - 장점
+
+    1. 사용자와 가까운 서버를 통해 빠르게 전달 가능
+    2. 외부 서버를 활용함으로써 본인 서버의 부하가 적어짐
+
+  - 적용 방법
+
+    1. Bootstrap 홈페이지 -> Docs -> Quick start에 있는 CSS(link태그)와 JS(script태그)코드를
+
+    2. 각각 head태그 안에 CSS, body 끝자락에 js코드를 넣어준다
+
+##### * Responsive Web Design
+
+- 다양한 화면 크기를 가진 디바이스들이 등장함에 따라 responsive web Design 개념이 등장
+- 반응형 웹은 별도의 기술 이름이 아닌 웹 디자인에 대한 접근 방식
+  - 반응형 Layout 작성에 도움이 되는 사례들의 모음등을 기술하는데 사용되는 용어
+- ex)
+  - Media Queries, Flexbox, Bootstrap Grid System, The viewport meta tag
+
+
+
+##### * Grid system
+
+- Bootstrap Grid system은 flexbox로 제작됨
+- container, rows, column으로 컨텐츠를 배치하고 정렬
+  - container속에 (하나의 row안에 12개의 column) 여러개가 있다
+- 반드시 기억해야 할 2가지
+  - 12개의 column (12는 약수의 개수가 적당하다 - 구조를 여러개를 짤 수 있다)
+  - 6개의 grid breakpoints (layout이 변화(=반응형이 바뀌는)되는 시점이 총 6개 존재)
+
