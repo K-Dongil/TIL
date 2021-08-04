@@ -1,35 +1,3 @@
-# def removeNum(a):
-#     gapList = []
-#     gapList1 = []
-#     strNum = str(a)
-#     if len(strNum) ==1:
-#         return a
-#     for i in range(len(strNum)):
-#         gapList.append(strNum[i])
-#     for i in range((len(gapList))-1):
-#         gapList1.append((int(gapList[i]) - int(gapList[i+1])))
-#     for i in range(len(gapList1)-1):
-#         if gapList1[i] == gapList1[i+1]:
-#             pass
-#         else:
-#             a = None
-#             break
-#     return a
-
-# N = int(input()) # 숫자 N을 입력받는다
-
-# numList = list(range(1, N+1))
-# NumList = []
-
-# for i in numList:
-#     NumList.append(removeNum(i))
-# numSet = set(NumList)
-# if None in numSet:
-#     numSet.remove(None)
-# print(len(numSet))
-
-
-
 def checkNum(a): # 인자로 보낸 값이 한수인지 아닌지 판별하는 함수
     gapList = [] # gapList는 각 자리의 값으로 채워질 리스트
     gapList1 = [] # gapList1는 연속된 두개의 수 차이들로 채워질 리스트
@@ -61,3 +29,33 @@ numSet = set(numList) # 한수가 아닐때는 함수가 None값을 보내므로
 if None in numSet: # 남아잇는 None값을 제거
     numSet.remove(None)
 print(len(numSet)) # numSet에는 한수값들만 남아있으므로 길이를 구하여 출력
+
+# def removeNum(a):
+#     gapList = []
+#     gapList1 = []
+#     strNum = str(a)
+#     if len(strNum) ==1:
+#         return a
+#     for i in range(len(strNum)):
+#         gapList.append(strNum[i])
+#     for i in range((len(gapList))-1):
+#         gapList1.append((int(gapList[i]) - int(gapList[i+1])))
+#     for i in range(len(gapList1)-1):
+#         if gapList1[i] == gapList1[i+1]:
+#             pass
+#         else:
+#             a = None
+#             break
+#     return a
+
+# N = int(input()) # 숫자 N을 입력받는다
+
+# numList = list(range(1, N+1))
+# NumList = []
+
+# for i in numList:
+#     NumList.append(removeNum(i))
+# numSet = set(NumList)
+# if None in numSet:
+#     numSet.remove(None)
+# print(len(numSet))
