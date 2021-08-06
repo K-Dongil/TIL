@@ -16,6 +16,7 @@ vscode
   - W3C (HTML5)
   - WHATWG (HTML Living Standard)
     - Apple, Google, Microsoft, Mozlia : 브라우저를 가지고 있음
+      - 브라우저 : HTML 문서를 해석해서 사용자에게 보여준다
   - Can I use?
     - 내가 쓰고자하는 HTML기술이 브라우저에서 사용가능한지 확인가능
     - 쓰고자하는 기술이 다양한 브라우저에서 공통적으로 쓰일 수 있는지 확인
@@ -839,4 +840,129 @@ vscode
 - 반드시 기억해야 할 2가지
   - 12개의 column (12는 약수의 개수가 적당하다 - 구조를 여러개를 짤 수 있다)
   - 6개의 grid breakpoints (layout이 변화(=반응형이 바뀌는)되는 시점이 총 6개 존재)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Media Query
+
+- 단말기의 유형(화면)과 특성, 수치(해상도, Viewport 너비)에 따라 웹 사이트나 앱의 스타일을 수정할때 유용
+
+- bootstrap의 greedSystem
+- bootstrap의 breakpoint 어떻게 구혀하는가
+
+- Media 타입별로 다른 스타일을 적용하기 위해 사용
+  - 화면(screen)
+  - 출력(print)
+  - 스크린 리더(speech)
+  - 모든 상황(all)
+
+
+
+##### * Font
+
+- 사용자 경험(UX)에 큰 영향을 준다
+  - 직접 만들 수는 없지만, 기본 폰트는 바꿔보자
+  - [폰트]('https://fonts.google.com/')
+    - link태그 복사하여 html 에서 head태그 부분, css복사하여 style 적용
+
+
+
+##### * Icon
+
+- [Fontawesome]('https://fontawesome.com/')
+  - API발급받은 것을 head태그에 집어넣기
+  - 각 아이콘에서 제공하는 i태그를 복사하여 body태그에 사용
+
+- [BootstrapIcon]('https://icons.getbootstrap.com/')
+  - CDN을 head태그에 집어넣기
+  - 각 아이콘에서 제공하는 i태그를 복사하여 body태그에 사용
+    - Bootstrap에서 사용이 적은 i태그를 아이콘으로 쓰고 있다
+
+- Favicon(Favorites icon)
+  - 인터넷 웹 브라우저의 주소창에 표시되는 웹 사이트나 **웹페이지를 대표하는 아이콘**
+  - head 태그에 작성
+  - 32px * 32px에 .gif .png .cio 확장자
+
+
+
+
+
+##### * Bootstrap Source Code 둘러보기
+
+- Compiled
+
+  - .rtl.css
+    - right to left(오른쪽에서 왼쪽)로 작성된 언어(e.g. 아랍어) 대응용
+  - .min.css
+    - 모든 공백(space, enter, tab 등)을 제거하여 경량화(압축)한  CSS파일
+      - 더빠른 로딩 == 향상된 사용자 경험(UX)
+  - .css.map
+    - Source Map(디버깅을 위해 원본소스와 매핑해주는 파일)
+      - 보통 서버에 배포할 때 성능 최적하를 위해 HTML, CSS, JS와 같은 웹 자원들을 압축한다
+        - 압축하여 배포한 파일에서 에러가 난다면 어떻게 디버깅??
+      - 오류가 나면 원본파일에서 몇 번째 줄에서 오류가 난건지 알려준다
+
+- Source files
+
+  - scss (Syntactically Awesome Style Sheet)
+
+  - css vs sass vs scss
+
+    ![image-20210806103055757](HTML%20&%20CSS.assets/image-20210806103055757.png)
+
+  - 브라우저는 SCSS를 해석X,  오직 순수 CSS만 해석 가능
+
+  - SCSS파일을  CSS파일로 바꿔 줄 번역기(컴파일러)가 필요
+
+    ![image-20210806103008202](HTML%20&%20CSS.assets/image-20210806103008202-16282134089601.png)
+
+    - Scource files  -(Compiler)-> compiled
+
+
+
+##### * 우선순위 & 명시도
+
+- CSS는 명시도가 높은 순으로 적용된다
+- 명시도 점수가 같을 때는 마지막 스타일이 적용
+
+- !important는 사용X, inline은 test용
+
+
+
+##### * Naming Convetion(BEM)
+
+- Block, Element, Modifier 가지로 구분 (Markup, class)
+- Block
+  - 혼자 독립적으로 존재할 수 있는 것
+
+  - class에 이름 지을 때 : block이름 (특징)
+
+    ![image-20210806111843093](HTML%20&%20CSS.assets/image-20210806111843093.png)
+- Element 
+  - Block의 구성요소, 독립적으로 존재X
+
+  - .block이름__element이름
+
+    ![image-20210806111903790](HTML%20&%20CSS.assets/image-20210806111903790.png)
+
+- Modifier
+  - Block or Modifier 의 상황이나 상태 표시
+  
+  - block이름--상태, element이름--상태
+  
+    ![image-20210806111933987](HTML%20&%20CSS.assets/image-20210806111933987.png)
 

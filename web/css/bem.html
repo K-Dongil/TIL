@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .form{
+      border:3px solid black;
+      padding: 1rem;
+    }
+
+    .form--theme-xmas{
+      background-color: green;
+      color: white;
+    }
+    
+    .form__group{
+      margin-bottom: 1rem;
+    }
+
+    .form__intput{
+      display: block;
+      width: 100%;
+      border: 1px solid gray;
+      border-radius: .25rem;
+    }
+
+    .form__input--theme-xams{
+      background-color: red;
+      border: 1px solid gold;
+      color: white;
+    }
+    
+    .form__sumbit {
+      border: 1px solid;
+      border-radius: .25rem;
+      padding: .3rem .7rem;
+      background-color: skyblue;
+    }
+
+    .form__submit--disabled{
+      background-color: slategray;
+    }
+  </style>
+</head>
+<body>
+  <h1>운세</h1>
+
+  <form class="form form--theme-xmas">
+    <div class="form__group">
+      <label for="name">이름</label>
+      <input class="form__input form__input--theme-xams" id="name" type="text">
+    </div>
+    <div class="form_group">
+      <input class="form__submit form__submit--disabled" type='text' disabled>
+    </div>
+  </form>
+</body>
+</html>
