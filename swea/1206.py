@@ -1,7 +1,7 @@
 T = 10 # 테스트 케이스 개수
 
 for i in range(T): # 테스트 케이스 개수만큼 반복한다
-    N = int(input()) # 각 아파트의 층수를 입력 받는다
+    N = int(input()) # 아파트의 개수
     n_list = list(map(int, input().split())) # 각 아파트의 층수를 입력 받는다
     count = 0 # 왼쪽으로 2칸 오른쪽으로 2칸 조망권이 확보되는 층수를 기록하는 변수
     
