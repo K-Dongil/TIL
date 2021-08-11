@@ -182,6 +182,51 @@
 
   - 선택 정렬 (Selection Sort)
 
+    - 주어진 자료들 중 가장 작은 값의 원소부터 차례대로 선택하여 위치를 교환하는 방식
+    - 정렬 과정
+      1. 주어진 리스트 중에서 최소값을 찾는다
+      2. 그 값을 리스트의 맨 앞에 위치한 값과 교환
+      3. 맨 처음 위치를 제외한 나머지 리스트를 대상으로 위의 과정을 반복
+      4. 미정렬원소가 하나 남은 상황에서는 마지막 원소가 가장 큰 값을 갖게 된다
+    - 시간 복잡도 : O(n**2)
+
+    ```
+    def SelectionSort(a):
+    	for i in range(0, len(a)-1): # 작업구간의 시작
+    		min = i # 맨 앞을 제일 작다고 가정
+    		for j in range(i+1, len(a)):
+    			if a[min] > a[j]:
+    				min = j
+    		a[i], a[min] = a[min], a[i]
+    ```
+
+    ##### * 셀렉션 알고리즘
+
+    - 저장되어 있는 자료로부터 k번째로 큰 혹은 작은 원소를 찾는 방법
+      - 최소값, 최대값 혹은 중간값을 찾는 알고리즘
+    - 선택 정렬과 다른 점 : 범위
+    - 선택과정
+      1. 정렬 알고리즘을 이용하여 정렬
+      2. 원하는 순서에 있는 원소 가져오기
+
+    - k번째로 작은 원소를 찾는 알고리즘
+
+      - 1번부터 k번째까지 작은 원소들들을 찾아 배열의 앞쪽으로 이동시키고, 배열의 k번째를 반환
+      - k가 비교적 작을 때 유용하며 O(kn)의 수행시간을 필요
+
+      ```
+      def select(list, k):
+      	for i in range(0, k): # 선택정렬과 다른 점
+      		minIndex = i
+      		for j in range(i+1, len(list)):
+      			if list[minIndex] > list[j]:
+      				minIndex = j
+      		list[i], list[minIndex] = list[minIndex], list[i]
+      	return list[k-1]
+      ```
+
+      
+
   - 퀵 정렬 (Quick Sort)
 
   - 삽입 정렬 (Insertion Sort)
@@ -275,8 +320,8 @@
 
   - N, M을 입력받았다고 가정
 
-  1. arr = [ list(map(int, input().split())) for _ in range(N) ]
-  2. arr2 = [[0] * M for _ in range(N)]
+  1. arr = [ list(map(int, input().split())) for _ in range(N) ]	# List Comprehension
+  2. arr2 = [[0] * M for _ in range(N)]  # List Comprehension
      - arr 2 = [[0] * M] * N은 사용 불가
        - 보이는 건 2차원 배열이지만 2차원 배열 속 N개의 배열들이 모두 주소를 공유한다
 
@@ -295,6 +340,13 @@
    for i in range(len(Array)):
    	for j in range(len(Array[i])):
    		Array[i][j] #필요한 연산 수행
+   		
+   * i번째 행의 합 구하기
+   for i in range(N):
+   	sumV = 0
+   	for j in range(M):
+   		sumV += ARR[i][j]
+   	print(sumV)
    ```
 
    ​	![image-20210811092416695](algorithm.assets/image-20210811092416695.png)
@@ -304,11 +356,18 @@
    - ex) 각 열의 합 중 최대값을 구하시오
 
    ```
-   # i 행의 좌표
+   1# i 행의 좌표
    # j 열의 좌표
-   for j in range(len(Array[0])): # Array[0]의 data 값들이 각 열에 들어가는 data이므로 len
-   	for i in range(len(Array)):
-   		Array[i][j] #필요한 연산 수행
+   for i in range(len(Array[0])): # Array[0]의 data 값들이 각 열에 들어가는 data이므로 len
+   	for j in range(len(Array)):
+   		Array[j][i] #필요한 연산 수행
+   		
+   * i번째 열의 합을 구하라
+   for i in range(M):
+   	sumV = 0
+   	for j in range(N):
+   		sumV += ARR[j][i]
+   	print(sumV)
    ```
 
    ​	![image-20210811092601080](algorithm.assets/image-20210811092601080.png)
@@ -317,6 +376,16 @@
 
    - 짝수일 때는 오른쪽, 홀수일 때는 왼쪽
      - if문을 줘서 구현이 가능하다
+
+   ```
+   for i in range(N):
+   	if i%2 == 0:
+   		for j in range(M-1):  # j
+   			print(ARR[i][j])
+   	else:
+   		for j in range(M-1, -1, -1): # m-j-1
+   			print(ARR[i][j])
+   ```
 
    ```
    # i 행의 좌표
@@ -337,19 +406,44 @@
    dx[] <- [0, 0, -1, 1] # 상하좌우
    dy[] <- [-1, 1, 0, 0]
    
-   for x in range(len(ary)):
-   	for y in range(len(ary[x])):
-   		for I in range(4):
+   for x in range(len(ary)): # x 가 row
+   	for y in range(len(ary[x])): # y가 column
+   		for mode in range(4):
    			textX <- x + dx[mode]
    			textY <- y + dy[mode]
    			test[ary[testX][testY]]
    ```
 
-   - ex
+   - 교수님 설명
 
      ```
-     di = [0, 1, 0, -1] # 우하좌상
-     dj = [1, 0, -1, 0]
+     ARR[i][j]
+     	상 : ARR[i-1][j]
+     	하 : ARR[i+1][j]
+     	좌 : ARR[i][j-1]
+     	우 : ARR[i][j+1]
+     
+     #상하좌우
+     drow = [-1, 1, 0, 0] # row는 y적 요소
+     dcol = [0, 0, -1, 1] # col이 x적 요소
+     
+     상 : ARR[i+drow[0]][j+dcol[0]]
+     하 : ARR[i+drow[1]][j+dcol[1]]
+     좌 : ARR[i+drow[2]][j+dcol[2]]
+     우 : ARR[i+drow[3]][j+dcol[3]]
+     
+     #행우선으로 차례대로 상하좌우 좌표 찍어내보기
+     for row in range(len(Arr)):
+     	for col in range(len(Arr[i])):
+     		for mode in range(4):
+     			newRow = row+drow[mode] 
+     			newCol = col+dcol[mode]
+     			if newRow, newCol in N, M??
+     				print(ARR[newRow][newCol]) # 나중에 쓸 때는 print말고 필요에 따라 바꿈
+     
+     #==========================================================================
+     di = [-1, 1, 0, 0] # 상하좌우
+     dj = [0, 0, -1, 1]
      
      for i in range(N):
      	for j in range(M):
@@ -384,6 +478,7 @@
    for i in range(3):
    	for j in range(3):
    		if i < j: # 대각선 기준 오른쪽 부분 (i > j : 대각선 기준 왼쪽부분, i=j : 대각선)
+   					# if문이 없었다면 원상복구가 된다
    			arr[i][j], arr[j][i] = arr[j][i], arr[i][j]
    ```
 
@@ -450,12 +545,22 @@
 ```
 & 비트 단위로 AND 연산을 한다
 	- i&(1<<j) : i의 j번째 비트가 1인지 아닌지를 리턴
+	- 특정 비트를 0으로 만들 때 주로 사용
+	
 | 비트 단위로 OR 연산을 한다.
-
+	- 특정 비트를 1로 만들 때 주로 사용
+	
 <<	피연산자의 비트 열을 왼쪽으로 이동시킨다
 	- 1 << n : 2**n (원소가 n개일 경우의 모든 부분집합의 수를 의미한다)
+	- 1 << n : n번 비트가 1인 값 
 
 >> 피연산자의 비트 열을 오른쪽으로 이동시킨다
+
+
+~ 
+
+
+^ 비트 단위로 비교값 두개가 서로 같다면 1, 다르다면 0
 
 ```
 
@@ -468,7 +573,7 @@
   
   for i in range(1<<n): # 1 << N : 부분 집합의 개수
   	for j in range(n): # 원소의 수만큼 비트를 비교
-  		if i & (1<<j): # i의 j번째 비트가 1이면 j번째 원소 출력
+  		if i & (1<<j): # i의 j번째 비트가 1이면 j번째 원소 출력, #True or False
   			print(arr[j], end=", ")
   	print()
   print()
@@ -567,11 +672,52 @@
     		if a[middle] == key: # 검색성공
     			return true
     		elif a[middle] > key:
-    			end = middle -1
+    			end = middle -1   # 주의해야할 곳!!
     		else:
-    			start = middle + 1
+    			start = middle + 1  # 주의해야할 곳!!
     	return false # 검색 실패
     ```
 
-    
+  - 재귀 함수를 이용한 이진 검색
+
+  ![image-20210811141842535](algorithm.assets/image-20210811141842535.png)
+
+  ![image-20210811141906212](algorithm.assets/image-20210811141906212.png)
+
+
+
+##### * index
+
+- database에서 유래, 테이블에 대한 동작 속도를 높여주는 자료 구조
+- 배열을 사용한 index
+  - 대량의 데이터를 매번 정렬시 성능 저하 문제가 발생, 이를 위해 배열 인덱스 사용
+
+
+
+##### * 셀렉션 알고리즘
+
+- 저장되어 있는 자료로부터 k번째로 큰 혹은 작은 원소를 찾는 방법
+  - 최소값, 최대값 혹은 중간값을 찾는 알고리즘
+- 선택 정렬과 다른 점 : 범위
+- 선택과정
+  1. 정렬 알고리즘을 이용하여 정렬
+  2. 원하는 순서에 있는 원소 가져오기
+
+- k번째로 작은 원소를 찾는 알고리즘
+
+  - 1번부터 k번째까지 작은 원소들들을 찾아 배열의 앞쪽으로 이동시키고, 배열의 k번째를 반환
+  - k가 비교적 작을 때 유용하며 O(kn)의 수행시간을 필요
+
+  ```
+  def select(list, k):
+  	for i in range(0, k): # 선택정렬과 다른 점
+  		minIndex = i
+  		for j in range(i+1, len(list)):
+  			if list[minIndex] > list[j]:
+  				minIndex = j
+  		list[i], list[minIndex] = list[minIndex], list[i]
+  	return list[k-1]
+  ```
+
+  
 

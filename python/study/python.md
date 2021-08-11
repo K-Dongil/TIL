@@ -2078,7 +2078,7 @@ g [1, 100, 3]
     - copy 라이브러리를 이용하여 복사
     - copy.deepcopy(복사할 리스트) # 복사한 리스트를 반환
 
-- List comprehension
+- List comprehension (comprehension 공부해보기)
 
   - 표현식과 제어문을 통해 특정한 값을 가진 리스트를 생성하는 법
 
