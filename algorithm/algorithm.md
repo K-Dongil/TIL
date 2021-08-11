@@ -84,7 +84,13 @@
 
 ---
 
-##### * 배열
+##### * index
+
+- database에서 유래, 테이블에 대한 동작 속도를 높여주는 자료 구조
+- 배열을 사용한 index
+  - 대량의 데이터를 매번 정렬시 성능 저하 문제가 발생, 이를 위해 배열 인덱스 사용
+
+## 배열
 
 - 일정한 자료형의 변수들을 하나의 이름으로 열거하여 사용하는 자료구조
 - 배열의 필요성
@@ -296,12 +302,6 @@
 
 
 
-
-
-
-
-
-
 ## 2차원 배열
 
 - 1차원 List를 묶어놓은 List
@@ -320,10 +320,23 @@
 
   - N, M을 입력받았다고 가정
 
-  1. arr = [ list(map(int, input().split())) for _ in range(N) ]	# List Comprehension
-  2. arr2 = [[0] * M for _ in range(N)]  # List Comprehension
+  1. ```
+     arr = [ list(map(int, input().split())) for _ in range(N) ]	# List Comprehension
+  
+  2. ```
+     arr2 = [[0] * M for _ in range(N)]  # List Comprehension
+     ```
+     
      - arr 2 = [[0] * M] * N은 사용 불가
        - 보이는 건 2차원 배열이지만 2차원 배열 속 N개의 배열들이 모두 주소를 공유한다
+     
+  3. ```
+     arr = []
+     
+     for i in range(N):
+     	tmp = list(map(int, input().split()))
+     	arr.append(tmp)
+     ```
 
 
 
@@ -484,7 +497,43 @@
 
    ​	![image-20210811100716069](algorithm.assets/image-20210811100716069.png)
 
+   - 오른쪽 대각선의 합을 구하려고 할 때
 
+     ```
+     def r_diagonal(lst):
+         sum = 0
+         for i in range(len(lst)):
+             sum += lst[i][len(lst)-i-1]
+         return sum
+     
+     def r_diagonal(lst):
+         sum = 0
+         for row in range(lst):
+             for col in range(len(lst[0])):
+                 if col == len(lst) -row -1:
+                     sum += lst[row][col]
+         return sum
+     ```
+
+   - 왼쪽 대각선의 합을 구하려고 할 때
+
+     ```
+     def l_diagonal(lst):
+         sum = 0
+         for i in range(len(lst)):
+             sum += lst[i][i]
+         return sum
+     
+     def l_diagonal(lst):
+         sum = 0
+         for row in range(len(lst)):
+             for col in range(len(lst[0])):
+                 if row == col:
+                     sum += lst[row][col]
+         return sum
+     ```
+
+     
 
 
 
@@ -500,13 +549,14 @@
 
 - 부분집합의 수
 
-  - 집합의 원소가 n개일 때, 공집합을 포함한 부분집합의 수는 2**n개
+  - 집합의 원소가 n개일 때, 공집합을 포함한 부분집합의 수는 2^n개
+    - [0, 0, 0, ....., 0] (0이 n개) ~ [1, 1, 1, ....., 1] (1이 n개) -> 0 ~ 2^n - 1 -> 2^n개 
   - 각 원소를 부분집합에 포함시키거나 포함시키지 않는 2가지 경우를 모든 원소에 적용한 경우의 수와 같다
 
 - 각 원소가 부분집합에 포함되었는지를 loop 이용하여 확인하고 부분집합을 생성하는 방법
 
   ```
-  bit = [0, 0, 0, 0]
+  bit = [0, 0, 0, 0] # 집합의 원소가 4개
   for i in range(2):
   	bit[0] = i	# 0번째 원소
   	for j in range(2):
@@ -541,6 +591,8 @@
 
 - 비트 : 정보를 구분할 수 있는 최소 단위
   - 비트 8개 묶어서 주소(Byte)를 만든다
+- 1을 저장하는데 1 bit면 충분한데 현실은 1byte를 쓴다.
+  - 낭비되는 자원이 아까우므로 bit를 사용
 
 ```
 & 비트 단위로 AND 연산을 한다
@@ -562,6 +614,30 @@
 
 ^ 비트 단위로 비교값 두개가 서로 같다면 1, 다르다면 0
 
+```
+
+```
+i = 14 #0b01110
+
+for j in range(5):
+	r = i & (1<<j)
+	if r:
+		print('1', end='')
+	else:
+		print('0', end='')
+# 출력 결과 01110
+```
+
+```
+N = 5
+for i in range(1<<N): #0b11111 + 1 = 0b100000 = 1<<5 = 2^5
+	#부분 집합 2^5개 중 하나인 i에 대한 sumV를 구한다.
+	sumV = 0
+	for j in range(N):
+		r = i & (1<<j)
+		if r != 0:
+			sumV += lst[j]
+	print(i, sumV)
 ```
 
 - ex) 보다 간결하게 부분집합을 생성하는 방법 (비트 연산자 이용)
@@ -685,39 +761,4 @@
   ![image-20210811141906212](algorithm.assets/image-20210811141906212.png)
 
 
-
-##### * index
-
-- database에서 유래, 테이블에 대한 동작 속도를 높여주는 자료 구조
-- 배열을 사용한 index
-  - 대량의 데이터를 매번 정렬시 성능 저하 문제가 발생, 이를 위해 배열 인덱스 사용
-
-
-
-##### * 셀렉션 알고리즘
-
-- 저장되어 있는 자료로부터 k번째로 큰 혹은 작은 원소를 찾는 방법
-  - 최소값, 최대값 혹은 중간값을 찾는 알고리즘
-- 선택 정렬과 다른 점 : 범위
-- 선택과정
-  1. 정렬 알고리즘을 이용하여 정렬
-  2. 원하는 순서에 있는 원소 가져오기
-
-- k번째로 작은 원소를 찾는 알고리즘
-
-  - 1번부터 k번째까지 작은 원소들들을 찾아 배열의 앞쪽으로 이동시키고, 배열의 k번째를 반환
-  - k가 비교적 작을 때 유용하며 O(kn)의 수행시간을 필요
-
-  ```
-  def select(list, k):
-  	for i in range(0, k): # 선택정렬과 다른 점
-  		minIndex = i
-  		for j in range(i+1, len(list)):
-  			if list[minIndex] > list[j]:
-  				minIndex = j
-  		list[i], list[minIndex] = list[minIndex], list[i]
-  	return list[k-1]
-  ```
-
-  
 
