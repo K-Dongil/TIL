@@ -50,47 +50,41 @@ for i in range(t): # 테스트케이스만큼 반복
 
 
 
+## 아래 코드는 위의 else:문을 조금 개선한 코드
+# def row_sum(lst, word_len):
+#     chance = 0
+#     for row in range(len(lst)):
+#         sum = 0
+#         for col in range(len(lst[0])):
+#             if lst[row][col] ==1:
+#                 sum += lst[row][col]
+#             elif lst[row][col] ==0 or col == len(lst[0])-1:
+#                 if sum == word_len:
+#                     chance +=1
+#                 sum = 0
+#     return chance
 
-def row_sum(lst, word_len):
-    chance = 0
-    for row in range(len(lst)):
-        sum = 0
-        for col in range(len(lst[0])):
-            if lst[row][col] ==1:
-                sum += lst[row][col]
-            else:
-                if sum == word_len:
-                    chance +=1
-                sum = 0
-            if col == len(lst[0])-1:
-                if sum == word_len:
-                    chance += 1
-    return chance
+# def col_sum(lst, word_len):
+#     chance = 0
+#     for col in range(len(lst[0])):
+#         sum = 0
+#         for row in range(len(lst)):
+#             if lst[row][col] ==1:
+#                 sum += lst[row][col]
+#             elif lst[row][col] ==0 or row == len(lst)-1:
+#                 if sum == word_len:
+#                     chance +=1
+#                 sum = 0
+#     return chance
 
-def col_sum(lst, word_len): # 길이가 입력받은 단어의 길이만큼인 column을 찾아주는 함수, 매개변수로는 리스트와 단어의 길이를 받는다
-    chance = 0
-    for col in range(len(lst[0])):
-        sum = 0
-        for row in range(len(lst)):
-            if lst[row][col] ==1:
-                sum += lst[row][col]
-            else:
-                if sum == word_len:
-                    chance +=1
-                sum = 0
-            if row == len(lst)-1:
-                if sum == word_len:
-                    chance += 1
-    return chance
+# t = int(input())
 
-t = int(input())
+# for i in range(t):
+#     square, word_len = map(int, input().split())
+#     square_lst = [list(map(int, input().split())) for _ in range(square)]
 
-for i in range(t):
-    square, word_len = map(int, input().split())
-    square_lst = [list(map(int, input().split())) for _ in range(square)]
+#     row_chance = row_sum(square_lst, word_len)
+#     col_chance = col_sum(square_lst, word_len)
+#     total_chance = row_chance + col_chance
 
-    row_chance = row_sum(square_lst, word_len)
-    col_chance = col_sum(square_lst, word_len)
-    total_chance = row_chance + col_chance
-
-    print('#{} {}'.format(i+1, total_chance))
+#     print('#{} {}'.format(i+1, total_chance))
