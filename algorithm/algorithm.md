@@ -188,29 +188,60 @@
 
   - 선택 정렬 (Selection Sort)
 
+    - 전테 데이터를 정렬하는 것이 목적, return X
+
     - 주어진 자료들 중 가장 작은 값의 원소부터 차례대로 선택하여 위치를 교환하는 방식
+
     - 정렬 과정
       1. 주어진 리스트 중에서 최소값을 찾는다
       2. 그 값을 리스트의 맨 앞에 위치한 값과 교환
       3. 맨 처음 위치를 제외한 나머지 리스트를 대상으로 위의 과정을 반복
       4. 미정렬원소가 하나 남은 상황에서는 마지막 원소가 가장 큰 값을 갖게 된다
+
     - 시간 복잡도 : O(n**2)
 
-    ```
-    def SelectionSort(a):
-    	for i in range(0, len(a)-1): # 작업구간의 시작
-    		min = i # 맨 앞을 제일 작다고 가정
-    		for j in range(i+1, len(a)):
-    			if a[min] > a[j]:
-    				min = j
-    		a[i], a[min] = a[min], a[i]
-    ```
+    - 슈더 코드
+
+      ```
+      def SelectionSort(a):
+      	for i in range(0, len(a)-1): # 작업구간의 시작
+      		min = i # 맨 앞을 제일 작다고 가정
+      		for j in range(i+1, len(a)):
+      			if a[min] > a[j]:
+      				min = j
+      		a[i], a[min] = a[min], a[i]
+      ```
+
+    - ex)
+
+      ```
+      lst = [64, 25, 10, 22, 11]
+      
+      def selectionS(lst):
+          N = len(lst)
+          for i in range(N-1):
+              # i 번째로 작은 값을 찾아서 i 번째 위치에 있는 자료와 교환한다
+              #i에서 시작해서
+              minP = i # minV = lst[i]
+              for j in range(i+1, N):
+                  if lst[minP] > lst[j]: # minV > lst[j]
+                      #minV = lst[j]
+                      minP = j
+      
+              lst[minP], lst[i] = lst[i], lst[minP]
+      
+      selectionS(lst)
+      print(lst) # [10, 11, 22, 25, 64]
+      ```
 
     ##### * 셀렉션 알고리즘
 
-    - 저장되어 있는 자료로부터 k번째로 큰 혹은 작은 원소를 찾는 방법
+    - k번째 리스트를 찾아오게는 목적이므로 return
+
+    - i번째로 작은 값을 찾아서 i번째 위치에 있는 자료와 교환 (0 ~ N-2까지포함)
+
+    - 저장되어 있는 자료로부터 k번째로 크거나 작은 원소를 찾는 방법
       - 최소값, 최대값 혹은 중간값을 찾는 알고리즘
-    - 선택 정렬과 다른 점 : 범위
     - 선택과정
       1. 정렬 알고리즘을 이용하여 정렬
       2. 원하는 순서에 있는 원소 가져오기
@@ -218,20 +249,42 @@
     - k번째로 작은 원소를 찾는 알고리즘
 
       - 1번부터 k번째까지 작은 원소들들을 찾아 배열의 앞쪽으로 이동시키고, 배열의 k번째를 반환
+
+        - 정렬을 다 한 다음에 k번째의 원소를 찾는 것이 아니라, k번만큼 셀렉정렬을 하여 k번째로 작은 데이터 값을 반환
+
       - k가 비교적 작을 때 유용하며 O(kn)의 수행시간을 필요
 
-      ```
-      def select(list, k):
-      	for i in range(0, k): # 선택정렬과 다른 점
-      		minIndex = i
-      		for j in range(i+1, len(list)):
-      			if list[minIndex] > list[j]:
-      				minIndex = j
-      		list[i], list[minIndex] = list[minIndex], list[i]
-      	return list[k-1]
-      ```
+      - 슈더코드
 
-      
+        ```
+        def select(list, k):
+        	for i in range(0, k): # 선택정렬과 다른 점
+        		minIndex = i
+        		for j in range(i+1, len(list)):
+        			if list[minIndex] > list[j]:
+        				minIndex = j
+        		list[i], list[minIndex] = list[minIndex], list[i]
+        	return list[k-1]
+        ```
+
+      - ex)
+
+        ```
+        lst = [64, 25, 10, 22, 11]
+        
+        def selectionAlgo(lst, k):
+            N = len(lst)
+            for i in range(k):
+                minP = i
+                for j in range(i+1, len(lst)):
+                    if lst[minP] > lst[j]:
+                        minP = j
+        
+                lst[minP], lst[i] = lst[i], lst[minP]
+            return lst[k-1]
+        k_min = selectionAlgo(lst, 2)
+        print(k_min) # 11
+        ```
 
   - 퀵 정렬 (Quick Sort)
 
@@ -591,32 +644,35 @@
   			bit[2] = k # 2번째 원소
   			for l in rnage(2):
   				bit[3] = l # 3번째 원소
-  				print(bit) #생성된 부분집합 출력
-  
-  
-  
+  				print(*bit) #생성된 부분집합 출력
   ```
-  
+
   - 위 코드에 대한 출력 값
-  
+
   <img src="algorithm.assets/image-20210812012420038.png" alt="image-20210812012420038" style="zoom:50%;" />
-  
-  ```
-  bit = [0, 0, 0, 0]
-  for i in range(2):
-  	bit[0] = i	# 0번째 원소
-  	for j in range(2):
-  		bit[1] = j # 1번째 원소
-  		for k in range(2):
-  			bit[2] = k # 2번째 원소
-  			for l in rnage(2):
-  				bit[3] = l # 3번째 원소
-  				for p in range(4):
-  					if bit[p]:
-  						print(arr[p], end=' ')
-  				print()
-  ```
-  
+
+  - 부분집합, 부분집합 속 데이터값 출력하기
+
+    ```
+    arr = [1, 2, 3, 4]
+    bit = [0, 0, 0, 0]
+    for i in range(2):
+    	bit[0] = i	# 0번째 원소
+    	for j in range(2):
+    		bit[1] = j # 1번째 원소
+    		for k in range(2):
+    			bit[2] = k # 2번째 원소
+    			for l in rnage(2):
+    				bit[3] = l # 3번째 원소
+    				print(bit, end = ' ') # 생성된 부분집합 출력
+    				for p in range(4): # arr 원소의 개수?
+    					if bit[p]: # bit[p]이 1이라면 부분집합에 속한 원소이다
+    						print(arr[p], end=' ')
+    				print() # 부분집합이 바뀌게되면
+    ```
+
+    ​	![image-20210812031817258](algorithm.assets/image-20210812031817258.png)
+
   
 
 
@@ -638,14 +694,15 @@
 	
 <<	피연산자의 비트 열을 왼쪽으로 이동시킨다
 	- 1 << n : 2^n (원소가 n개일 경우의 모든 부분집합의 수를 의미한다)
-	- 1 << n : n+1번 bit가 1인 값이고 나머지 bit는 0
+	- 1 << n : n번 bit가 1인 값이고 나머지 bit는 0, n은 0부터 존재
+				1을 왼쪽으로 n번 밀어버린다
 	- 레프트 시프트 연산은 한번 할 때마다 값이 2배씩 늘어난다 
 	
 	
 >> 피연산자의 비트 열을 오른쪽으로 이동시킨다
 	- 라이트 시프트 연산은 2배씩 줄어든다.
 
-~ 
+~ not
 
 
 ^ 비트 단위로 비교값 두개가 서로 같다면 1, 다르다면 0
@@ -665,31 +722,37 @@
   2 * 2 * 2 * 2 # 16
   ```
 
+- 10진법으로 표현된 값을 비트연산자를 이용하여 2진법으로 바꾸기
+
+  ```
+  i = 15 #0b01111 비트가 5자리 수
   
+  for j in range(4, -1, -1):
+  	r = i & (1<<j)
+  	if r:
+  		print('1', end='')
+  	else:
+  		print('0', end='')
+  # 출력 결과 01111
+  ```
 
-```
-i = 14 #0b01110
+- 각 부분집합이 데이터모양(부분집합의 10진수 값?) 합 출력
 
-for j in range(5):
-	r = i & (1<<j)
-	if r:
-		print('1', end='')
-	else:
-		print('0', end='')
-# 출력 결과 01110
-```
+  - 코드에서 i는 부분집합의 데이터 모양 + 몇 번째 부분집합인지 의미를 갖는다
+    - 데이터 모양은 집합에서 어떤 data(집합의 원소)들로 부분집합이 이뤄졌는지 의미한다.
 
-```
-N = 5
-for i in range(1<<N): #0b11111 + 1 = 0b100000 = 1<<5 = 2^5
-	#부분 집합 2^5개 중 하나인 i에 대한 sumV를 구한다.
-	sumV = 0
-	for j in range(N):
-		r = i & (1<<j)
-		if r != 0:
-			sumV += lst[j]
-	print(i, sumV)
-```
+  ```
+  lst = [0, 1, 2, 3, 4] # 원소가 5개, 부분집합의 개수 : 2^5개
+  N = 5
+  for i in range(1<<N): #0b11111 + 1 = 0b100000 = 1<<5 = 2^5 
+  	#부분 집합 2^5개 중 하나인 i에 대한 sumV를 구한다.
+  	sumV = 0
+  	for j in range(N): # 집합의 원소의 개수 (0b11111.....N개 +1 == 1<<N)
+  		r = i & (1<<j) # 0 ~ N-1 번째 자리의 bit가 0인지 1인지 판단하기 위함
+  		if r != 0: # 만약 j번째 자리의 bit가 1이라면(= 집합에서의 j번째 요소가 i부분집합에 포함 )
+  			sumV += lst[j] # 부분집합의 합을 나타내는 sumV 변수에 리스트의 ?번째 데이터 값을 더한다
+  	print(i, sumV)
+  ```
 
 - ex) 보다 간결하게 부분집합을 생성하는 방법 (비트 연산자 이용)
 
@@ -730,22 +793,47 @@ for i in range(1<<N): #0b11111 + 1 = 0b100000 = 1<<5 = 2^5
       - 첫 번째 원소부터 순서대로 검색 대상과 키 값이 같은 원소가 있는지 비교하며 찾는다
       - 키 값이 동일한 원소를 찾으면 그 원소의 index를 반환
       - 자료구조의 마지막에 이를 때까지 검색 대상을 찾지 못하면 검색 실패
+      
     - 찾고자 하는 원소의 순서에 따라 비교회수가 결정된다
       - 첫 번째 원소를 찾을 떄는 1번 비교, 두 번째 원소를 찾을 때는2번 비교
       - 정렬되지 않은 자료에서의 순차 검색의 평균 비교 회수
         - (1/n)*(1+2+3+...+n) = (n+1)/2
       - 시간 복잡도 : O(n)
+      
+    - 슈더코드
 
-    ```
-    def sequentialSearch(a, n, key)
-    	i <- 0
-    	while i<n and a[i]!=key :
-    		i <- i+1
-    	if i<n:
-    		return i
-    	else:
-    		return -1
-    ```
+      ```
+      def sequentialSearch(a, n, key)
+      	i <- 0
+      	while i<n and a[i]!=key :
+      		i <- i+1
+      	if i<n:
+      		return i
+      	else:
+      		return -1
+      ```
+
+    - ex) 정렬되어 있지 않은 경우에서의 순차 검색
+
+      ```
+      def sequential_search(key, lst): # key는 리스트에서 찾고자 하는 값
+          idx = 0
+          N = len(lst)
+          # idx를 증가하면서 key를 찾는다
+          # key를 찾을 때까지 idx를 증가한다
+          while idx < N and key != lst[idx]:
+              idx += 1
+      
+          if idx == N: # if문을 while문 안에 넣은다음에 조건문에서 idx < N을 빼주는 방법은 비추천(조건을 먼저 생각했느냐 안 했느냐의 차이)
+              return -1
+          return idx
+      
+      lst = [4, 9, 11, 23, 2, 19, 7]
+      print(sequential_search(2, lst)) # 4
+      print(sequential_search(8, lst)) # -1
+      print(sequential_search(4, lst)) # 0
+      print(sequential_search(7, lst)) # 6
+      ```
 
     ![image-20210811104755555](algorithm.assets/image-20210811104755555.png)
 
@@ -753,22 +841,48 @@ for i in range(1<<N): #0b11111 + 1 = 0b100000 = 1<<5 = 2^5
 
     - 검색 과정
       - 자료가 오름차순으로 정렬된 상태에서 검색을 실시한다고 가정
-      - 자료를 순차적으로 검색하면서 키값을 비교하여, 원소의 키값이 검색 대상의 키 값보다 크면 찾는 원소가 없다는 것이므로 더 이상 검색하지 않고 종료
+      - 자료를 순차적으로 검색하면서 키값을 비교하여, 원소의 키값(배열안의 데이터 값)이 검색 대상의 키 값보다 크면 찾는 원소가 없다는 것이므로 더 이상 검색하지 않고 종료
 
     - 찾고자 하는 원소의 순서에 따라 비교회수 결정된다
       - 정렬이 되어있으므로, 검색 실패를 반환하는 경우 평균 비교 회수가 반으로 줄어든다
       - 시간 복잡도 : O(n)
+      
+    - 슈더코드
 
-    ```
-    def sequentialSearch(a, n, key)
-    	i <- 0
-    	while i<n and a[i]<key:
-    		i <- i+1
-    	if i<n and a[i] = key:
-    		return i
-    	else:
-    		reutrn -1
-    ```
+      ```
+      def sequentialSearch(a, n, key)
+      	i <- 0
+      	while i<n and a[i]<key:
+      		i <- i+1
+      	if i<n and a[i] = key:
+      		return i
+      	else:
+      		reutrn -1
+      ```
+
+    - ex)
+
+      ```
+      def sequential_search(key, lst):
+          idx = 0
+          N = len(lst)
+          # idx를 증가하면서 key를 찾는다
+          # key를 찾을 때까지 idx를 증가한다
+          while idx < N and key > lst[idx]:
+              idx += 1
+      
+          if idx < N and key == lst[idx]:
+              return idx
+      
+          return -1
+      
+      lst = [2, 4, 7, 9, 11, 19, 23]
+      print(sequential_search(4, lst)) # 1
+      print(sequential_search(7, lst)) # 2
+      print(sequential_search(5, lst)) # -1
+      print(sequential_search(1, lst)) # -1
+      print(sequential_search(24, lst)) # -1
+      ```
 
     ![image-20210811112226690](algorithm.assets/image-20210811112226690.png)
 
@@ -790,20 +904,46 @@ for i in range(1<<N): #0b11111 + 1 = 0b100000 = 1<<5 = 2^5
     1. 검색 범위의 시작점과 종료점을 이용하여 검색을 반복 수행
     2. 이진 검색의 경우, 자료에 삽입이나 삭제가 발생했을 때 배열의 상태를 항상 정렬 상태로 유지하는 추가 작업이 필요하다.
 
-    ```
-    def binarySearch(a, key)
-    	start <- 0
-    	end <- length(a) -1
-    	while start <= end:
-    		middle = (start + end)//2
-    		if a[middle] == key: # 검색성공
-    			return true
-    		elif a[middle] > key:
-    			end = middle -1   # 주의해야할 곳!!
-    		else:
-    			start = middle + 1  # 주의해야할 곳!!
-    	return false # 검색 실패
-    ```
+    - 슈더코드
+
+      ```
+      def binarySearch(a, key)
+      	start <- 0
+      	end <- length(a) -1
+      	while start <= end:
+      		middle = (start + end)//2
+      		if a[middle] == key: # 검색성공
+      			return true
+      		elif a[middle] > key:
+      			end = middle -1   # 주의해야할 곳!!
+      		else:
+      			start = middle + 1  # 주의해야할 곳!!
+      	return false # 검색 실패
+      ```
+
+    - ex)
+
+      ```
+      def binaryS(key, lst): # key는 찾고자 하는 값
+      	start = 0
+      	end = len(lst) - 1
+      	while start <= end:
+      		m = (start+end)//2
+      		if key == lst[m]: # 검색성공
+      			return m
+      		elif key < lst [m]:
+      			end = m - 1 # 주의!!
+      		else:
+      			start = m +1 # 주의!!
+      
+      	return -1
+      
+      print(binaryS(7, lst)) # 2
+      print(binaryS(2, lst)) # 0
+      print(binaryS(23, lst)) # 6
+      print(binaryS(5, lst)) # -1
+      print(binaryS(1, lst)) # -1
+      ```
 
   - 재귀 함수를 이용한 이진 검색
 
@@ -813,3 +953,4 @@ for i in range(1<<N): #0b11111 + 1 = 0b100000 = 1<<5 = 2^5
 
 
 
+​		
