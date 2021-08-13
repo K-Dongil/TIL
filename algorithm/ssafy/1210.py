@@ -29,23 +29,29 @@ for tc in range(10):
                 elif line_box[row][col + 1] == 1:
                     line_box[row][col] = 0
                     col += 1
+                elif line_box[row + 1][col] == 2:
+                    row += 1
             elif col == 0:
                 if line_box[row + 1][col] == 1 and line_box[row][col + 1] == 0:
                     row += 1
                 elif line_box[row][col + 1] == 1:
                     line_box[row][col] = 0
                     col += 1
+                elif line_box[row + 1][col] == 2:
+                    row += 1
             elif col == 99:
                 if line_box[row][col - 1] == 0 and line_box[row + 1][col] == 1:
                     row += 1
                 elif line_box[row][col - 1] == 1:
                     line_box[row][col] = 0
                     col -= 1
+                elif line_box[row + 1][col] == 2:
+                    row += 1
 
             if line_box[row][col] == 2:
                 want_start = i
                 break
 
-        if line_box[row][col] == 2:
+        if want_start == 2:
             break
     print('#{} {}'.format(tc_num, want_start))
