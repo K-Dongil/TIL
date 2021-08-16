@@ -46,6 +46,7 @@ vscode
   - Markup : 특정 Text에 역할(의미)을 부여 (제목, 본문 Marking)
 
     - Markup을 한다 : 제목을 제목이라고, 본문을 본문이라고 Marking
+    - 구조는 크게 header(머릿말), section(본문), footer(마지막)
 
   - Marktup Language : 태그등을 이용하여 문서나 데이터의 구조를 명시 (데이터를 표현)
 
@@ -78,9 +79,8 @@ vscode
     - CSS 선언 혹은 외부 로딩 파일 지정
     - meta 태그
       - charset속성을 통해 문서가 어떤 언어로 인코딩할지(해석 될지)
-      - Open Graph Protocol
-      - 메타 데이터를 표현하는 새로운 규약
-      - HTML 문서의 메타 데이터를 통해 문서의 정보를 전달
+      - 메타 데이터를 표현하는 새로운 규약(Open Graph Protocol)
+      - 메타 데이터에 해당하는 제목, 설명 등을 쓸 수 있도록 정의하여 문서의 정보를 전달
   - body요소
     - 브라우저 화면에 나타나는 정보로 실제 내용에 해당
 
@@ -104,15 +104,13 @@ vscode
 
 - 요소(element)
 
-  - HTML의 요소는 태그와 태그 사이에 위치한 내용(contents)로 구성되어 있다.
+  - HTML의 요소는 시작태그와 종료태그 사이에 위치한 내용(contents)로 구성되어 있다.
 
     - 태그는 보통 시작(처음)과 종료(끝) 2개로 구성되어 있다
 
     - 태그는 내용을 감싸는 것으로 정보의 성격와 의미를 정의
 
-      ```
-      <h1> contents </h1>
-      ```
+      <img src="HTML%20&%20CSS.assets/image-20210816234041312.png" alt="image-20210816234041312" style="zoom: 80%;" />
 
   - 내용이 없는 태그들
 
@@ -129,12 +127,13 @@ vscode
 
   - 태그별로 사용할 수 있는 속성은 다르다
   - 시작 태그에 작성하며 보통 이름과 값이 하나의 쌍으로 존재
-    - 이름(속성명)=속성값
+    - 이름(속성명)="속성값"
     - 이름과 값 사이에는 공백X, 속성값에는 ""(쌍따옴표) 사용!
   - 모든 HTML 요소가 공통으로 사용할 수 있는 속성(몇몇 요소에는 아무 효과없을 수 있다)
     - id, class, hidden, lang, style, tabindex, title
+    - [참고사이트](https://developer.mozilla.org/ko/docs/Web/HTML/Global_attributes)
 
-- 시맨틱 태그
+- 시맨틱 태그(Markup)
 
   - HTML5에서 의미론적 요소를 담은 태그
 
