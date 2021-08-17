@@ -94,3 +94,24 @@ for tc in range(t):
 #         result += temp +' '
 #     print(f'#{test_case}',end=' ')
 #     print(result[:len(result)-1])
+
+
+
+# # 교수님 코드
+# import sys
+# sys.stdin = open("input1221.txt", "r")
+
+# TC = int(input())
+# pattern = ['ZRO ', 'ONE ', 'TWO ', 'THR ', 'FOR ', 'FIV ', 'SIX ', 'SVN ', 'EGT ', 'NIN ']
+
+# for tc in range(1, TC+1):
+#     No = input()
+#     lst = list(input().split())
+
+#     for p in pattern:
+#         #lst에서 p랑 같은 것을 출력해라
+#         for s in lst:
+#             if p==s:
+#                 print(s, end=' ')
+
+#     print()

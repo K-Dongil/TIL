@@ -288,6 +288,26 @@
 - ex ) 
 
   ```
+  def brute_force(T, P):
+      lenT = len(T)
+      lenP = len(P)
+  
+      for i in range(lenT - lenP + 1):
+          j = 0
+          while j < lenP and P[j] == T[i+j]:
+              j += 1
+          if j == lenP:
+              return 1
+      return 0
+  
+  T = "TTTTAACCABCDETTATTTF"
+  P = "TTATTT"
+  
+  result = brute_force(T, P)
+  print(result)
+  ```
+
+  ```
   def pattern_B(T, P):
       lenT = len(T)
       lenP = len(P)
@@ -387,6 +407,34 @@
     - 밑에서 보면 rithm의 반대 mhtir순서로 배열을 구성하였다
     
     ![image-20210813153108843](string_algorithm.assets/image-20210813153108843.png)
+    
+    ```
+    T = 'rithm Process finished with exit code 0'
+    
+    def BM(P):
+        M = len(P)
+        N = len(T)
+    
+        SKIP = [0] * 128
+        for i in range(M):
+            # pos = ord(P[i])
+            # SKIP[pos] = M-i-1
+            SKIP[ord(P[i])] = M - i - 1
+        idxT = 0 # 시작 위치
+        while idxT < N-M:
+            idxP = M - 1 # 끝위치
+            while idxP >= 0 and T[idxT + idxP] == P[idxP]:
+                idxP -= 1
+            if idxP == -1: # 찾았다면
+                return idxT
+            #pos = ord(T[idxT+M-1])
+            idxT = idxT + SKIP[ord(T[idxT+M-1])]
+    
+        return -1
+    
+    print(BM('rithm')) # 0
+    print(BM('rathm')) # -1
+    ```
 
 - 입력에 따라 다르지만 일반적으로 O(n)보다 시간이 덜 든다
 
