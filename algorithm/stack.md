@@ -303,6 +303,22 @@
 
   ```
   def fibo(n):
+  	#if n < 2: # 계속 저장이 일어나므로 밑에서 0과 1은 함수 호출되기전에 미리 정의
+  	#	memo[n] = n
+  	#	return meno[n]
+  	if n >= 2 and memo[n] ==0:
+  		memo[n] = fibo[n-1] + fibo(n-2)
+  	return memo[n]
+  
+  n = 10
+  memo = [0] * (n+1)
+  memo[0] = 0
+  memo[1] = 1
+  fibo(10)
+  ```
+
+  ```
+  def fibo(n):
   	global cnt
   	cnt += 1
   	if n>=2 and memo[n]==0: # 아직 계산되지 않은 값이면
@@ -339,7 +355,7 @@
 
 
 
-## DP(Dynamic Programming)
+## DP(Dynamic Programming) - 뒤에서 다시 다룸
 
 - 그리디 알고리즘과 같이 **최적화 문제(가장 좋은 해를 찾는)**를 해결하는 알고리즘
 
@@ -447,15 +463,13 @@
   1. 깊이 우선 탐색(Depth First Search, DFS)
   2. 너비 우선 탐색(Breadth First Search, BFS)
 
-- 시작 정점의 한 방향으로 갈 수 있는 경로가 있는 곳까지 **가장 깊은 곳을 탐색**해 가다가 **더 이상 갈 곳이 없게되면**, 가장 마지막에 만났던 갈림길 간선이 있는 정점으로 되돌아와서 다른 방향의 정점으로 탐색을 계속 반복하여 결국 모든 정점을 방문하는 순회방법
+- 시작 정점의 한 방향으로 갈 수 있는 경로가 있는 곳까지 탐색해 가다가 **더 이상 갈 곳이 없게되면**, 가장 마지막에 만났던 갈림길 간선이 있는 정점으로 되돌아와서 다른 방향의 정점으로 탐색을 계속 반복하여 결국 모든 정점을 방문하는 순회방법
 
 - 가장 마지막에 만났던 갈김길의 정점으로 되돌아와서 다시 깊이 우선 탐색을 반복해야 하므로 후입선출 구조의 스택 사용
 
 - 깊이 우선 탐색에는 내가 지나온 경로를 최근 순으로 꺼낼 수 있어야한다. 경로를 저장할 수 있는 방법으로 스택을 사용할 수 있다
 
 - DFS 알고리즘
-
-  - stack배열에는 현재 노드와 간선으로 연결된 노드들을 push, 다른 노드로 이동시 해당 노드 pop, 그 노드와 간선으로 연결된 노드들을 push, 없으면 이 전 노드로 복귀하여 다른 연결된 노드로 이동
 
   1. 자료간의 구조를 python에서 사용할 수 있게 2차원 배열(인접 행렬) or 리스트(인접 리스트)를 통해 구현
 
@@ -554,3 +568,152 @@
        }
     }
 
+- 자료간의 구조를 python에서 사용할 수 있게 구현하는 방법들과 3가지 방법 풀이
+
+  - ex)
+
+    <img src="stack.assets/image-20210819095405227.png" alt="image-20210819095405227" style="zoom:67%;" />
+
+  1. ```
+     lst =[1, 2, 1, 3, 2, 4, 2, 5, 4, 6, 5, 6, 6, 7, 3, 7]
+     
+     def findw(v):
+         for i in range(0, len(lst), 2):
+             if v == lst[i] and visited[lst[i+1]] ==False:
+                 return lst[i+1]
+             if v == lst[i+1] and visited[lst[i]] ==False:
+                 return lst[i]
+     
+         return -1
+     
+     def dfs(v):
+         visited[v] = True
+         print(v)
+         stack.append(v)
+         while len(stack) > 0: # stack이
+             w = findw(v)
+             if w != -1:
+                 stack.append(v)
+                 visited[w] = True
+                 print(w)
+                 v = w
+             else:
+                 v = stack.pop(-1)
+     
+     n = 7
+     visited = [False] * (n+1) # n대신 n+1한 이유 : 0번 비워 놓는다
+     stack = []
+     dfs(1)
+     ```
+
+  2. ```
+     G = {0:[], 1:[2, 3], 2:[1, 4, 5], 3:[1, 7], 4:[2, 6], 5:[2, 6], 6:[4, 5, 7], 7:[3, 5]}
+     
+     def findw(v):
+         for w in G[v]:
+             if visited[w] == False:
+                 return w
+         return -1
+     
+     def dfs(v):
+         visited[v] = True
+         print(v)
+         stack.append(v)
+         while len(stack) > 0: # stack이
+             w = findw(v)
+             if w != -1:
+                 stack.append(v)
+                 visited[w] = True
+                 print(w)
+                 v = w
+             else:
+                 v = stack.pop(-1)
+     
+     n = 7
+     visited = [False] * (n+1) # n대신 n+1한 이유 : 0번 비워 놓는다
+     stack = []
+     dfs(1)
+     ```
+
+  3. ```
+     G = [[], [2, 3], [1, 4, 5], [1, 7], [2, 6], [2, 6], [4, 5, 7], [3, 5]]
+     
+     def dfs(v):
+     	s = []
+     	s.append(v)
+     	while s:
+     		v = s.pop(-1)
+     		if not visited[v]
+     			print(v, end=' ')
+     			visited[v] = True
+     			for w in G[v]:
+     				if not visited[w]:
+     					s.append(w)
+     
+     def dfs(v):
+     	s = []
+     	s.append(v)
+     	while s:
+     		v = s.pop(-1)
+     		print(v, end=' ')
+     		for w in G[v]:
+     			if not visited[w]:
+     				s.append(w)
+     				visited[w] = True
+     				
+     def dfs(v):
+     	visited[v] = True
+     	print(v, end=' ')
+     	for w in G[v]:
+     		if not visited[w]:
+     			dfs(w)
+     
+     visited = [False] * 8
+     dfs(1)
+     ```
+
+     - stack배열에는 현재 노드와 간선으로 연결된 노드들을 push, 다른 노드로 이동시 해당 노드 pop, 그 노드와 간선으로 연결된 노드들을 push, 없으면 이 전 노드로 복귀하여 다른 연결된 노드로 이동
+
+  4. ```
+     adj = [[0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 1, 1, 0, 0, 0, 0],
+            [0, 1, 0, 0, 1, 1, 0, 0],
+            [0, 1, 0, 0, 0, 0, 0, 1],
+            [0, 0, 1, 0, 0, 0, 1, 0],
+            [0, 0, 1, 0, 0, 0, 1, 0],
+            [0, 0, 0, 0, 1, 1, 0, 1],
+            [0, 0, 0, 1, 0, 0, 1, 0]]
+            
+     def findw(v):
+         for i in range(len(adj[v])):
+             if adj[v][i] == 1 and visited[i] == False:
+                 return i
+         return -1
+     def findw(v):
+         lst = adj[v]
+         for i in range(len(lst)):
+             if lst[i] == 1 and visited[i] == False:
+                 return i
+         return -1
+     
+     def dfs(v): #
+         visited[v] = True
+         print(v)
+         stack.append(v)
+         while len(stack) > 0:  # stack이
+             w = findw(v)
+             if w != -1:
+                 stack.append(v)
+                 visited[w] = True
+                 print(w)
+                 v = w
+             else:
+                 v = stack.pop(-1)
+     
+     n = 7
+     visited = [False] * (n + 1)  # n대신 n+1한 이유 : 0번 비워 놓는다
+     stack = []
+     dfs(1)
+     ```
+
+  
