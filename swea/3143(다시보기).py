@@ -1,5 +1,3 @@
-
-
 # testcase : bananana nana
 def typing(str1, str2):
     str1_len = len(str1)
