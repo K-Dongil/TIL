@@ -3,6 +3,7 @@ def overlap_remove(str):
     str_lst = []
     for s in str:
         str_lst.append(s)
+        
     while break_condition == 0:
         if len(str_lst) == 2:
             if str_lst[0] == str_lst[1]:

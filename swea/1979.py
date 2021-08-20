@@ -1,3 +1,6 @@
+#만약 배열을 만들 때 마지막에 한줄을 더 만든다면 끝부분의 조건을 따로 안 줘도 된다.
+
+
 # 퍼즐의 가로 부분에서 단어를 넣을 수 있는 공간이 몇개인지 세어줄 함수
 def row_sum(lst, word_len): # 길이가 입력받은 단어의 길이만큼인 row을 찾아주는 함수, 매개변수로는 리스트와 단어의 길이를 받는다
     chance = 0 # 퍼즐에서 공간이 word_len만큼 딱 맞아 떨어지는 곳을 count해주는 공간 
@@ -47,44 +50,3 @@ for i in range(t): # 테스트케이스만큼 반복
     total_chance = row_chance + col_chance # 가로+세로에서 몇 개를 넣을 수 있는지 저장
 
     print('#{} {}'.format(i+1, total_chance)) # 테스트케이스 번호와 총 몇개를 넣을 수 있는지 출력
-
-
-
-## 아래 코드는 위의 else:문을 조금 개선한 코드
-# def row_sum(lst, word_len):
-#     chance = 0
-#     for row in range(len(lst)):
-#         sum = 0
-#         for col in range(len(lst[0])):
-#             if lst[row][col] ==1:
-#                 sum += lst[row][col]
-#             elif lst[row][col] ==0 or col == len(lst[0])-1:
-#                 if sum == word_len:
-#                     chance +=1
-#                 sum = 0
-#     return chance
-
-# def col_sum(lst, word_len):
-#     chance = 0
-#     for col in range(len(lst[0])):
-#         sum = 0
-#         for row in range(len(lst)):
-#             if lst[row][col] ==1:
-#                 sum += lst[row][col]
-#             elif lst[row][col] ==0 or row == len(lst)-1:
-#                 if sum == word_len:
-#                     chance +=1
-#                 sum = 0
-#     return chance
-
-# t = int(input())
-
-# for i in range(t):
-#     square, word_len = map(int, input().split())
-#     square_lst = [list(map(int, input().split())) for _ in range(square)]
-
-#     row_chance = row_sum(square_lst, word_len)
-#     col_chance = col_sum(square_lst, word_len)
-#     total_chance = row_chance + col_chance
-
-#     print('#{} {}'.format(i+1, total_chance))

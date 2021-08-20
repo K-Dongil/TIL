@@ -34,4 +34,3 @@ for i in range(T): # 위에서 입력받은 수만큼 for문을 돌린다
 #         print(f'#{i+1} {a_price}')
 #     else:
 #         print(f'#{i+1} {b_price}')
-

@@ -495,6 +495,8 @@
 
   ![image-20210818145054579](stack.assets/image-20210818145054579.png)
 
+  ​	<img src="stack.assets/image-20210820094343057.png" alt="image-20210820094343057" style="zoom:67%;" />
+
   - ex)
 
     ```
@@ -716,4 +718,6 @@
      dfs(1)
      ```
 
-  
+- DFS 알고리즘 -재귀
+
+  <img src="stack.assets/image-20210820094245114.png" alt="image-20210820094245114" style="zoom:67%;" />
