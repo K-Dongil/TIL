@@ -22,7 +22,7 @@
 
   2. 순서도
 
-     ![image-20210809102832973](algorithm.assets/image-20210809102832973.png)
+     ![image-20210809102832973](array.assets/image-20210809102832973.png)
 
 
 
@@ -46,9 +46,9 @@
 
     - 실행되는 명령문의 개수를 계산
 
-      ![image-20210809103850535](algorithm.assets/image-20210809103850535.png)
+      ![image-20210809103850535](array.assets/image-20210809103850535.png)
 
-      ![image-20210809103601591](algorithm.assets/image-20210809103601591.png)
+      ![image-20210809103601591](array.assets/image-20210809103601591.png)
 
 - 빅-오(O) 표기법
 
@@ -57,26 +57,23 @@
   - 계수(Coefficient)는 생략하여 표시
 
     - 밑의 예시에서는 n의 차수가 가장 큰 영향력이다
-      - 계수 상수 제거
+      - 계수, 상수 제거 (밑에서 상수 2는 입력에 따라 변하지 않는 부분)
 
-    ![image-20210809104134750](algorithm.assets/image-20210809104134750.png)
+    ![image-20210809104134750](array.assets/image-20210809104134750.png)
 
-  - ex) n개의 데이터를 입력 받아 저장한 후 각 데이터에 1씩 증가시킨 후 각 데이터를 화면에 출력하는 알고리즘의 시간 복잡도는??
+  - ex) n개의 데이터를 입력 받아 저장한 후 각 데이터에 1씩 증가(n번의 연산)시킨 후 각 데이터를 화면에 출력하는 알고리즘의 시간 복잡도는??
 
     - O(n)
 
 - 요소 수가 증가함에 따라 각기 다른 시간복잡도의 알고리즘은 아래와 같은 연산 수를 보인다
 
-  - 요소 : 
-  - 연산 : 
-
-  ![image-20210809104605860](algorithm.assets/image-20210809104605860.png)
+  ![image-20210809104605860](array.assets/image-20210809104605860.png)
 
 
 
 - 시간 복잡도별 실제 실행 시간 비교
 
-  ![image-20210809105501720](algorithm.assets/image-20210809105501720.png)
+  ![image-20210809105501720](array.assets/image-20210809105501720.png)
 
 
 
@@ -105,11 +102,29 @@
   - Arr[idx] = 10; 
     - 배열 Arr의 idx번째 원소에 10을 저장
 
-##### * 예제
+##### * 배열 활용 예제 : Gravity
 
-- 상자들이 쌓여있는 방이 있다
+- 상자들이 쌓여있는 방이 오른쪽으로 90도 회전하였을 때, 중력의 영향을 받아 낙하한다. 이 때 낙차가 가장 큰 상자를 구하여 그 낙차를 리턴하는 프로그램을 작성해라
 
+  ![image-20210822162227016](array.assets.assets/image-20210822162227016.png)
 
+  ```
+  lst = [7, 4, 2, 0, 0, 6, 0, 7, 0]
+  max_v = lst[0]
+  result = 0
+  
+  for i in range(len(lst)):
+      count = 0
+  
+      for j in range(i+1, len(lst)):
+          if lst[i] > lst[j]:
+              count += 1
+  
+      if result < count:
+          result = count
+  
+  print(result) # 7
+  ```
 
 
 
@@ -125,7 +140,7 @@
 
 - 대표적인 정렬 방식의 종류
 
-  ![image-20210809143449311](algorithm.assets/image-20210809143449311.png)
+  ![image-20210809143449311](array.assets/image-20210809143449311.png)
 
   - 버블 정렬 (Bubble Sort)
 
@@ -152,20 +167,6 @@
       - 카운트들을 위한 충분한 공간을 할당하려면 집합 내의 가장 큰 정수를 알아야 함
     - 시간 복잡도 : O(n+k) : n은 리스트 길이, k는 정수의 최대값
 
-    ![image-20210809142527830](algorithm.assets/image-20210809142527830.png)
-
-    1. Data에서 각 항목들의 발생 회수를 세고, 정수 항목들로 직접 인덱스 되는 카운트 배열에 저장
-
-       - 카운트 배열은 주어진 숫자의 범위에 따라서 달라진다
-
-       - 카운트 배열의 원소들은 0으로 초기화 해놓구 시작해야한다
-
-         - counts = [0] * (주어진 숫자의 범위 중 가장 큰) 값
-
-           ```
-           counts = [0] * 3 # [0, 0, 0]
-           ```
-
     ```
     def Counting_Sort(A, B, k)
     # A [] -- 입력 배열(1 to k)
@@ -185,6 +186,32 @@
     		C[A[i]] -= -1		# B(C[A[i]]) = A[i]
     # 2N + K --> O(N+K)
     ```
+
+    1. Data에서 각 항목들의 발생 회수를 세고, 정수 항목들로 직접 인덱스 되는 카운트 배열에 저장
+
+       - 카운트 배열은 주어진 숫자의 범위에 따라서 달라진다 (data 개수X)
+
+       - 카운트 배열의 원소들은 0으로 초기화 해놓구 시작해야한다
+
+         - counts = [0] * (주어진 숫자의 범위 중 가장 큰) 값
+
+           ```
+           counts = [0] * 3 # [0, 0, 0]
+           ```
+
+    2. 정렬했을 때 각 항목 앞에 위치할 항목의 개수를 반영
+
+       - 밑의 그림에서, data배열에서 각 항목(0~4)들에서 가장 뒤에 있는 값들은 다음과 같이 존재한다.
+
+         0은 첫번째, 1은 네번째, 2는 5번째, 3은 6번째, 4는 8번째에 있다는 뜻이다.
+
+       <img src="array.assets/image-20210809142527830.png" alt="image-20210809142527830" style="zoom:80%;" />
+
+    3. data의 맨 뒤에 있는 값부터 차례대로 정렬 된 값을 기록할 배열에 채워 넣는다 (안전정렬)
+
+      <img src="array.assets.assets/image-20210822171401951.png" alt="image-20210822171401951" style="zoom:80%;" />
+
+      <img src="array.assets.assets/image-20210822171530428.png" alt="image-20210822171530428" style="zoom:80%;" />
 
   - 선택 정렬 (Selection Sort)
 
@@ -291,12 +318,6 @@
   - 삽입 정렬 (Insertion Sort)
 
   - 병합 정렬 (Merget Sort)
-
-
-
-안전정렬?
-
-
 
 
 
@@ -427,7 +448,7 @@
    	print(sumV)
    ```
 
-   ​	![image-20210811092416695](algorithm.assets/image-20210811092416695.png)
+   ​	![image-20210811092416695](array.assets/image-20210811092416695.png)
 
 2. 열 우선 조회
 
@@ -448,7 +469,7 @@
    	print(sumV)
    ```
 
-   ​	![image-20210811092601080](algorithm.assets/image-20210811092601080.png)
+   ​	![image-20210811092601080](array.assets/image-20210811092601080.png)
 
 3. 지그재그 순회
 
@@ -473,7 +494,7 @@
    		Array[i][j + (m-1-2*j) * (i%2)] #필요한 연산 수행
    ```
 
-   ​	![image-20210811093033647](algorithm.assets/image-20210811093033647.png)
+   ​	![image-20210811093033647](array.assets/image-20210811093033647.png)
 
 4. 델타를 이용한 2차 배열 탐색
 
@@ -496,7 +517,7 @@
 
    - 교수님 설명
 
-     ![image-20210812011332881](algorithm.assets/image-20210812011332881.png)
+     ![image-20210812011332881](array.assets/image-20210812011332881.png)
 
      ```
      ARR[i][j]
@@ -549,7 +570,7 @@
 
      
 
-     ![image-20210811094423622](algorithm.assets/image-20210811094423622.png)
+     ![image-20210811094423622](array.assets/image-20210811094423622.png)
 
 5. 전치행렬
 
@@ -567,7 +588,7 @@
    			arr[i][j], arr[j][i] = arr[j][i], arr[i][j]
    ```
 
-   ​	![image-20210811100716069](algorithm.assets/image-20210811100716069.png)
+   ​	![image-20210811100716069](array.assets/image-20210811100716069.png)
 
    - 오른쪽 대각선의 합을 구하려고 할 때
 
@@ -613,7 +634,7 @@
 
 - 부분집합 : 공집합, 자신을 포함, 집합에서 요소들이 1개 이상 선택 된 집합
 
-  ![image-20210812011129655](algorithm.assets/image-20210812011129655.png)
+  ![image-20210812011129655](array.assets/image-20210812011129655.png)
 
 - 유한 개의 정수로 이루어진 집합이 있을 때, 이 집합의 부분집합 중에서 그 집합의 원소를 모두 더한 값이 0이 되는 경우가 있는지를 알아내는 문제
 
@@ -630,7 +651,7 @@
     
   - 각 원소를 부분집합에 포함시키거나 포함시키지 않는 2가지 경우를 모든 원소에 적용한 경우의 수와 같다
 
-    <img src="algorithm.assets/image-20210812011550663.png" alt="image-20210812011550663" style="zoom:50%;" />
+    <img src="array.assets/image-20210812011550663.png" alt="image-20210812011550663" style="zoom:50%;" />
 
 - 각 원소가 부분집합에 포함되었는지를 loop 이용하여 확인하고 부분집합을 생성하는 방법
 
@@ -649,7 +670,7 @@
 
   - 위 코드에 대한 출력 값
 
-  <img src="algorithm.assets/image-20210812012420038.png" alt="image-20210812012420038" style="zoom:50%;" />
+  <img src="array.assets/image-20210812012420038.png" alt="image-20210812012420038" style="zoom:50%;" />
 
   - 부분집합, 부분집합 속 데이터값 출력하기
 
@@ -671,7 +692,7 @@
     				print() # 부분집합이 바뀌게되면
     ```
 
-    ​	![image-20210812031817258](algorithm.assets/image-20210812031817258.png)
+    ​	![image-20210812031817258](array.assets/image-20210812031817258.png)
 
   
 
@@ -711,7 +732,7 @@
 
 - 레프트 시프트 연산은 한번 할 때마다 값이 2배씩 늘어난다 
 
-<img src="algorithm.assets/image-20210812012857576.png" alt="image-20210812012857576" style="zoom: 33%;" />
+<img src="array.assets/image-20210812012857576.png" alt="image-20210812012857576" style="zoom: 33%;" />
 
 - ex) 1을 4번 시프트 연산(1 << 4 )
 
@@ -860,7 +881,7 @@
       print(sequential_search(7, lst)) # 6
       ```
 
-    ![image-20210811104755555](algorithm.assets/image-20210811104755555.png)
+    ![image-20210811104755555](array.assets/image-20210811104755555.png)
 
   - 정렬되어 있는 경우
 
@@ -909,7 +930,7 @@
       print(sequential_search(24, lst)) # -1
       ```
 
-    ![image-20210811112226690](algorithm.assets/image-20210811112226690.png)
+    ![image-20210811112226690](array.assets/image-20210811112226690.png)
 
 - **이진검색(Binary Search)**
 
@@ -977,9 +998,9 @@
     다음 기회에
     ```
 
-  ![image-20210811141842535](algorithm.assets/image-20210811141842535.png)
+  ![image-20210811141842535](array.assets/image-20210811141842535.png)
 
-  ![image-20210811141906212](algorithm.assets/image-20210811141906212.png)
+  ![image-20210811141906212](array.assets/image-20210811141906212.png)
 
 
 
