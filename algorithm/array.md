@@ -106,7 +106,7 @@
 
 - 상자들이 쌓여있는 방이 오른쪽으로 90도 회전하였을 때, 중력의 영향을 받아 낙하한다. 이 때 낙차가 가장 큰 상자를 구하여 그 낙차를 리턴하는 프로그램을 작성해라
 
-  ![image-20210822162227016](array.assets.assets/image-20210822162227016.png)
+  ![image-20210822162227016](array.assets/image-20210822162227016.png)
 
   ```
   lst = [7, 4, 2, 0, 0, 6, 0, 7, 0]
@@ -207,11 +207,40 @@
 
        <img src="array.assets/image-20210809142527830.png" alt="image-20210809142527830" style="zoom:80%;" />
 
-    3. data의 맨 뒤에 있는 값부터 차례대로 정렬 된 값을 기록할 배열에 채워 넣는다 (안전정렬)
+    3. data의 맨 뒤에 있는 값부터 차례대로W 정렬 된 값을 기록할 배열에 채워 넣는다 (안전정렬)
 
-      <img src="array.assets.assets/image-20210822171401951.png" alt="image-20210822171401951" style="zoom:80%;" />
+       <img src="array.assets/image-20210822171401951.png" alt="image-20210822171401951"  />
 
-      <img src="array.assets.assets/image-20210822171530428.png" alt="image-20210822171530428" style="zoom:80%;" />
+         <img src="array.assets/image-20210822171530428.png" alt="image-20210822171530428" style="zoom:80%;" />
+
+    - ex)
+
+      ```
+      data = [0, 4, 1, 3, 1, 2, 4, 1]
+      
+      M = 5 # 0 ~ 4, data 개수가 아닌 data원소의 범위
+      N = len(data)
+      counts = [0] * M
+      temp = [0] * N
+      
+      # 데이터가 각 항목별로 몇개 있는지 센다
+      for d in data:
+          counts[d] += 1
+      
+      # 정렬했을 때 각 숫자(data)의 앞에 위치할 data 개수를 반영하기 위해 counts의 원소를 조정
+      for i in range(M-1):
+          counts[i+1] = counts[i] + counts[i+1]
+      
+      for j in range(N-1, -1, -1):
+          p = counts[data[j]] - 1
+          temp[p] = data[j]
+          counts[data[j]] -= 1
+          # p1 = data[j] # j=7, p1=1
+          # p2 = counts[p1] - 1 # p2 =3
+          # temp[p2] = p1
+          # counts[p1] -= 1
+      
+      print(temp) # [0, 1, 1, 1, 2, 3, 4, 4]
 
   - 선택 정렬 (Selection Sort)
 
@@ -321,6 +350,17 @@
 
 
 
+##### * Baby-gin Game
+
+```
+0 ~ 9 사이의 숫자 카드에서 임의의 카드 6장을 뽑았을 때,  3장의 카드가 연속적인 번호를 갖는 경우를 run이라 하고, 3장의 카드가 동일한 번호를 갖는 경우를 triplet이라 한다.
+6장의 카드가 run과 triplet로만 구성된 경우를 baby-gin이라 부른다.
+run + run, run + triplet, triplet + triplet
+이 때 찾는 방법은 완전검색방법과 탐욕 알고리즘이 있다.
+```
+
+
+
 ##### * 완전 검색(Exaustive Search)
 
 - 완전 검색 방법은 문제의 해법으로 생각할 수 있는 모든 경우의 수를 나열해보고 확인하는 기법
@@ -333,29 +373,43 @@
 
 - ex)완전 검색을 활용한 Baby-gin 접근
 
-  ```
-  0~9 사이의 숫자 카드에서 임의의 카드 6장을 뽑았을 때, 3장의 카드가 연속적인 번호를 갖는 경우를 run이라 하고, 3장의 카드가 동일한 번호를 갖는 경우를 triplet이라 한다.
-  그리고, 6장의 
-  ```
-
   - 고려할 수 있는 모든 경우의 수 생성하기
+
     - 6개의 숫자로 만들 수 있는 모든 숫자 나열(중복 포함)
+
+    - ex) 입력으로 [2, 3, 5, 7, 7, 7]을 받았을 경우, 아래와 같이 순열을 생성할 수 있다
+
+      ​	<img src="array.assets/image-20210822180456293.png" alt="image-20210822180456293" style="zoom:50%;" />
+
+      ##### * [순열(추후에 배울 것)](https://shoark7.github.io/programming/algorithm/Permutations-and-Combinations)
+
+      - 서로 다른 것들 중 몇 개를 뽑아서 한 줄로 나열하는 것
+
+      - 서로 다른 n개 중 r개를 택하는 순열은 다음과 같이 표현 : nPr
+
+      - nPr은 다음과 같은 식이 성립
+
+        - nPr = n * (n-1) * (n-2) * ... * (n-r+1)
+
+      - nPn = n!이라고 표기하며 Factorial이라고 부른다
+
+        - n! = n * (n-1) * (n-2) * ... * 2 * 1
+
+      - ex) {1, 2, 3}을 포함하는 모든 순열을 간단하게 생성해보기
+
+        ```
+        # 동일한 숫자가 포함되지 않았을 때, 각 자리 수 별로 loop을 이용
+        for i1 in range(1, 4):
+        	for i2 in range(1, 4):
+        		if i2 != i1:
+        			for i3 in range(1, 4):
+        				if i3 != i1 and i3 != i2:
+        					print(i1, i2, i3)
+        ```
+
   - 해답 테스트하기
+
     - 앞의 3자리와 뒤의 3자리를 잘라, run와 triplet 여부를 테스트하고 최종적으로 bay-gin 판단
-
-
-
-##### * 순열
-
-- 서로 다른 것들 중 몇 개를 뽑아서 한 줄로 나열하는 것
-- 서로 다른 n개 중 r개를 택하는 순열은 다음과 같이 표현 : nPr
-- nPr은 다음과 같은 식이 성립
-  - nPr = n * (n-1) * (n-2) * ... * (n-r+1)
-
-- nPn = n!이라고 표기하며 Factorial이라고 부른다
-  - n! = n * (n-1) * (n-2) * ... * 2 * 1
-
-
 
 
 

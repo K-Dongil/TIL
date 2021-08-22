@@ -14,12 +14,13 @@ for i in range(M-1):
     counts[i+1] = counts[i] + counts[i+1]
 
 for j in range(N-1, -1, -1):
-    p = counts[data[j]]
+    p = counts[data[j]] - 1
     temp[p] = data[j]
     counts[data[j]] -= 1
-    # p1 = data[j] # j=7, i=1
-    # p2 = counts[p1] # p2 =4
+    # p1 = data[j] # j=7, p1=1
+    # p2 = counts[p1] - 1 # p2 =3
     # temp[p2] = p1
     # counts[p1] -= 1
 
 print(counts)
+print(temp)
