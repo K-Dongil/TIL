@@ -802,7 +802,8 @@
                 if c == ')':
                     while ST and ST[-1] != '(':
                         postfix.append(ST.pop(-1))
-                elif len(ST)==0 or (ST and isp[ST[-1]] < icp[c]):
+                    ST.pop(-1)
+                elif c == '(' or (ST and isp[ST[-1]] < icp[c]):
                     ST.append(c)
                 else:
                     while ST and isp[ST[-1]] >= icp[c]:
@@ -819,7 +820,7 @@
     s = '2+((3*4)/5)'
     print(change_postfix(s)) # ['2', '3', '4', '*', '5', '/', '+']
     ```
-
+    
     ```
     def change_postfix(s):
         postfix = []
@@ -833,6 +834,7 @@
                 elif c == ')':
                     while ST and ST[-1] != '(':
                         postfix.append(ST.pop(-1))
+                    ST.pop(-1)
                 elif c in ['+', '-']:
                     while ST and ST[-1] in ['*', '/']:
                         postfix.append(ST.pop(-1))
