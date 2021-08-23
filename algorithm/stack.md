@@ -745,9 +745,9 @@
 
 - 중위 표기법에서 후위 표기법으로의 변환
 
-  - 손으로 푸는 방법
+  - 손으로 풀 때 주로 쓰는 방법
 
-    1. 수식의 각 연산자에 대해서 우선순위에 따라 괄호를 사용하여 다시 표현
+    1. 수식의 각 연산자(operator)에 대해서 우선순위에 따라 괄호를 사용하여 다시 표현
     2. 각 연산자를 그에 대응하는 오른쪽 괄호의 뒤로 이동
     3. 괄호 제거
 
@@ -755,19 +755,107 @@
 
   - 스택이용
 
-    - 스택 밖의 왼쪽 괄호는 우선 순위가 가장 높으며, 스택 안의 왼쪽 괄호는 우선 순위가 가장 낮다
+    - 스택에 operator가 들어간다
+    - 스택 밖의 왼쪽 괄호는 우선 순위가 가장 높으며, 스택 안의 왼쪽 괄호 '('는 우선 순위가 가장 낮다
+    - 우선순위는 딕셔너리로 직접 만들어 줘야한다.
     - 수식의 길이만큼 계산이 일어난다
+    - (출력 = 리스트에 저장) : 후위표기법으로 변경 후 계산하기 위해
 
     1. 입력 받은 중위 표기식에서 토큰을 읽는다
-    2. 토큰이 피연산자이면 토큰을 출력한다
-    3. 토큰이 연산자(괄호포함)일 때, 이 토큰이 스택의 top에 저장되어 있는 연산자보다 우선순위가 높으면 스택에 push하고, 그렇지 않다면 스택 top의 연산자의 우선순위가 토큰의 우선순위보다 작을 때까지 스택에서 pop한 후 토큰의 연산자를 push한다. (만약 top에 연산자가 없으면 push한다)
+
+       <img src="stack.assets/image-20210823125024048.png" alt="image-20210823125024048" style="zoom: 67%;" />
+
+    2. 토큰이 **피연산자**이면 토큰을 **출력**한다
+
+       <img src="stack.assets/image-20210823125052238.png" alt="image-20210823125052238" style="zoom: 67%;" />
+
+    3. 토큰이 **연산자(괄호포함)**일 때, 이 토큰이 스택의 top에 저장되어 있는 연산자보다 **우선순위가 높으면** 스택에 push하고, **그렇지 않다면** 스택 top의 연산자의 우선순위가 토큰의 우선순위보다 작을 때까지 스택에서 pop한 후 토큰의 연산자를 push한다. (만약 top에 연산자가 없으면 push한다)
+
+       <img src="stack.assets/image-20210823125615905.png" alt="image-20210823125615905" style="zoom:67%;" />
+
+       <img src="stack.assets/image-20210823125530567.png" alt="image-20210823125530567" style="zoom:67%;" />
+
     4. 토큰이 오른쪽 괄호 ')'이면 스택 top에 왼쪽 괄호 '('가 올 때까지 스택에 pop 연산을 수행하고 pop한 연산자를 출력한다. 
+
+       <img src="stack.assets/image-20210823125338496.png" alt="image-20210823125338496" style="zoom:67%;" />
+
     5. 중위 표기식에 더 읽을 것이 없다면 중지하고, 더 읽을 것이 있다면 1부터 다시 반복
+
     6. 스택에 남아 있는 연산자를 모두 pop하여 출력
 
+       <img src="stack.assets/image-20210823130708360.png" alt="image-20210823130708360" style="zoom:67%;" />
+
+       <img src="stack.assets/image-20210823130729468.png" alt="image-20210823130729468" style="zoom:67%;" />
+
+  - 스택이용한 코드 예제
+
+    ```
+    def step1(s):
+        isp = {'(':0, '+':1, '-':1, '*':2, '/':2}
+        icp = {'(': 3, '+': 1, '-': 1, '*': 2, '/': 2}
+        postfix = []
+        ST = []
+        for c in s:
+            if c.isdecimal():
+                postfix.append(c)
+            else:
+                if c == ')':
+                    while ST and ST[-1] != '(':
+                        postfix.append(ST.pop(-1))
+                elif len(ST)==0 or (ST and isp[ST[-1]] < icp[c]):
+                    ST.append(c)
+                else:
+                    while ST and isp[ST[-1]] >= icp[c]:
+                        postfix.append(ST.pop(-1))
+                    ST.append(c)
+    
+        while ST:
+            if ST[-1] == '(':
+                ST.pop(-1)
+            else:
+                postfix.append(ST.pop(-1))
+    
+        return postfix
+    s = '2+((3*4)/5)'
+    print(change_postfix(s)) # ['2', '3', '4', '*', '5', '/', '+']
+    ```
+
+    ```
+    def change_postfix(s):
+        postfix = []
+        ST = []
+        for c in s:
+            if c.isdecimal():
+                postfix.append(c)
+            else:
+                if c == '(':
+                    ST.append(c)
+                elif c == ')':
+                    while ST and ST[-1] != '(':
+                        postfix.append(ST.pop(-1))
+                elif c in ['+', '-']:
+                    while ST and ST[-1] in ['*', '/']:
+                        postfix.append(ST.pop(-1))
+                    ST.append(c)
+                elif c in ['*', '/']:
+                    while ST and ST[-1] in ['*', '/']:
+                        postfix.append(ST.pop(-1))
+                    ST.append(c)
+    
+        while ST:
+            if ST[-1] == '(':
+                ST.pop(-1)
+            else:
+                postfix.append(ST.pop(-1))
+    
+        return postfix
+        
+    s = '2+((3*4)/5)'
+    print(change_postfix(s)) # ['2', '3', '4', '*', '5', '/', '+']
 
 - 후위 표기법의 수식을 스택을 이용하여 계산
 
+  - 스택에 피연산자(숫자)가 들어간다
   - 수식의 길이만큼 계산이 일어난다
 
   1. 피연산자를 만나면 스택에 push
@@ -784,7 +872,28 @@
 
      <img src="stack.assets/image-20210823114418761.png" alt="image-20210823114418761" style="zoom:50%;" />
 
+  - 코드 구현
 
+    ```
+    def step2(t):
+        ST = []
+        for c in t:
+            if c.isdecimal():
+                ST.append(c)
+            else:
+                n1 = int(ST.pop())
+                n2 = int(ST.pop())
+                if c == '+':
+                    ST.append(n2+n1)
+                elif c == '-':
+                    ST.append(n2-n1)
+                elif c == '*':
+                    ST.append(n2*n1)
+                elif c == '/':
+                    ST.append(n2/n1)
+        return ST[0]
+    s = ['2', '2', '5', '*', '5', '/', '+'] # 2+((2*5)/5)
+    print(step2(s)) # 4
 
 ##### * 백트래킹 (재귀와 dfs의 이해필요)
 
@@ -793,9 +902,7 @@
 - 결정 문제 : 문제의 조건을 만족하는 해가 존재하는지의 여부를 'yes' 또는 'no'가 답하는 문제 
   - 미로찾기, n-Queen, Map coloring, 부분 집합의 합(Subset Sum) 등등
 
-
-
-##### * 미로찾기
+##### ex) 미로찾기
 
 - 아래 그림과 같이 입구와 출구가 주어진 미로에서 입구부터 출구까지의 경로를 찾는 문제
 
@@ -803,5 +910,55 @@
 
   ![image-20210823115450561](stack.assets/image-20210823115450561.png)
 
-- 
+- 미로찾기의 알고리즘
+
+  <img src="stack.assets/image-20210823141429703.png" alt="image-20210823141429703" style="zoom: 80%;" />
+
+- 백트래킹과 깊이우선탐색과의 차이
+
+  - 어떤 노드에서 출발하는 경로가 해결책으로 이어질 것 같지 않으면 더 이상 그 경로를 따라가지 않음으로써 시도의 횟수를 줄임(Prunning 가지치기)
+  - 깊이우선탐색이 모든 경로를 추적하는데 비해 백트래킹은 불필요한 경로를 조기에 차단
+  - 깊이우선탐색을 가하기에는 경우의 수가 너무나 많음. N! 가지의 경우의 수를 가진 문제에 대해 깊이우선탐색을 가하면 처리 불가능한 문제
+  - 백트래킹 알고리즘을 적용하면 일반적으로 경우의 수가 즐어들지만 이 역시 최악의 경우에는 여전히 지수함수 시간(Expoenential Time)을 요하므로 처리 불가능
+
+- 백트래킹 기법
+  - 어떤 노드의 유망성을 점검한 후에 유망(promising)하지 않다고 결정되면 그 노드의 부모로 돌아가(backtracking)다음 자식 노드로 감
+  - 어떤 노드를 방문하였을 때 그 노드를 포함한 경로가 해답이 될 수 없으면 그 노드는 유망하지 않다고 하며, 반대로 해답의 가능성이 있으면 유망하다고 본다
+  - 가지치기(pruning) : 유망하지 않는 노드가 포함되는 경로는 더 이상 고려X
+- 절차
+  1. 상태 공간 트리의 깊이 우선 검색을 실시 (DFS)
+  2. 각 노드가 유망한지를 점검
+  3. 만일 노드가 유망하지 않으면, 그 노드의 부모 노드로 돌아가 검색을 실시한다
+
+#####   ex) 부분집합 구하기
+
+- 어떤집합의 공집합과 자기자신을 포함한 모든 부분집합을 powerset이라고 하며 구하고자 하는 어떤 집합의 원소 개수가 n일 경우 부분집합의 개수는 2^n개 이다.
+
+- 백트래킹 기법으로 powerset구하기
+
+  - 일반적인 백트래킹 접근 방법 이용
+  - n개의 원소가 들어있는 집합의 2^n개의 부분집합을 만들 때는, true 또는 false값을 가지는 항목들로 구성된 n개의 배열을 만드는 방법을 이용
+
+  - 배열의 i번째 항목은 i번째의 원소가 부분집합의 값인지 아닌지를 나타내는 값
+
+- 각 원소가 부분집합에 포함되었는지를 loop이용하여 확인하고 부분집합 생성
+
+- powerset을 구하는 백트래킹 알고리즘
+
+  ```
+  def backtrack(a, k, input):
+  	global MAXCANDIDATES
+  	c = [0] * MAXCANDIDATES
+  	
+  	if k == input:
+  		process_solution(a, k) # 답이면 원하는 작업을 한다
+  	else:
+  		k += 1
+  		ncandidates = construct_candidates(a, k, input, c)
+  		for i in range(ncandidates):
+  			a[k] = c[i]
+  			backtrack(a, k, input)
+  ```
+
+  
 
