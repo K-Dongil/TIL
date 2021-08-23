@@ -693,13 +693,16 @@ run + run, run + triplet, triplet + triplet
      di = [-1, 1, 0, 0] # 상하좌우
      dj = [0, 0, -1, 1]
      
+     N, M = map(int, input().split())
+     arr = [list(map(int, input().split())) for _ in range(N)]
+     
      for i in range(N):
-     	for j in range(M):
-     		for k in range(4):
-     			ni = i + di[k]
-     			nj = j + dj[k]
-     			if 0 <= ni < N and 0 <= nj < M:
-                 	arr[ni][nj]
+         for j in range(M):
+             for k in range(4):
+                 ni = i + di[k]
+                 nj = j + dj[k]
+                 if 0 <= ni < N and 0 <= nj < M:
+                     print(arr[ni][nj])
                  	
      for i in range(N):
      	for j in range(M):
@@ -707,11 +710,11 @@ run + run, run + triplet, triplet + triplet
      			ni = i + dr
      			nj = j +dc
      			if 0 <= ni < N and 0 <= nj < M:
-     				arr[ni][nj]
+     				print(arr[ni][nj])
      ```
-
      
-
+     
+     
      ![image-20210811094423622](array.assets/image-20210811094423622.png)
 
 5. 전치행렬
@@ -825,12 +828,12 @@ run + run, run + triplet, triplet + triplet
     		bit[1] = j # 1번째 원소
     		for k in range(2):
     			bit[2] = k # 2번째 원소
-    			for l in rnage(2):
+    			for l in range(2):
     				bit[3] = l # 3번째 원소
-    				print(bit, end = ' ') # 생성된 부분집합 출력
-    				for p in range(4): # arr 원소의 개수?
+    				print(bit, end = ' ') # arr의 어떤 원소들로 이루어진 부분집합인지 출력
+    				for p in range(4): # arr 원소의 개수가 4개이므로 범위는 0~3
     					if bit[p]: # bit[p]이 1이라면 부분집합에 속한 원소이다
-    						print(arr[p], end=' ')
+    						print(arr[p], end=' ') # 부분집함의 원소를 출력 
     				print() # 부분집합이 바뀌게되면
     ```
 
@@ -909,10 +912,10 @@ run + run, run + triplet, triplet + triplet
   ```
   lst = [0, 1, 2, 3, 4] # 원소가 5개, 부분집합의 개수 : 2^5개
   N = 5
-  for i in range(1<<N): #0b11111 + 1 = 0b100000 = 1<<5 = 2^5 
+  for i in range(1<<N): # i에는  arr의 부분집합에 어떤 원소가 담겨져 있는지 정보가 담겨있다, #0b11111 + 1 = 0b100000 = 1<<5 = 2^5 
   	#부분 집합 2^5개 중 하나인 i에 대한 sumV를 구한다.
   	sumV = 0
-  	for j in range(N): # 집합의 원소의 개수 (0b11111.....N개 +1 == 1<<N)
+  	for j in range(N): # j는 비트번호, 집합의 원소의 개수 (0b11111.....N개 +1 == 1<<N)
   		r = i & (1<<j) # 0 ~ N-1 번째 자리의 bit가 0인지 1인지 판단하기 위함
   		if r != 0: # 만약 j번째 자리의 bit가 1이라면(= 집합에서의 j번째 요소가 i부분집합에 포함 )
   			sumV += lst[j] # 부분집합의 합을 나타내는 sumV 변수에 리스트의 ?번째 데이터 값을 더한다
@@ -929,10 +932,10 @@ run + run, run + triplet, triplet + triplet
         subset_element, subset_sum = map(int, input().split()) # 집합의 원소의 몇개로 부분집합이 이루어졌는지, 부분집합의 합은 몇인지 입력받는다
         want_subset = 0 # 위의 조건을 만족하는 부분집합을 counting할 변수
         
-        for j in range(1<<12): # #0b111111111111 + 1 = 0b1000000000000 = 1<<12 = 2^12,  부분집합의 개수는 2^12개
+        for j in range(1<<12): # 0b000000000000 ~ 0b111111111111 + 1 = 0b1000000000000 = 1<<12 = 2^12,  부분집합의 개수는 2^12개, i에는  arr의 부분집합에 어떤 원소가 담겨져 있는지 정보가 담겨있다
             element_count = 0 # 현재 부분집합의 원소가 몇개 있는지 couning할 변수
             element_sum = 0 # 현재 부분집합의 합을 저장해둘 변수
-            for k in range(12): # 집합의 원소가 12개 이므로
+            for k in range(12): # 집합의 원소가 12개 이므로, k는 비트번호
                 if j & (1<<k): # j의 bit는 j번째 부분집합이 어떻게 생겼는지 나타낸다. 각 자리의 bit가 0인지 1인지 check하여 부분집합의 원소를 알아낸다
                     element_sum += A[k] # k번째 bit가 1이라면 집합에서 k번째 원소는 j번째 부분집합의 원소
                     element_count += 1 # 부분집합의 원소를 세주는 변수에 +1을 해준다
@@ -949,8 +952,8 @@ run + run, run + triplet, triplet + triplet
   
   n = len(arr) # 원소의 개수
   
-  for i in range(1<<n): # 1 << N : 부분 집합의 개수
-  	for j in range(n): # 원소의 수만큼 비트를 비교
+  for i in range(1<<n): # i에는  arr의 부분집합에 어떤 원소가 담겨져 있는지 정보가 담겨있다, 1 << N : 부분 집합의 개수
+  	for j in range(n): # j는 비트번호, 원소의 수만큼 비트를 비교
   		if i & (1<<j): # i의 j번째 비트가 1이면 j번째 원소 출력, #True or False
   			print(arr[j], end=", ")
   	print()
@@ -1056,7 +1059,7 @@ run + run, run + triplet, triplet + triplet
           N = len(lst)
           # idx를 증가하면서 key를 찾는다
           # key를 찾을 때까지 idx를 증가한다
-          while idx < N and key > lst[idx]:
+          while idx < N and lst[idx] < key :
               idx += 1
       
           if idx < N and key == lst[idx]:
