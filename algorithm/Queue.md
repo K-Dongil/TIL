@@ -30,7 +30,7 @@
 
   1. 공백 큐 생성 : CreateQueue();
 
-     ```
+     ```python
      Q = [0] * 필요한만큼(정점의 개수?)
      front = -1
      rear = -1
@@ -40,7 +40,7 @@
 
   2. 원소 A 삽입 : enQueue(A);
 
-     ```
+     ```python
      rear += 1
      Q[rear] = 'A'
      ```
@@ -53,7 +53,7 @@
 
   4. 원소 반환/삭제 : deQueue();
 
-     ```
+     ```python
      front += 1
      data = Q[front]
      ```
@@ -100,7 +100,7 @@
       1. rear 값을 하나 증가시켜 새로운 원소를 삽입할 자리를 마련
       2. index에 해당하는 배열원소 Q[rear]에 item을 저장
 
-      ```
+      ```python
       def enQueue(item):
       	global rear
       	if isFull() : print("Queue Full")
@@ -119,7 +119,7 @@
       - index번호를 이용하여 판단하기 때문에 삭제한다 = 쓰레기 데이터라고 생각(실제 삭제X)
         - front의 index 이하에 있는 데이터는 다 비어있다고 판단(생각)
 
-      ```
+      ```python
       deQueue()
       	if(isEmpty()) then Queue_Empty(); # 디버깅용도
       	else{
@@ -136,7 +136,7 @@
     - 공백상태 : front = rear
     - 포화 상태 : rear = n-1 (n:배열의 크기, n-1 : 배열의 마지막 인덱스)
 
-    ```
+    ```python
     def isEmpty():
     	return front = rear
     def Full():
@@ -147,7 +147,7 @@
     - 가장 앞에 있는 원소를 검색하여 반환하느 ㄴ연산
     - 현재 front의 한자리 뒤(front+1)에 있는 원소, 즉 큐의 첫번째에 있는 원소를 반환
 
-    ```
+    ```python
     def Qpeek():
     	if isEmpty() : print("Queue_Empty")
     	else: return Q[front+1]
@@ -195,155 +195,219 @@
   - 해결방법2
     - 1차원 배열을 사용하되, 논리적으로는 배열의 처음과 끝이 연결되어 원형 형태의 큐를 이룬다고 가정하고 사용 : 원형 큐
 
-- 원형 큐
 
-  - 1차원 배열을 사용하되, 논리적으로는 배열의 처음과 끝이 연결되어 원형 형태의 큐를 이룬다고 가정하고 사용
 
-  - 원형 큐의 논리적 구조
 
-    ![image-20210825094616461](Queue.assets/image-20210825094616461.png)
+##### * 원형 큐
 
-  - 초기 공백 상태
-    - front = rear = 0
-  - index의 순환
-    - front와 rear의 위치가 배열의 마지막 인덱스인 n-1를 가리킨 후, 그 다음에는 논리적 순환을 이루어 배열의 처음 index인 0으로 이동해야 함
-    - 이를 위해 나머지 연산자 mod를 사용
+- 1차원 배열을 사용하되, 논리적으로는 배열의 처음과 끝이 연결되어 원형 형태의 큐를 이룬다고 가정하고 사용
 
-  - front 변수
+- 원형 큐의 논리적 구조
 
-    - 공백 상태와 포화 상태 구분을 쉽게 하기 위해 fromt가 있는 자리는 사용하지 않고 빈자리로 둠
+  ![image-20210825094616461](Queue.assets/image-20210825094616461.png)
 
-  - 삽입 위치 및 삭제 위치
+- 초기 공백 상태 (큐에 데이터가 없는 상태 = 비어있는 상태)
 
-    ![image-20210825094955143](Queue.assets/image-20210825094955143.png)
+  - front = rear = 0
+  - 큐에 데이터를 넣어줄 때 enque를 사용할 것 
 
-  - 연산 과정
+- index의 순환
 
-    1. create Queue
+  - front와 rear의 위치가 배열의 마지막 인덱스인 n-1를 가리킨 후, 그 다음에는 논리적 순환을 이루어 배열의 처음 index인 0으로 이동해야 함
+  - 이를 위해 나머지 연산자 mod를 사용
 
-       <img src="Queue.assets/image-20210825100035511.png" alt="image-20210825100035511" style="zoom:80%;" />
+- front 변수
 
-    2. enQueue(A);
+  - 공백 상태와 포화 상태 구분을 쉽게 하기 위해 fromt가 있는 자리는 사용하지 않고 빈자리로 둠
 
-       ```
-       (rear+A)%4
-       ```
+- 삽입 위치 및 삭제 위치
 
-       <img src="Queue.assets/image-20210825100105443.png" alt="image-20210825100105443" style="zoom:80%;" />
+  ![image-20210825094955143](Queue.assets/image-20210825094955143.png)
 
-    3. enQueue(B);
+- 연산 과정
 
-       <img src="Queue.assets/image-20210825122520489.png" alt="image-20210825122520489" style="zoom:80%;" />
+  1. create Queue
 
-    4. deQueue();
+     <img src="Queue.assets/image-20210825100035511.png" alt="image-20210825100035511" style="zoom:80%;" />
 
-       <img src="Queue.assets/image-20210825122622780.png" alt="image-20210825122622780" style="zoom:80%;" />
+  2. enQueue(A);
 
-    5. enQueue(C);
+     ```
+     (rear+1)%4
+     ```
 
-       <img src="Queue.assets/image-20210825122654885.png" alt="image-20210825122654885" style="zoom:80%;" />
+     <img src="Queue.assets/image-20210825100105443.png" alt="image-20210825100105443" style="zoom:80%;" />
 
-    6. enQueue(D);
+  3. enQueue(B);
 
-       <img src="Queue.assets/image-20210825122722837.png" alt="image-20210825122722837" style="zoom:80%;" />
+     <img src="Queue.assets/image-20210825122520489.png" alt="image-20210825122520489" style="zoom:80%;" />
 
-  - 구현
+  4. deQueue();
 
-    - 초기 공백 큐 생성
+     <img src="Queue.assets/image-20210825122622780.png" alt="image-20210825122622780" style="zoom:80%;" />
 
-      - 크기 n인 1차원 배열 생성
-      - front와 rear를 0으로 초기화
+  5. enQueue(C);
 
-    - 공백상태 및 포화상태 검사 : isEmpty(), isFull()
+     <img src="Queue.assets/image-20210825122654885.png" alt="image-20210825122654885" style="zoom:80%;" />
 
-      - 공백상태 : front = rear
+  6. enQueue(D);
 
-      - 포화상태 : 삽입할 rear의 다음위치 = 현재 front
+     <img src="Queue.assets/image-20210825122722837.png" alt="image-20210825122722837" style="zoom:80%;" />
 
-        - (rear+1) % n = front
+- 구현
 
-        ```
-        def isEmpty():
-        	return front == rear
-        def isFull():
-        	return (rear+1) % len(cQ) == front
+  - 초기 공백 큐 생성
 
-    - 삽입 : enQueue(item)
+    - 크기 n인 1차원 배열 생성
+    - front와 rear를 0으로 초기화
 
-      - 마지막 원소 뒤에 새로운 원소를 삽입하기 위해
+  - 공백상태 및 포화상태 검사 : isEmpty(), isFull()
 
-        1. rear값을 조정하여 새로운 원소를 삽입할 자리를 마련함 : rear <- (rear + 1) % n
-        2. index에 해당하는 배열원소 cQ[rear]에 item을 저장
+    - 공백상태 : front = rear
 
-        ```
-        def enQueue(item):
-        	global rear
-        	if isFull():
-        		print("Queue_Full")
-        	else:
-        		rear = (rear + 1) % len(cQ)
-        		cQ[rear] = item
+    - 포화상태 : 삽입할 rear의 다음위치 = 현재 front
 
-    - 삭제 : deQueue(), delete()
+      - (rear+1) % n = front
 
-      - 가장 앞에 있는 원소를 삭제하기 위해
-
-        1. front값을 조정하여 삭제할 자리를 준비
-        2. 새로운 front 원소를 리턴 함으로써 삭제와 동일한 기능
-
-        ```
-        def deQueue():
-        	global front
-        	if isEmpty():
-        		print("Queue_Empty")
-        	else:
-        		front = (front + 1) % len(cQ)
-        		return cQ[front]
-        ```
-
-        ```
-        def delete():
-        	global front
-        	if isEmpty():
-        		print("Queue_Empty")
-        	else:
-        		front = (front + 1) % len(cQ)
-
-    - 공백상태 및 포화상태 검사 : isEmpty(), isFull()
-
-      ```
+      ```python
       def isEmpty():
       	return front == rear
       def isFull():
-      	return (rear + 1) % len(cQ) == front ( rear 다음 칸이 front면 가득찬 상태)
+      	return (rear+1) % len(cQ) == front
+      ```
 
-- 연결 큐 (넘어 감)
+  - 삽입 : enQueue(item)
 
-  - 배열의 사이즈 조절이 자유롭지 않기 때문에 연결 큐가 나왔다
+    - 마지막 원소 뒤에 새로운 원소를 삽입하기 위해
 
-    - 파이썬은 사이즈 조절이 자유롭다.
+      1. rear값을 조정하여 새로운 원소를 삽입할 자리를 마련함 : rear <- (rear + 1) % n
+      2. index에 해당하는 배열원소 cQ[rear]에 item을 저장
 
-  - 배열로 구현하지 않는다
+      ```python
+      def enQueue(item):
+      	global rear
+      	if isFull():
+      		print("Queue_Full")
+      	else:
+      		rear = (rear + 1) % len(cQ)
+      		cQ[rear] = item
+      ```
 
-    - 선형구조인 list(파이썬의 list가 아니다)를 쓴다..?
+  - 삭제 : deQueue(), delete()
 
-  - 단순 연결 리스트(Linked List)를 이용한 큐
+    - 가장 앞에 있는 원소를 삭제하기 위해
 
-    - 큐의 원소 : 단순 연결 리스트의 노드
-    - 큐의 원소 순서 : 노드의 연결 순서. 링크로 연결되어 있음
-    - front : 첫 번째 노드를 가리키는 링크
-    - rear : 마지막 노드를 가리키는 링크
+      1. front값을 조정하여 삭제할 자리를 준비
+      2. 새로운 front 원소를 리턴 함으로써 삭제와 동일한 기능
 
-  - 상태 표현
+      ```python
+      def deQueue():
+      	global front
+      	if isEmpty():
+      		print("Queue_Empty")
+      	else:
+      		front = (front + 1) % len(cQ)
+      		return cQ[front]
+      ```
 
-    - 초기 상태 : front = rear = null
+      ```python
+      def delete():
+      	global front
+      	if isEmpty():
+      		print("Queue_Empty")
+      	else:
+      		front = (front + 1) % len(cQ)
+      ```
 
-    - 공백 상태 : front = rear= null
+  - 공백상태 및 포화상태 검사 : isEmpty(), isFull()
 
-      ![image-20210825101444176](Queue.assets/image-20210825101444176.png)
+    ```python
+    def isEmpty():
+    	return front == rear
+    def isFull():
+    	return (rear + 1) % len(cQ) == front ( rear 다음 칸이 front면 가득찬 상태)
+    ```
 
-      - A : data, 0x1008 :다음 공간을 가르키는 주소값
-        - 공간을 잡는다 = 변수에 저장한다
+- swea 5097. 코드구현 연습
+
+  - N개의 숫자로 이루어진 수열이 주어진다. 맨 앞의 숫자를 맨 뒤로 보내는 작업을 M번 했을 때, 수열의 맨 앞에 있는 숫자를 출력하는 프로그램을 만드시오.
+
+  ```
+  def isEmpty():
+  	return front == rear
+  
+  def isFull():
+  	return (rear+1) % len(q) == front
+  
+  def enQueue(item):
+  	global rear
+  	if isFull():
+  		print("Queue_Full")
+  	else:
+  		rear = (rear + 1) % len(q)
+  		q[rear] = item
+  
+  def deQueue():
+  	global front
+  	if isEmpty():
+  		print("Queue_Empty")
+  	else:
+  		front = (front + 1) % len(q)
+  		return q[front]
+  
+  tc = int(input())
+  
+  for t in range(tc):
+      N, M = map(int, input().split())
+      lst = list(map(int, input().split()))
+      q = [0] * (N+1)
+  
+      front = 0
+      rear = 0
+  
+      for i in range(len(lst)): # 큐에 데이터가 없기 때문에, enQueue를 활용해 데이터를 넣어준다
+          enQueue(lst[i])
+  
+      for i in range(M):
+          a = deQueue()
+          enQueue(a)
+          print(q)
+  
+  	# front는 마지막으로 빠져나간 위치를 뜻하므로 front+1이여야한다
+  	# rear는 마지막으로 넣은 위치
+      print('#{} {}'.format(t+1, q[(front + 1) % len(q)]))
+
+
+
+##### * 연결 큐 - 넘어감
+
+- 배열의 사이즈 조절이 자유롭지 않기 때문에 연결 큐가 나왔다
+
+  - 파이썬은 사이즈 조절이 자유롭다.
+
+- 배열로 구현하지 않는다
+
+  - 선형구조인 list(파이썬의 list가 아니다)를 쓴다..?
+
+- 단순 연결 리스트(Linked List)를 이용한 큐
+
+  - 큐의 원소 : 단순 연결 리스트의 노드
+  - 큐의 원소 순서 : 노드의 연결 순서. 링크로 연결되어 있음
+  - front : 첫 번째 노드를 가리키는 링크
+  - rear : 마지막 노드를 가리키는 링크
+
+- 상태 표현
+
+  - 초기 상태 : front = rear = null
+
+  - 공백 상태 : front = rear= null
+
+    ![image-20210825101444176](Queue.assets/image-20210825101444176.png)
+
+    - A : data, 0x1008 :다음 공간을 가르키는 주소값
+      - 공간을 잡는다 = 변수에 저장한다
+
+
 
 ##### * 우선순위 큐(Priority Queue) - 넘어 감
 
@@ -356,7 +420,8 @@
 
   - 시뮬레이션 시스템
   - 네트워크 트래픽 제어
-  - 운영체제의 데스크 스케줄링
+  - 운영체제의 테스크 스케줄링
+  - 다운로드
 
 - 구현종류
 
@@ -397,8 +462,6 @@
 
 
 
-
-
 ##### * BFS(Breadth First Search)
 
 - 그래프를 탐색하는 방법에는 크게 두가지가 있다
@@ -409,9 +472,9 @@
 - 너비우선 탐색은 탐색 시작점의 인접한 정점들을 먼저 모두 차례로 방문한 후에, 방문했던 정점을  시작점으로 다시 인접한 정점들을 차례로 방문하는 방식
 
   ```
-  1.시작점 A inQueue
-  2.A deQueue, A와 인접한 점(새로운 시작점) B, C, D를 inQueue
-  3.B부터 deQueue하고 B와 인접한 점을 Queue에 inQueue
+  1.시작점 A enQueue
+  2.A deQueue, A와 인접한 점(새로운 시작점) B, C, D를 enQueue
+  3.B부터 deQueue하고 B와 인접한 점을 Queue에 enQueue
   deQueue할 때 방문표시를 한다.
   ```
 
@@ -423,31 +486,33 @@
 
   - BFS는 탐색 시작점이 여러개일 때도 동작 가능
 
-  ```
-  def BFS(G, v): # 그래프 G, 탐색 시잠점 v
-  	visited = [0] * (n+1) # 방문표시 배열생성, n : 정점의 개수 (n+1 : index를 1~n까지 씀)
-  	queue = [] # 큐 생성
-  	queue.append(v) # 시작점 v를 큐에 삽입, 시작점 inQueue
-  	while queue: # 큐가 비어있지 않은 경우
-  		t = queue.pop(0) # 큐의 첫번째 원소 반환
-  		if not visited[t]: # 방문되지 않은 곳이라면
-  			visited[t] = True # 방문한 것으로 표시
-  			visit(t) # 정점 t에서 할 일
-  			for i in G[t]: # t와 연결된 모든 정점에 대해
-  				if not visited[i]: # 방문되지 않은 곳이라면
-  					queue.append(i) # 큐에 넣기
-  ```
+  - pop할 때 방문여부를 표시
+
+    ```python
+    def BFS(G, v): # 그래프 G, 탐색 시잠점 v
+    	visited = [0] * (n+1) # 방문표시 배열생성, n : 정점의 개수 (n+1 : index를 1~n까지 씀)
+    	queue = [] # 큐 생성
+    	queue.append(v) # 시작점 v를 큐에 삽입, 시작점 enQueue
+    	while queue: # 큐가 비어있지 않은 경우
+    		t = queue.pop(0) # 큐의 첫번째 원소 반환
+    		if not visited[t]: # 방문되지 않은 곳이라면
+    			visited[t] = True # 방문한 것으로 표시
+    			visit(t) # 정점 t에서 할 일, processing
+    			for i in G[t]: # t와 연결된 모든 정점에 대해
+    				if not visited[i]: # 방문되지 않은 곳이라면
+    					queue.append(i) # 큐에 넣기
+
   - enQueue와 visited표시를 동시 + 각 정점까지의 거리
 
-    ```
+    ```python
     def BFS(G, v, n): # 그래프 G, 탐색 시잠점 v
     	visited = [0] * (n+1) # 방문표시 배열생성, n : 정점의 개수 (n+1 : index를 1~n까지 씀)
     	queue = [] # 큐 생성
-    	queue.append(v) # 시작점 v를 큐에 삽입, 시작점 inQueue
+    	queue.append(v) # 시작점 v를 큐에 삽입, 시작점 enQueue
     	visited[v] = 1
     	while queue: # 큐가 비어있지 않은 경우
     		t = queue.pop(0) # 큐의 첫번째 원소 반환
-    		visit(t)
+    		visit(t) # 정점 t에서 할 일, processing
     		for i in G[t]: # t와 연결된 모든 정점에 대해
     			if not visited[i]: # 방문되지 않은 곳이라면
     				queue.append(i) # 큐에 넣기
@@ -464,15 +529,18 @@
 
   ![image-20210825143752759](Queue.assets/image-20210825143752759.png)
 
-  ```
+  
+
+  ```python
   """
   7 8 # node의 개수, 간선의 개수
   1 2 1 3 2 4 2 5 4 6 5 6 6 7 3 7
   """
+  # 인접 행렬
   def bfs(s, V): # s는 시작점
       q = [] # 큐 생성
       visited = [0]*(V+1) # visited 생성
-      q.append(s) # 시작점 inQueue
+      q.append(s) # 시작점 enQueue
       visited[s] = 1 # 시작점 visited 표시
       while q: # 큐가 비어있지 않으면 (처리할 정점이 남아 있으면)
           t = q.pop(0) # deQueue(꺼내서)해서 t에 저장
@@ -495,11 +563,12 @@
   출력 : 1 2 3 4 5 7 6
   ```
 
-  ```
+  ```python
+  # 인접리스트
   def bfs(s, V): # s는 시작점
       q = [] # 큐 생성
       visited = [0]*(V+1) # visited 생성
-      q.append(s) # 시작점 inQueue
+      q.append(s) # 시작점 enQueue
       visited[s] = 1 # 시작점 visited 표시
       while q: # 큐가 비어있지 않으면 (처리할 정점이 남아 있으면)
           t = q.pop(0) # deQueue(꺼내서)해서 t에 저장
@@ -518,3 +587,134 @@
       adjList[n1].append(n2)
       adjList[n2].append(n1)
   bfs(1, V)
+  ```
+
+  ```python
+  # front 와 rear이용한 풀이
+  def bfs(s, V):  # s는 시작점
+      q = [0]*V # 큐 생성
+      front = -1
+      rear = -1
+      visited = [0]*(V+1) # visited 생성
+      rear += 1 # 시작점 인큐
+      q[rear] = s
+      visited[s] = 1 # 시작점 visited
+      while front != rear: # 큐가 비어있지 않다면
+          front += 1 # 디큐해서 t에 저장
+          t = q[front]
+          print(t)
+          for i in range(1, V+1): # t에 인접하고 미방문인 모든 i에 대해
+              if adj[t][i] == 1 and visited[i] == 0:
+                  rear += 1 # 인큐 i
+                  q[rear] = i
+                  visited[i] = visited[t] + 1 # i 방문표시
+  
+  V, E = map(int, input().split())
+  edge = list(map(int, input().split()))
+  adj = [[0] * (V + 1) for _ in range(V + 1)]  # 인접 행렬
+  
+  for i in range(E):
+      n1, n2 = edge[2 * i], edge[2 * i + 1]
+      adj[n1][n2] = 1
+      adj[n2][n1] = 1  # 방향이 없는 그래프
+  
+  bfs(1, V)
+  ```
+
+  - bfs와 dfs비교
+
+    ```python
+    def dfs(v):
+        ST = []
+        visited = [False] * 8
+    
+        ST.append(v)
+        visited[v] = True
+    
+        while ST:
+            v = ST.pop(-1)
+            print(v, end= ' ')
+            for w in G[v]:
+                if not visited[w]:
+                    ST.append(w)
+                    visited[w] = True
+    
+    
+    def bfs_adj(v):
+        Q = []
+        visited = [False] * 8
+    
+        Q.append(v)
+        visited[v] = True
+    
+        while Q:
+            v = Q.pop(0)
+            print(v, end= ' ')
+    
+            for w in range(len(adj[v])):
+                if adj[v][w] == 1 and not visited[w]:
+                    Q.append(w)
+                    visited[w] = True
+    
+    def bfs_G(v):
+        Q = []
+        visited = [False] * 8
+        Q.append(v)
+        # 첫번째 것 무조건 큐에 넣는다.
+        visited[v] = True
+        while Q:
+            v = Q.pop(0)
+            print(v, end= ' ')
+            for w in G[v]:
+                if not visited[w]:
+                    Q.append(w)
+                    visited[w] = True
+    
+    lst = [1, 2, 1, 3, 2, 4, 2, 5, 4, 6, 5, 6, 6, 7, 3, 7]
+    G = [[] for _ in range(8)]
+    adj = [[0] * 8 for _ in range(8)]
+    
+    for i in range(0,16, 2):
+        v1 = lst[i]
+        v2 = lst[i+1]
+    
+        G[v1].append(v2)
+        G[v2].append(v1)
+    
+        adj[v1][v2] = 1
+        adj[v2][v1] = 1
+    
+    bfs_adj(1)
+    print()
+    bfs_G(1)
+    print()
+    dfs(1)
+
+  - 시작점에서의 거리구하기
+
+    ```python
+    def bfs_G(v):
+        Q = []
+        visited = [0] * 8
+        Q.append(v)
+        # 첫번째 것 무조건 큐에 넣는다.
+        visited[v] = 1
+        while Q:
+            v = Q.pop(0)
+            print(v, visited[v])
+            for w in G[v]:
+                if not visited[w]:
+                    Q.append(w)
+                    visited[w] = visited[v] + 1
+                    
+    lst = [1, 2, 1, 3, 2, 4, 2, 5, 4, 6, 5, 6, 6, 7, 3, 7]
+    G = [[] for _ in range(8)]
+    
+    for i in range(0,16, 2):
+        v1 = lst[i]
+        v2 = lst[i+1]
+    
+        G[v1].append(v2)
+        G[v2].append(v1)
+    
+    bfs_G(1)
