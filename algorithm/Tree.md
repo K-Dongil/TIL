@@ -143,32 +143,93 @@
 
     - 내가 탐색을 하고자하는 정점을 root로 하는 서트브리 안에서만 돌고 끝난다
 
-    ```python
-    def pre_order(root):
-        if root < N:
-            print(root, tree[root])
-            pre_order(root*2)
-            pre_order(root*2+1)
-    
-    N = 10 # 노드 개수
-    tree = [i*100 for i in range(N+1)] # len(tree)도 노드의 개수
-    pre_order(1)
-    ```
+    - 두 코드는 완전 이진트리라는 가정하에 구현
 
-    ```python
-    # tree를 아래와 같이 딕셔너리로 만들었을 때 위의 코드를 사용하면 keyError가 발생한다
-    # {'1':[2,3], '2':[4, 5]}
-    # V = 13 # 노드의 수
-    def pre_order(root):
-        print(root, tree[root])
-        if root*2 <= N:
-            pre_order(root*2)
-        if root*2 + 1 <= N:
-            pre_order(root*2+1)
-            
-    N = 10
-    tree = [i*100 for i in range(N+1)]
-    pre_order(1)
+      ```
+      def pre_order(root):
+          if root < N:
+              print(root, tree[root])
+              pre_order(root*2)
+              pre_order(root*2+1)
+      
+      N = 10 # 노드 개수
+      tree = [i*100 for i in range(N+1)] # len(tree)도 노드의 개수
+      pre_order(1)
+      ```
+
+      ```
+      # tree를 아래와 같이 딕셔너리로 만들었을 때 위의 코드를 사용하면 keyError가 발생한다
+      # {'1':[2,3], '2':[4, 5]}
+      # V = 13 # 노드의 수
+      def pre_order(root):
+          print(root, tree[root])
+          if root*2 <= N:
+              pre_order(root*2)
+          if root*2 + 1 <= N:
+              pre_order(root*2+1)
+              
+      N = 10
+      tree = [i*100 for i in range(N+1)]
+      pre_order(1)
+
+    - 완전 이진트리가 아닐 때 트리를 구현하는 방법 2가지
+
+      - 트리를 2차원 배열로 만든다
+
+        - 행에는 node의 번호를 열에는 데이터, 왼쪽 자식node 번호, 오른쪽 자식node 번호
+
+        ```
+        def pre_order3(root):
+            if root != 0:
+                print(root, end=' ')
+                pre_order3(tree[root][0])
+                pre_order3(tree[root][1])
+        
+        N = 13
+        inpst = '1 2 1 3 2 4 3 5 3 6 4 7 5 8 5 9 6 10 6 11 7 12 11 13'
+        lst = list(map(int, inpst.split()))
+        tree = [[0]*2 for _ in range(N+1)]
+        
+        for i in range(0, len(lst), 2):
+            p = lst[i]
+            c = lst[i+1]
+        
+            # 조건에 따라 선택적으로 입력되도록
+            if tree[p][0] == 0:
+                tree[p][0] = c
+            elif tree[p][0] != 0:
+                tree[p][1] = c
+        
+        print(tree)
+        
+        pre_order3(1)
+
+      - data, 왼쪽 자식, 오른쪽 자식에 대한 정보값이 담긴 1차원 배열을 3개 만들어서 풀이
+
+        ```
+        def pre_order(n):
+            if n: # 유효한 정점이면
+        		print(n, end=' ')
+                pre_order(left[n]) # n의 왼쪽자식으로 이동
+                pre_order(right[n])
+                
+        V = int(input()) # node 개수
+        edge = list(map(int, input().split())) # 부모-자식
+        E = V - 1 # V개의 정점이 있는 트리의 간선 수
+        left = [0] * (V+1)
+        right = [0] * (V+1)
+        
+        for i in range(E):
+            p, c = edge[i*2], edge[i*2+1]
+            if left[p] == 0: # p의 왼쪽 자식이 없으면
+                left[p] = c
+            else: # 왼쪽자식이 있으면 오른쪽자식으로 저장
+                right[p] = c
+        pre_order(1)
+        # 입력 :
+        6
+        1 2 1 3 2 4 3 5 3 6
+        # 출력결과 : 1 2 4 3 5 6
 
 - 중위 순회
 
@@ -212,8 +273,8 @@
 
   ```
   전위 : ABDHIEJCFKGLM
-  중위 : 
-  후위 : 
+  중위 : HDIBJEAFKCLGM
+  후위 : HIDJEBKFLMGCA
 
 
 
@@ -345,7 +406,7 @@
       # 출력
       3 1
 
-    - (2) root찾기
+    - (2) (최상위 rootX) 지정한 node에서의 root찾기
 
       ```python
       V = int(input()) # node 개수
@@ -368,6 +429,12 @@
       2 1 1 3 2 4 3 5 3 6
       # 출력
       2
+
+- Tree에서 node번호(key)와 index가 불일치할 때  1차원 배열이 아닌 다른 방법으로 표현해보기
+
+  ![image-20210827163836240](Tree.assets/image-20210827163836240.png)
+
+
 
 ##### * 연결리스트를 이용한 트리의 표현(저장 방법)
 
@@ -412,14 +479,19 @@
 
 ##### * 이진 탐색 트리
 
-- 이진 탐색은 정렬되어 있어야 한다
-
 - 탐색작업을 효율적으로 하기 위한 자료구조
+
 - 모든 원소는 **서로 다른 유일한 키**를 갖는다
+
 - 노드 안에 있는 값을 키(key)라고 한다
+
 - **key(왼쪽 서브트리) < key(루트 노드) < key(오른쪽 서브트리)**
+
 - 왼쪽 서브트리와 오른쪽 서브트리도 이진 탐색 트리
+
 - 왼쪽 서브트리의 key들은 root보다 작고, 오른쪽 서브트리의 key들은 root보다 크다
+
+  - 이진 탐색은 정렬되어 있어야 하는 것처럼 트리모양이 위의 조건을 만족시켜야 한다.
 
 - 이진탐색트리를 중위 순회하면 오름차순으로 정렬된 값을 얻을 수 있다.
 
@@ -456,8 +528,10 @@
     - O(log n)
   - 최악의 경우
     - 한쪽으로 치우친 경사 이진트리의 경우
+      - 2 3 5 7 11 13을 이진 탐색트리로 만들면 편향 트리가 된다
     - O(n)
     - 순차탐색과 시간복잡도가 같다
+  
 - 검색 알고리즘의 비교
   - 배열에서의 순차 검색 : O(N)
   - 정렬된 배열에서의 순차 검색 : O(N)
@@ -468,16 +542,17 @@
     - 완전 이진 트리 또는 균형트리로 바꿀 수 있다면 최악의 경우를 없앨 수 있다
       - 새로운 원소를 삽입할 때 삽입 시간을 줄인다
       - 평균과 최악의 시간이 같다 O(lonn)
-    - 해쉬 검색 : O(1)
+    - [해쉬](https://steemit.com/kr/@twinbraid/4yjj7b) 검색 : O(1)
       - 추가 저장 공간이 필요
 
 - 삭제 연산
 
+  - 프로그램을 구현할 때 leaf일 때, child가 하나일때 child가 2개일때로 나눠서 구현한다
   - (키 값 x = 루트노드의 key 값)인 경우 :  원하는 원소를 찾았으므로 삭제
   - 다음 트리에 대하여 13, 12, 9를 차례로 삭제
     - 12가 삭제되면 15가 9에 붙는다
-    - 9가 삭제되면 왼쪽 서브트리에서 가장 오른쪽에 있는 값으로 대체한다
-
+    - 9가 삭제되면 왼쪽 서브트리에서 가장 오른쪽(가장 큰 값)에 있는 값으로 대체한다
+  
   ![image-20210827145751758](Tree.assets/image-20210827145751758.png)
 
 
@@ -486,9 +561,11 @@
 
 ##### * 힙 (heap)
 
-- 완전 이진 트리에 있는 노드 중에서 키(우선순위) 값이 가장 크거나 가장 작은 노드를 찾기 위해서 만든 자료구조
+- **완전 이진 트리**에 있는 노드 중에서 **키(우선순위) 값이 가장 크거나 가장 작은** 노드를 찾기 위해서 만든 자료구조
+  
   - 우선 순위가 높거나 작은 정점을 찾기위한 자료구조
   - 완전 이진 트리로 구현되어있다
+  - 왼쪽 오른쪽은 서로 신경쓰지 않고, 부모와 자식만 비교
 - 힙의 키를 우선순위로 활용하여 우선순위 큐를 구현할 수 있다
   - [링크]('http://pages.cs.wisc.edu/~vemon/cs367/notes/11.PRIORITY-~.html')
 
@@ -519,6 +596,8 @@
 - 삽입
 
   - 부모가 없거나 (root거나) 부모의 키가 커질때까지 부모와 키값을 교환
+  - 가장 깊은 곳 가장 오른쪽에 값을 추가하고 자리를 맞춘다
+    - 완전 이진 트리 구조를 지켜주기 위함
 
   ![image-20210827150904544](Tree.assets/image-20210827150904544.png)
 
@@ -527,7 +606,9 @@
 - 삭제
   - 힙에서는 루트 노드의 원소만을 삭제할 수 있다
   - 루트 노드의 원소를 삭제하여 반환
-  - 힙의 종류에ㅐ 따라 최대값 또는 최소값을 구할 수 있다
+  - 힙의 종류에 따라 최대값 또는 최소값을 구할 수 있다
+  - root를 삭제하고 가장 깊은곳의 가장 오른쪽에 있는 값을 root에 넣고 자리를 맞춘다
+    - 완전 이진 트리 구조를 지켜주기 위함
 
 ​		![image-20210827151934628](Tree.assets/image-20210827151934628.png)
 
