@@ -28,64 +28,64 @@ for t in range(tc):
             break
 
 
-# 교수님 코드
-def isCheck(st):
-    #st이 회문이면 True
-    #아니면 False 를 return
-    st = 0
-    ed = len(s) - 1
-    while st < ed and s[st] == s[ed]:
-        st += 1
-        ed -= 1
-    if st >= ed:
-        return True
+# # 교수님 코드
+# def isCheck(st):
+#     #st이 회문이면 True
+#     #아니면 False 를 return
+#     st = 0
+#     ed = len(s) - 1
+#     while st < ed and s[st] == s[ed]:
+#         st += 1
+#         ed -= 1
+#     if st >= ed:
+#         return True
         
-    return False
+#     return False
 
-def CC():
-    #회문을 찾아서 return
-    #가로
-    # for row in range(N):
-    #     for st in range(N-M+1):
-    #         result = isCheck(ARR[row][st:str+M])
-    #         if result:
-    #             retrun ARR[row][st:st + M]
+# def CC():
+#     #회문을 찾아서 return
+#     #가로
+#     # for row in range(N):
+#     #     for st in range(N-M+1):
+#     #         result = isCheck(ARR[row][st:str+M])
+#     #         if result:
+#     #             retrun ARR[row][st:st + M]
 
-    # #세로
-    # for col in range(N):
-    #     for st in range(N-M+1):
-    #         temp_str = ""
-    #         for k in range(st, st+M):
-    #             temp_str += ARR[k][col]
-    #         result = isCheck(temp_str)
-    #         if result:
-    #             return temp_str
-
-
-    for i in range(N):
-        for st in range(N-M+1):
-            #가로
-            result = isCheck(ARR[i][st:st+M])
-            if result:
-                return ARR[i][st:st+M]
-            #세로
-            temp_str = ""
-            for k in range(st, st+M):
-                temp_str += ARR[k][i]
-            result = isCheck(temp_str)
-            if result:
-                return temp_str
+#     # #세로
+#     # for col in range(N):
+#     #     for st in range(N-M+1):
+#     #         temp_str = ""
+#     #         for k in range(st, st+M):
+#     #             temp_str += ARR[k][col]
+#     #         result = isCheck(temp_str)
+#     #         if result:
+#     #             return temp_str
 
 
+#     for i in range(N):
+#         for st in range(N-M+1):
+#             #가로
+#             result = isCheck(ARR[i][st:st+M])
+#             if result:
+#                 return ARR[i][st:st+M]
+#             #세로
+#             temp_str = ""
+#             for k in range(st, st+M):
+#                 temp_str += ARR[k][i]
+#             result = isCheck(temp_str)
+#             if result:
+#                 return temp_str
 
-import sys
-sys.stdin = open('4861_input.txt', 'r')
 
-tc = int(input())
 
-for t in range(tc):
-    N, M = map(int, input().split())
-    ARR = [input() for _ in range(N)]
+# import sys
+# sys.stdin = open('4861_input.txt', 'r')
+
+# tc = int(input())
+
+# for t in range(tc):
+#     N, M = map(int, input().split())
+#     ARR = [input() for _ in range(N)]
 
 
 
