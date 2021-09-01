@@ -66,12 +66,13 @@
 - View(MVC패턴에서 Controller)
 
   - HTTP 요청을 수신하고 HTTP응답을 반환
+  - 프로그램의 로직을 처리
   - Model을 통해 요청을 충족시키는데 필요한 데이터에 접근
     - 사용자의 요청을 받는다, Model에서 받은 data를 Template에 전달
   - template에게 응답의 서식 설정을 맡김
-
+  
   <img src="Django.assets/image-20210831093648156.png" alt="image-20210831093648156" style="zoom:67%;" />
-
+  
   ![image-20210831094039912](Django.assets/image-20210831094039912.png)
 
 
@@ -137,3 +138,236 @@
 앱을 만들때는 복수형으로 만든다
 
 article X , articles
+
+
+
+
+
+url -> views ->templates
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- 수요일 강의부터
+
+##### * Model
+
+- 단일한 데이터에 대한 정보를 가짐
+  - 사용자가 저장하는 데이터들의 필수적인 필드들과 동작들을 포함
+- 저장된 데이터베이스의 구조(layout)
+  - 모델 != 데이터베이스
+- 웹 애플리케이션의 데이터(DB)를 **구조화**하고 **조작**하기 위한 도구
+- 장고는 model을 통해 데이터에 접속하고 관리
+- 일반적으로 각각의 model은 하나의 데이터베이스 테이블에 매핑 됨
+  - 매핑 : 각각에 연결된다
+
+##### * 데이터베이스(DB)
+
+- 체계화된 데이터의 모임
+  - 여러개의 테이블로 이루어져 있다
+- 쿼리(Query)
+  - 데이터를 조회하기 위한 명령어를 쿼리라 한다
+    - 쿼리를 날린다 = DB를 조작(조회, 수정, 삭제 등)한다
+  - 조건에 맞는 데이터를 추출하거나 조작하는 명령어
+
+- 기본구조
+
+  - 스키마(Schema)
+
+    - 데이터베이스에서 자료의 구조, 표현방법, 관계 등을 정의한 구조
+
+  - 테이블(Table)
+
+    - 열(column) : 필드(field) or 속성
+
+      - 데이터의 형식(타입)
+
+        <img src="Django.assets/image-20210901091709149.png" alt="image-20210901091709149" style="zoom: 67%;" />
+
+    - 행(row) : 레코드(record) or 튜플
+
+      - 실제 데이터가 작성되는 부분
+
+        <img src="Django.assets/image-20210901091737809.png" alt="image-20210901091737809" style="zoom:67%;" />
+
+    - PK(기본키) : 각 행(레코드)의 고유값으로, Primary key로 불린다. 반드시 설정해야하며, 데이터베이스 관리 및 관계 설정시 주요하게 활용된다
+
+  ![image-20210901091621302](Django.assets/image-20210901091621302.png)	
+
+
+
+##### * ORM
+
+- Object-Relational-Mapping
+
+- 객제 지향 프로그래밍 언어를 사용하여 호환되지 않는 유형의 시스템 간에 (Django-SQL)데이터를 변환하는 프로그래밍 기술
+
+- DB를 객체(object)로 조작하기위해 ORM을 사용한다
+
+- OOP 프로그래밍에서 RDBMS을 연동할 때, 데이터베이스와 객체 지향 프로그래밍 언어 간의 호환되지 않는 데이터를 (서로 대화할 수 있게)변환하는 프로그래밍 기법 
+
+  - Django는 sql문을 해석할 수 없다
+
+    ![image-20210901092539601](Django.assets/image-20210901092539601.png)
+
+- Django는 내장 Django ORM을 사용
+
+- 장점
+  - SQL을 잘 알지 못해도 DB 조작이 가능
+  - SQL의 절차적 접근이 아닌 객체 지향적 접근으로 인한 높은 생산성
+- 단점
+  - ORM만으로 완전한 서비스를 구현하기 어려운 경우가 있음
+- 현대 웹 프레임워크의 요점은 웹 개발의 속도를 높이는 것(생산성)
+
+##### * 클래스를 통한 모델 정의 (models.py 작성)
+
+```django
+from django.db import models
+
+class Article(models.Model):
+    title = models.CharField(max_length=10)
+    content = models.TextField()
+```
+
+- 테이블을 구조화하는 스키마를 코드(클래스)로 구현한 것
+- pk는 직접 정의하지 않아도 장고가 만들어준다
+- DB컬럼과 어떠한 타입으로 정의할 것인지에 대해 django.db라는 모듈의 models를 상속
+  - 각 모델은 django.db.models.Model 클래스의 서브 클래스로 
+    - Article 클래스는 models.Model을 상속받는다
+- title과 content는 모델의 필드(컬럼, 열)이다
+  - 열은 총 3개 (pk + title + content)
+  - 각 필드는 클래스 속성으로 지정되어 있으며, 각 속성은 데이터베이스의 열에 매핑
+- 사용 모델 [필드](https://docs.djangoproject.com/en/3.2/ref/models/fields/)(title의 타입 : CharField, content의 타입 : TextField)
+  1. CharField(max_length=None, **options)
+     - 길이의 제한이 있는 문자열을 넣을 때 사용
+     - charField의 max_length는 필수 인자
+     - 필드의 최대 길이(문자), 데이터베이스 레벨과 Django의 유효성 검사(값을 검증하는 것)
+  2. TextField(**option)
+     - 글자의 수가 많을 때 사용
+     - max_length 옵션 작성시 자동 양식 필드인 textarea 위젯에 반영은 되지만 모델과 데이터베이스 수준에는 적용되지 않음
+
+##### * Migrations
+
+- django가 model에 생긴 변화(필드를 추가했다던가 모델을 삭제했다던가 등)를 **DB에 반영**하는 방법
+
+- Migration(설계도)실행 및 DB 스키마를 다루기 위한 몇가지 명령어
+
+  - **makemigrations**
+
+    - model을 변경하는 것에 기반한 새로운 **마이그레이션(설계도)을 만들 때** 사용
+
+      - models.py에 만든 클래스(스키마)를 DB에 보낼 수 있는 설계도로 바꿔줘야 한다
+
+    - python manage.py makemigrations
+
+      - models.py에 변경이 있을 때 명령어 python manage.py makemigrations을 수행하면 migrations 폴더에 설계도가 생성된다
+
+        - 설계도에는 pk가 추가되어 있다, pk의 속성은 BigAutoField
+
+          ![image-20210901110139949](Django.assets/image-20210901110139949.png)
+
+    - 한 테이블을 구성하는 클래스가 변경되었을 때 makemigrations을 사용하면 기존의 설계도가 바뀌는것이 아니라 새로운 설계도 생성된다
+
+      - 새로운 설계도는 이전에 만들어진 설계도를 참고한다.
+
+        ![image-20210901110032814](Django.assets/image-20210901110032814.png)
+
+  - **migrate**
+
+    - 마이그레이션(설계도)을 **DB에 반영**하기 위해 사용
+
+      - makemigrations에서 만들어진 설계도는 ORM에 의해서 SQL언어로 바꿔서 DB에 전달한다
+
+    - 설계도를 실제 DB에 반영하는 과정
+
+    - 모델에서의 변경 사항들과 DB의 스키마가 동기화를 이룬다
+
+    - python manage.py migrate
+
+      - sql에 생성되는 테이블의 이름은 기본적으로 앱이름_클래스이름 구조로 만들어진다
+
+        ![image-20210901110254019](Django.assets/image-20210901110254019.png)
+
+  - sqlmigrate
+
+    - 마이그레이션(설계도)에 대한 SQL 구문을 보기 위해 사용
+      - 설계도가 SQL문법으로 어떻게 바뀌는지 볼 수 있다
+    - 마이그레이션이 SQL문으로 어떻게 해석되어서 동작할지 미리 확인 할 수 있음
+    - python manage.py sqlmigrate 앱이름 설계도번호
+
+  - showmigrations
+
+    - 프로젝트 전체의 마이그레이션 상태를 확인하기 위해 사용
+    - 마이그레이션 파일들이 migrate됐는지 안됐는지 여부를 확인 할 수 있음
+    - python manage.py showmigrations
+
+- DateField's options
+  - auto_now_add
+    - 최초 생성 일자
+    - django ORM이 최초 insert(테이블에 데이터 입력)시에만 현재 날짜와 시간으로 갱신
+      - 테이블에 어떤 값을 최초로 넣을 때
+  - auto-now
+    - 최종 수정 일자
+    - django ORM이 save를 할 때마다 현재 날짜와 시간으로 갱신
+
+
+
+##### * Database API
+
+- DB를 조작하기 위한 도구
+- django가 기본적으로 ORM을 제공함에 따른 것으로 DB를 편하게 조작할 수 있도록 도움
+- Model을 만들면 django는 객체들을 만들고 읽고 수정하고 지울 수 있는 database-abstract API를 자동으로 만듦
+
+- database-abstract API 혹은 database-access API라고도 함
+
+- DB API 문법적인 구문 : Making Queries
+
+  - ClassName.Manager.QuerySetAPI
+
+    ![image-20210901111738463](Django.assets/image-20210901111738463.png)
+
+  - Manager
+
+    - django 모델에 데이터베이스 query 작업이 제공되는 인터페이스
+    - 기본적으로 모든 django 모델 클래스에 objects라는 Manager를 추가
+
+    - 데이터베이스와 소통할 수 있는 메서드를 가지고 있다
+
+  - QuerySet
+
+    - 데이터베이스로부터 전달받은 객체 목록
+    - queryset안의 객체는 0개, 1개 혹은 여러 개일 수 있음
+      - 데이터베이스로부터 받은 값은 queryset 타입이다
+    - 데이터베이스로부터 조회, 필터, 정렬 등을 수행 할 수 있음
+
+- Django shell
+
+  - 일반 Python shell을 통해서는 장고 프로젝트 환경에 접근할 수 없음
+
+  - 장고 프로젝트 설정이 load된 Python shell을 활용해 DB API 구문 테스트
+
+    - 기본 Django shell보다 많은 기능을 제공하는 shell_plus 설치 후 사용
+
+      ```
+      $ pip install django-extensions
+      ```
+
+      - 설치 후 setting.py에서 INSTALLED_APPS에 django_extensions를 추가해줘야 한다
+
+    ```
+    $ python manage.py shell_plus
