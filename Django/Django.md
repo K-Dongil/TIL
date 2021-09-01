@@ -171,6 +171,7 @@ url -> views ->templates
   - 사용자가 저장하는 데이터들의 필수적인 필드들과 동작들을 포함
 - 저장된 데이터베이스의 구조(layout)
   - 모델 != 데이터베이스
+  - 내가 만든 모델이 DB에 실제로 저장될 것이므로 db의 table구조이다
 - 웹 애플리케이션의 데이터(DB)를 **구조화**하고 **조작**하기 위한 도구
 - 장고는 model을 통해 데이터에 접속하고 관리
 - 일반적으로 각각의 model은 하나의 데이터베이스 테이블에 매핑 됨
@@ -230,8 +231,10 @@ url -> views ->templates
 - 장점
   - SQL을 잘 알지 못해도 DB 조작이 가능
   - SQL의 절차적 접근이 아닌 객체 지향적 접근으로 인한 높은 생산성
+  
 - 단점
   - ORM만으로 완전한 서비스를 구현하기 어려운 경우가 있음
+  
 - 현대 웹 프레임워크의 요점은 웹 개발의 속도를 높이는 것(생산성)
 
 ##### * 클래스를 통한 모델 정의 (models.py 작성)
@@ -263,9 +266,13 @@ class Article(models.Model):
 
 ##### * Migrations
 
+- 기본적으로 마이그레이션이라는 뜻은 DB에 무언가를 적용할 때를 의미한다
+
 - django가 model에 생긴 변화(필드를 추가했다던가 모델을 삭제했다던가 등)를 **DB에 반영**하는 방법
 
 - Migration(설계도)실행 및 DB 스키마를 다루기 위한 몇가지 명령어
+
+  - makemigrations ~ migrate 부분은 sql의 create와 비슷?
 
   - **makemigrations**
 
@@ -325,12 +332,14 @@ class Article(models.Model):
     - 최종 수정 일자
     - django ORM이 save를 할 때마다 현재 날짜와 시간으로 갱신
 
-
+#####  [더 다양한 필드와 option확인하기](https://docs.djangoproject.com/en/3.2/ref/models/fields/)
 
 ##### * Database API
 
 - DB를 조작하기 위한 도구
+
 - django가 기본적으로 ORM을 제공함에 따른 것으로 DB를 편하게 조작할 수 있도록 도움
+
 - Model을 만들면 django는 객체들을 만들고 읽고 수정하고 지울 수 있는 database-abstract API를 자동으로 만듦
 
 - database-abstract API 혹은 database-access API라고도 함
@@ -348,26 +357,232 @@ class Article(models.Model):
 
     - 데이터베이스와 소통할 수 있는 메서드를 가지고 있다
 
-  - QuerySet
+  - [QuerySet](https://docs.djangoproject.com/ko/3.2/ref/models/querysets/)
 
     - 데이터베이스로부터 전달받은 객체 목록
     - queryset안의 객체는 0개, 1개 혹은 여러 개일 수 있음
       - 데이터베이스로부터 받은 값은 queryset 타입이다
     - 데이터베이스로부터 조회, 필터, 정렬 등을 수행 할 수 있음
 
-- Django shell
+- Django에서 사용 가능한 모듈 및 메서드를 Django shell에서 사용해보기
+
+  - shell : 명령어들을 하나씩 동작 시켜보는 것
 
   - 일반 Python shell을 통해서는 장고 프로젝트 환경에 접근할 수 없음
 
-  - 장고 프로젝트 설정이 load된 Python shell을 활용해 DB API 구문 테스트
+    - 장고 프로젝트 설정이 load된 Python shell을 활용해 DB API 구문 테스트
 
-    - 기본 Django shell보다 많은 기능을 제공하는 shell_plus 설치 후 사용
+      - 기본 Django shell보다 많은 기능을 제공하는 shell_plus 설치 후 사용
 
-      ```
-      $ pip install django-extensions
-      ```
+        ```
+        $ pip install django-extensions
 
       - 설치 후 setting.py에서 INSTALLED_APPS에 django_extensions를 추가해줘야 한다
 
-    ```
-    $ python manage.py shell_plus
+    - Django shell 실행 명령어
+
+      ```
+      $ python manage.py shell_plus
+
+
+
+## CRUD
+
+- 대부분의 컴퓨터 소프트웨어가 가지는 기본적인 데이터 처리기능 4가지
+
+  - Create(생성), Read(읽기), Update(갱신), Delete(삭제)
+
+- 아래의 설명을 위한 다음과 같은 모델을 정의
+
+  ```
+  from django.db import models
+  
+  class Article(models.Model):
+      title = models.CharField(max_length=10)
+      content = models.TextField()
+      created_at = models.DateTimeField(auto_now_add= True)
+      updated_at = models.DateTimeField(auto_now=True)
+
+- Create
+
+  - sql의 insert와 비슷?
+
+  1. 모델 클래스의 인스턴스 클래스를 생성하여 인스턴스 변수에 값을 저장, 인스턴스 클래스가 save메서드를 호출
+
+     ![image-20210901143555670](Django.assets/image-20210901143555670.png)
+
+     ![image-20210901143606178](Django.assets/image-20210901143606178.png)
+
+     ```
+     article = Article()
+     article.title = 'first'
+     article.content = 'django!'
+     ========================= 여기까지는 DB에 저장되지 않는다==============================
+     article.save()
+
+  2. **⭐키워드 인자를 활용하여 초기값과 함께 인스턴스 생성, save메서드 호출**
+
+     ![image-20210901143528166](Django.assets/image-20210901143528166.png)
+
+     - 저장하기 전에 유효성을 검사할 수 있다
+
+     ```
+     article = Article(title='second', content='django!!')
+     ========================= 여기까지는 DB에 저장되지 않는다==============================
+     # 유효성 검사
+     article.save()
+
+  3. QuerySetAPI의 create() 사용, 생성과 저장을 한번에 처리
+
+     - 위의 2개의 방식과는 다르게 바로 쿼리 표현식 리턴
+     - 유효성 검사할 수 있는 타이밍이 없다
+
+     ```
+     Article.objects.create(title='third', content='django!')
+     # create는 return값이 존재한다
+
+  - save() method
+
+    - saving objects
+    - 객체를 데이터베이스에 저장함
+    - 데이터 생성시 save()를 호출하기 전에는 객체의 ID값이 무엇인지 알 수 없음
+      - ID값은 django가 아니라 DB에서 계산되기 때문
+    - 단순히 모델을 인스턴스화 하는 것은 DB에 영향을 미치지 않기 때문에 반드시 save()가 필요
+
+  - 객체에 대한 출력표현 변경하기
+
+    - 모델에 다음과 같은 코드 추가
+
+      ```
+      def __str__(self):
+      	return self.title
+
+    - 표준 파이썬 클래스의 메소드인 str()을 정의하여 각각의 object가 사람이 읽을 수 있는 문자열을 반환하도록 할 수 있다
+      - 작성 후 반드시 shell_plus 재시작 필요
+
+- READ
+
+  - sql의 select과 비슷?
+
+  - QuerySet API method를 사용해 다양한 조회를 하는 것이 중요
+
+  - QuerySet API method는 크게 2가지로 분류
+
+    1. Methods that return new querysets
+       - 새로운 QuerySet을 주는 메서드
+    2. Methods that do not return querysets
+       - QuerySet을 주지 않는 메서드
+
+  - all()
+
+    - 모든 객체가 들어있는 QuerySet return
+
+    ![image-20210901145647112](Django.assets/image-20210901145647112.png)
+
+  - get()
+
+    - 주어진 lookup(조회) 매개변수와 일치하는 객체를 반환
+
+    - 객체를 찾을 수 없으면 DoesNotExist 예외를 발생, 둘 이상의 객체를 찾으면 MultipleObjectReturned예외 발생
+
+      ![image-20210901145547992](Django.assets/image-20210901145547992.png)
+
+    - 위와 같은 특징을 가지고 있기 때문에, primary key와 같이 고유(unique)성을 보장하는 조회에서 사용
+
+    <img src="Django.assets/image-20210901145629300.png" alt="image-20210901145629300" style="zoom: 67%;" />
+
+  - filter()
+
+    - 주어진 조회 매개변수와 일치하는 객체를 포함하는 새 QuerySet을 반환
+
+      <img src="Django.assets/image-20210901145828002.png" alt="image-20210901145828002" style="zoom:67%;" />
+
+    - 조건에 일치하는 데이터가 없으면 빈 QuerySet을 반환
+
+- Update
+
+  - 인스턴스 객체의 인스턴스 변수의 값을 변경한다
+
+  1. 수정하고자 하는 부분을 조회해서 가져온다
+  2. 변경하고자하는 부분(인스턴스 변수)에 새로운 값을 저장하여 save() 메서드 호출
+
+  <img src="Django.assets/image-20210901150243210.png" alt="image-20210901150243210" style="zoom:80%;" />
+
+- DELETE
+
+  - 인스턴스 생성 후 delete() 메서드 호출
+    - 삭제하고자 하는 부분을 조회해서 가져온 뒤 delete() 메서드 호출
+
+  - delete()
+
+    - QuerySet의 모든 행에 대해 SQL삭제 쿼리를 수행, 삭제된 객체 수와 객체 유형당 삭제 수가 포함된 닉셔너리를 반환
+
+    <img src="Django.assets/image-20210901150458932.png" alt="image-20210901150458932" style="zoom:80%;" />
+
+##### * Field lookups
+
+- 열 지정하는 방법
+
+- SQL WHERE 절을 지정하는 방법
+
+- 조회 시 특정 조건을 적용시키기 위해 사용
+
+- QuerySet 메서드 filter(), exclude() 및 get()에 대한 키워드 인수로 지정
+
+- ex)
+
+  ```
+  Article.objects.filter(pk__gt=2)
+  Article.objects.filter(content__contains='ja')
+
+
+
+
+
+##### * HTTP method
+
+- GET
+  - 특정 리소스를 가져오도록 요청할 때 사용
+  - 반드시 데이터를 가져올 때만 사용해야 함
+  - DB에 변화를 주지 않음
+  - CRUD에서 R 역할을 담당
+- POST
+  - 서버로 데이터를 전송할 때 사용
+  - 리소스를 생성/변경하기 위해 데이터를 HTTP body에 담아 전송
+  - 서버에 변경사항을 만듦
+  - CRUD에서 C/U/D 역할을 담당
+
+##### * 사이트 간 요청 위조(Cross-Site-Request-Forgery)
+
+- 웹 애플리케이션 취약점 중 하나로 사용자가 자신의 의지와 무관하게 공격자가 의도한 행동을 하여 특정 웹페이지를 보안에 취약하게 한다거나 수정, 삭제 등의 작업을 하게 만드는 공격 방법
+- django는 CSRF에 대항하여 middleware와 template tag를 제공
+
+- 공격 방어
+
+  - Security Token 사용 방식(CSRF Token)
+    - 사용자의 데이터에 임의의 난수 값을 부여해 매 요청마다 해당 난수 값을 포함시켜 전송
+    - 이후 서버에서 요청을 받을 때 마다 전달된 token 값이 유효한지 검증
+  - 일반적으로 데이터 변경이 가능한 POST, PATCH, DELETE Method등에 적용
+  - django는 csrf token 템플릿 태그를 제공
+
+  - csrf token in Django
+
+    - 전송하는 구간에 아래와 같은 코드 추가해준다
+
+      ```
+      {% csrf_token %}
+      ```
+
+      - ex)
+
+        ```
+        <form action = "" method="post">
+        	{% csrf_token %}
+            <input type="submit">
+         </form>
+
+    - input type이 hidden으로 작성되며 value는 djanfo에서 생성한 hash값이 들어있음
+
+      - rendering할때마다 hash값은 계속 바뀐다
+
+    - 해당 태그가 없다면 Django 서버는 403 forbidden을 응답
