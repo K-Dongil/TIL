@@ -2,4 +2,13 @@
 
 {% block content %}
   <h1>INDEX</h1>
+  <a href="{% url 'articles:new' %}">New</a>
+  <hr>
+  <h2>{{ articles }}<h2>
+  {% for article in articles %}
+    <p> 제목 : {{ article.title }}
+    <p> 내용 : {{ article.content }}
+    <hr>
+  {% endfor %}
+  <a href="#">DETAIL</a>
 {% endblock %}
