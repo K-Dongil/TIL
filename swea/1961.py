@@ -3,7 +3,7 @@ def rotation_90(lst):
     ratation90_lst = [[]*square_len]
     for col in range(len(lst)-1, -1, -1):
         for row in range(len(lst[0])):
-            ratation90_lst[col].append([row])
+            ratation90_lst[col].append(lst[col][row])
     return ratation90_lst
 
 t = int(input())
