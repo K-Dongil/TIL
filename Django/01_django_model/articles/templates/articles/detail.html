@@ -2,4 +2,16 @@
 
 {% block content %}
   <h1>DETAIL</h1>
+  <h2>{{ articles.pk }}번째 글</h2>
+  <hr>
+  <h2>제목:{{ articles.title }}</h2>
+  <h2>내용:{{ articles.content }}</h2>
+  <h2>내용:{{ articles.created_at }}</h2>
+  <h2>내용:{{ articles.updated_at }}</h2>
+  <form action="{% url 'articles:delete' articles.pk %}" method="POST">
+    {% csrf_token %}
+    <button class="btn btn-danger">DELETE</button>
+  </form>
+  <a href="{% url 'articles:index' %}">back</a>
+  <a href="{% url 'articles:edit' articles.pk %}">edit</a>
 {% endblock %}
