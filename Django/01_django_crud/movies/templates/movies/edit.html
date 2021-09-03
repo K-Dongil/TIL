@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <form action="{% url 'movies:update' movie.pk %}" method ="POST">
+    {% csrf_token %}
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" value="{{ movie.title }}"><br>
+    <label for="overview">overview:</label>
+    <textarea id="overview" name="overview" cols='50' row='30'>{{ movie.overview }}</textarea><br>
+    <label for="poster_path">path:</label>
+    <input type="text" id="poster_path" name="poster_path" value="{{ movie.poster_path }}"><br>
+    <input type="submit" value="add">
+  </form>
+{% endblock content %}

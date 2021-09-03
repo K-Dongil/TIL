@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% for movie in movies %}
+    <div>
+      <h1> 제목 : {{ movie.title }}
+      <h1> 내용 : {{ movie.overview }} <br>
+      <img src="{{ movie.poster_path }}"><br>
+      <a href="{% url 'movies:detail' movie.pk %}">자세히보기</a>
+    </div>
+    <hr>
+  {% endfor %}
+{% endblock content %}
+
