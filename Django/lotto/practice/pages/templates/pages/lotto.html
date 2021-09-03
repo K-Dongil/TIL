@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1> 로또 당첨 횟수를 알아보자
+  <hr>
+  <p> 내가 뽑은 번호는 과연 1회에서 500회까지 총 몇번의 당첨이 있었을까
+  <p> {{ my_lotto }}
+  <p> {{ result }}
+  <p>1등 : {{ one }}
+  <p>2등 : {{ two }}
+  <p>3등 : {{ three }}
+  <p>4등 : {{ four }}
+  <p>5등 : {{ five }}
+
+{% endblock  %}
