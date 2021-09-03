@@ -6,7 +6,7 @@
   - 이것은 웹 개발의 많은 번거로움을 덜어주기 때문에 당신은 앱 작성에 집중할 수 있습니다
 
 - 빠르고 깨끗한 개발을 지원 
-- Web Framework
+- Web Framework노
 - 검증된 Python 언어 기반 Web Framework
 - 대규모 서비스에도 안정적이며 오랫동안 세계적인 기업들에 의해 사용되고 있다
 
@@ -50,7 +50,7 @@
 - 사용자 인터페이스로부터 프로그램 로직을 분리하여 애플리케이션의 시각적 요소나 이면에서 실행되는 부분을 서로 영향 없이 쉽게 고칠 수 있는 애플리케이션을 만들 수 있음
 - Django는 MTV pattern
 
-##### * MTV Pattern
+##### * [MTV Pattern](https://developer.mozilla.org/ko/docs/Learn/Server-side/Django/Introduction)
 
 - Model
 
@@ -242,7 +242,7 @@ url -> views ->templates
 ```django
 from django.db import models
 
-class Article(models.Model):
+class Article(models.Model): # (model.Model)을 상속받는 순간 DB와 통신하는 method를 가지게된다
     title = models.CharField(max_length=10)
     content = models.TextField()
 ```
@@ -272,7 +272,10 @@ class Article(models.Model):
 
 - Migration(설계도)실행 및 DB 스키마를 다루기 위한 몇가지 명령어
 
-  - makemigrations ~ migrate 부분은 sql의 create와 비슷?
+  - makemigrations ~ migrate 부분은 table을 생성한다
+
+    - sql의 create table
+    - 처음(makemigrations ~ migrate) 이후 migrate는 테이블의 열을 삽입, 수정, 삭제하는 것
 
   - **makemigrations**
 
@@ -586,3 +589,62 @@ class Article(models.Model):
       - rendering할때마다 hash값은 계속 바뀐다
 
     - 해당 태그가 없다면 Django 서버는 403 forbidden을 응답
+
+
+
+
+
+##### Admin Site
+
+- Automatic admin interface
+  - 사용자가 아닌 서버의 관리자가 활용하기 위한 페이지
+  - Model class(DB)를 admin.py에 등록하고 관리
+  - django.contrib.auth 모듈에서 제공됨
+  - 행(record) 생성 여부 확인에 매우 유용하며, 직접 record를 삽입할 수도 있음
+
+- admin 생성
+
+  ```
+  $ python manage.py createsuperuser
+
+
+
+
+
+
+
+redirect
+
+```
+View -> template 가아니라
+View - > url 로 다시 넘어간다
+
+이미 만들어진 페이지 불러오는거고
+```
+
+render
+
+```
+render가 사용자에게 보여주기 위해 html을 만들어준다 (사용자에게 보여지는 형태로 html을 만든다)
+템플릿을 가져오는것
+
+내가 만들어놓은 템플릿을 가져다가 사용자가 볼수있는 html형태로 만들어준다?
+```
+
+```
+redirect는 URL로 이동하는 것이기 때문에 render 처럼 context 값을 넘기지는 못함
+render 는 템플릿을 불러오고, redirect 는 URL로 이동합니다. URL 로 이동한다는 건 그 URL 에 맞는 views 가 다시 실행될테고
+여기서 render 를 할지 다시 redirect 할지 결정하는 것.
+```
+
+
+
+
+
+delete일 때는 POST방식을 사용하는게 좋다
+
+DB에 저장된 값을 아무나 지울수 없게 방지하기 위함
+
+view.py에서
+
+조건을 걸어준다 if request.method == 'POST'
