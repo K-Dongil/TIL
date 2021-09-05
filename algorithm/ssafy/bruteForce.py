@@ -1,5 +1,5 @@
 p = 'is' # 찾을 패턴
-t = 'This is a book~!' # 전체 텍스트
+t = 'Thia is a book~!' # 전체 텍스트
 M = len(p) # 찾을 패턴의 길이
 N = len(t) # 전체 텍스트의 길이
 
@@ -16,3 +16,6 @@ def BruteForce(p,t):
         return i - M # 검색 성공, 몇번째 index부터 찾고자하는 단어가 시작되는지
     else:
         return -1 # 검색 실패
+
+result = BruteForce(p,t)
+print(result)
