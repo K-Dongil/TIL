@@ -50,7 +50,7 @@ def catch(request):
     }
     return render(request, 'articles/catch.html', context)
 
-def hello(request, name='default'):
+def hello(request, name):
     context = {
         'name':name,
     }

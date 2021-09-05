@@ -31,7 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'articles', # 새로 만든 앱 등록
+    'articles', # 새로 만든 앱 등록,
+    'pages',
     'django.contrib.admin', # 숨겨져있음
     'django.contrib.auth',
     'django.contrib.contenttypes',
