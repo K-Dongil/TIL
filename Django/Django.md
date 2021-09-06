@@ -648,3 +648,123 @@ DB에 저장된 값을 아무나 지울수 없게 방지하기 위함
 view.py에서
 
 조건을 걸어준다 if request.method == 'POST'
+
+
+
+
+
+##### *Django form Class
+
+- HTML에서의 사용자 데이터 입력 받기
+  - HTML from, input을 통해서 사용자로부터 데이터를 받음
+  - 직접 사용자의 데이터를 받으면 입력된 데이터의 유효성을 검증하고, 필요시에 입력된 데ㅣ터를 검증 결과와 함께 다시 표시, 유효한 데이터에 대해 요구되는 동작을 수행하는 것을 '올바르게 하기'위해서는 많은 노력이 필요한 작업
+- Django는 일부 과중한 작업과 반복 코드를 줄요줌으로써, 훨씬 쉽게 만들어 준다
+
+- Django의 forms
+
+  - Form은  Django 프로젝트 주요 유효성 검사 도구들 중 하나, 공격 및 우연한 데이터 손상에 대한 중요한 방어수단
+  - HTML의 form 기능의 방대한 부분을 단순화하고 자동화, 프로그래머가 직접 작성한 코드에서 수행할 수 있는 것보다 더 안전하게 수행 가능
+  - Django가 Form에 관련된 작업 3가지를 처리해준다
+    1. 렌더링을 위한 데이터 준비 및 재구성
+    2. 데이터에 대한 HTML forms 생성
+    3. Client로부터 받은 데이터 수신 및 처리
+
+- form class
+
+  - Django Form 관리 시스템의 핵심
+
+  - form내 field, field배치, 디스플레이 widget, label, 초기값, 유효하지 않는 field에 관련된 에러 메시지를 결정
+
+  - 사용자의 데이터를 받을 때 해야 할 과중한 작업(데이터 유효성 검증, 필요시 입력된 데이터 검증 결과 재출력, 유효한 데이터에 대해 요구되는 동작 수행 등)과 반복 코드를 줄여줌
+
+    
+
+- Form 선언
+
+  - Class로 선언한다
+
+  - Model을 선언하는 것과 유사하며 같은 필드타입을 사용(또한, 일부 매개변수도 유사)
+
+    - Model 의 TextField()는 forms에서는 CharField(widget=forms.Textarea())로 쓰인다
+
+  - forms 라이브러리에서 파생된 Form 클래스를 상속받는다
+
+    ```
+    #form.py
+    from django import forms
+    
+    class ArticleForm(forms, Form):
+    	title = forms.CharField(max_length=10)
+    	content = forms.CharField()
+
+
+
+##### * ModelForm
+
+- **Model이 있는 경우** form에서 Form class를 만들면서 필드 재정의를 하면 중복된 행위가 발생한다
+
+- Django는 Model을 통해 Form Class를 만들 수 있는  Helpaer를 제공
+
+- ModelFrom Class
+  - Model을 통해 Form Class를 만들 수 있는 Helper
+  - 일반 Form Class와 완전히 같은 방식(객체 생성)으로 view에서 사용 가능
+  - 이미 정의된 Model class를 기반으로 만든다
+    - 필드에 대한 재정의가 없다
+
+- 선언
+
+  - forms 라이브러리에서 파생된 ModelForm 클래스를 상속받음
+
+  - 정의한 클래스 안에 Meta 클래스를 선언하고, 어떤 모델을 기반으로 form을 작성할 것인지에 대한 정보를 Meta클래스에 지정
+
+    ```
+    ```
+
+- Meta class
+
+  - Model의 정보를 작성하는 곳
+  - ModelForm을 사용할 경우 사용할 모델이 있어야 하는데 Meta class가 이를 구성한다
+    - 해당 model에 정의한 field 정보를 Form에 적용하기 위함
+
+  - 참고
+    - Inner class(Nested class)
+      - 클래스 내에 선언된 다른 클래스
+      - 관련 클래스를 함께 그룹화 하여 가독성 및 프로그램 유지 관리를 지원(논리적으로 묶어서 표현)
+      - 외부에서 내부 클래스에 접근할 수 없으므로 코드의 복잡성을 줄일 수 있음
+    - Meta 데이터
+      - 데이터에 대한 데이터
+      - ModelForm class에 대한 추가 정보 데이터
+      - ex) 사진촬영 - 사진 데이터 - 사진의 메타 데이터(촬영 시각, 렌즈, 조리개 값 등)
+
+- 유효성 검사
+
+  - 요청한 데이터가 특정 조건에 충족하는지 확인하는 작업
+
+  - DB 각 필드 조건에 올바르지 않은 데이터가 서버로 전송되거나, 저장되지 않도록 하는 것
+
+  - is_valid()
+
+    - 유효성 검사를 실행하고, 데이터가 유효한지 여부를 boolean으로 반환
+    - 데이터 유효성 검사를 보장하기 위한 많은 테스트에 대해 django는 is_valid()를 제공
+
+    - ex)
+
+      ```
+      def create(request):
+      
+          form = ArticleForm(request.POST) # 현재 form은 데이터가 채워져있는 상태, data는 request.POST에 들어있다
+          #유효성 검사
+          if form.is_valid():
+              article = form.save() # save하면 작성된 객체가 나온다
+              return redirect('articles:detail', article.pk)
+          return redirect('articles:new')
+
+  - save()
+
+    - form에 바인딩 된 data에서 DB 객체를 만들고(반환이 있다) 저장
+      - 바인딩 : 연결이 됐다, 담겨져 있다
+
+    - ModelForm의 하위(sub)클래스는 기존 모델 인스턴스를 키워드 인자 instance로 받아 들일 수 있음
+      - 이것이 제공되면 save()는 해당 인스턴스를 업데이트(UPDATE)
+      - 제공되지 않은 경우 save()는 지정된 모델의 새 인스턴스를 만듦(CREATE)
+    - form의 유효성이 확인되지 않은 경우(hasn't been validated), save()를 호출하면 form.error를 확인하여 에러 확인 가능
