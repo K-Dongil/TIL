@@ -705,12 +705,14 @@ view.py에서
 
 - Django는 Model을 통해 Form Class를 만들 수 있는  Helpaer를 제공
 
-- ModelFrom Class
+- ModelForm Class
   - Model을 통해 Form Class를 만들 수 있는 Helper
   - 일반 Form Class와 완전히 같은 방식(객체 생성)으로 view에서 사용 가능
   - 이미 정의된 Model class를 기반으로 만든다
     - 필드에 대한 재정의가 없다
-
+  - inner class로 meta calss가 존재한다
+    - meta class에는 model에 대한 정보가 들어있다
+  
 - 선언
 
   - forms 라이브러리에서 파생된 ModelForm 클래스를 상속받음
@@ -770,3 +772,165 @@ view.py에서
       - 이것이 제공되면 save()는 해당 인스턴스를 업데이트(UPDATE)
       - 제공되지 않은 경우 save()는 지정된 모델의 새 인스턴스를 만듦(CREATE)
     - form의 유효성이 확인되지 않은 경우(hasn't been validated), save()를 호출하면 form.error를 확인하여 에러 확인 가능
+
+---
+
+---
+
+## Managing Static Files
+
+##### * static file(정적 파일)
+
+- 응답할 때 별도의 처리 없이 파일 내용을 그대로 보여주면 되는 파일
+  - 사용자의 요청 따라 내용이 바뀌는 것이 아니라 요청한 것을 그대로 보여주는 파일
+  - 사용자의 요청이 서버에 왔을 때  서버가 별도의 처리X
+- 웹 사이트는 일반적으로 이미지, 자바스크립트 또는 CSS와 같은 미리 준비된 추가 파일(움직이지 않는)을 제공
+
+- 구성
+
+  1. django.contrib.staticfiles가 INSTALLED_APPS에 포함되어 있는지 확인
+
+     - staticfiles : 장고에서 staticfile을 managing해주는 application
+
+  2. setting.py에서 STATIC_URL을 정의
+
+  3. templates에서 static 탬플릿 태그를 사용하여 지정된 상대경로에 대한 URL을 빌드
+
+     ```
+     {% load static %}
+     <img src="{% static '경로' %}" alt="MY image">
+
+  4. 앱의 static 폴더에 정적 파일을 저장
+
+- Django template tag
+
+  - load
+    - 사용자 정의 템플릿 태그 세트를 로드
+    - 로드하는 라이브러리, 패키지에 등록된 모든 태그와 필터를 로드
+  - static
+    - STATIC_ROOT에 저장된 정적 파일에 연결
+
+- staticfiles app
+
+  - STATIC_ROOT
+
+    - collectstatic이 배포를 위해 정적 파일을 수집하는 디렉토리의 절대 경로
+
+      - collectstatic : SATIC_ROOT에 정적 파일을 수집하는 명령어
+
+        ```
+        $ python mange.py collectstatic
+
+      - settings.py에서 STATIC_ROOT 작성(경로 설정)
+
+        ![image-20210908092638132](Django.assets/image-20210908092638132.png)
+
+    - django 프로젝트에서 사용하는 모든 정적 파일을 한 곳에 모아 넣는 경로
+
+    - 개발 과정에서 settings.py의 DEBUG 값이 True로 설정되어 있으면 해당 값은 작용되지 않음
+
+      - 직접 작성하지 않으면 django 프로젝트에서는 settings.py에 작성되어 있지 않음
+
+    - 실 서비스 환경(배포 환경)에서 djnago의 모든 정적 파일을 다른 웹 서버가 직접 제공하기 위한 경로
+
+  - STATIC URL
+
+    - STATIC_ROOT에 있는 정적파일을 참조 할 때 사용할 URL
+      - 개발 단계에서는 실제 정적 파일들이 저장되어 있는 각 앱의 static/ 폴더 및 STATICFILES_DIRS에 정의된 추가 경로들을 탐색함
+    - 실제 파일이나 디렉토리가 아니며, URL로만 존재
+    - 비어 있지 않은 값으로 설정 한다면 반드시 salsh(/)로 끝나야 함
+
+  - STATICFILES_DIRS
+
+    - App내에서 static 디렉토리 경로를 사용하는 것(기본 경로)외에 추가적인 정적 파일 경로 목록을 정의하는 리스트
+    - 추가 파일 디렉토리에 대한 전체 경로를 포함하는 문자열 목록으로 작성 되어야 함
+
+    - BASE_DIR에 static폴더 -> images라는 폴더를 생성했을 때 settings.py에 아래와 같이 정의
+
+      ```
+      STATICFILES_DIRS = [
+          BASE_DIR / 'static',
+      ]
+
+##### * 이미지 업로드
+
+- Media file
+  - 사용자가 웹에서 업로드하는 정적 파일(user-uploaded)
+  - 유저가 업로드 한 모든 정적 파일
+
+- Model field
+
+  - ImageField
+
+    - 이미지 업로드에 사용하는 모델 필드
+    - 사용하기 위해 반드시 Pillow 라이브러리 필요
+    - FileField를 상속받는 서브 클래스이기 때문에 FileField의 모든 속성 및 메서드를 사용가능하며, 사용자에 의해 업로드 된 객체가 유효한 이미지인지 검사함
+
+    - ImageField 인스턴스는 최대 길이가 100자인 문자열로 DB에 생성, max_length 인자를 사용하여 최대 길이 변경가능
+      - DB에 이미지 파일이 저장되는 것이 아니라 경로가 담긴 문자열이 저장된다.
+    - 
+
+  - FileField
+    - 파일 업로드에 사용하는 모델 필드
+    - upload_to 인자
+      - 실제 이미지가 저장되는 경로를 지정
+      - 업로드 디렉토리(경로)와 파일 이름을 설정하는 2가지 방법을 제공
+        1. 문자열 값이나 경로 지정
+        2. 함수 호출
+
+  - MEDIA_ROOT
+
+    - 사용자가 업로드 한 파일(미디어 파일)들을 보관할 디렉토리의 절대 경로
+    - django는 성능을 위해 업로드 파일은 데이터베이스 저장X
+      - 실제 데이터베이스에 저장되는 것은 파일의 경로
+    - MEDIA_ROOT는 STATIC_ROOT와 반드시 다른 경로로 지정해야 한다
+
+  - MEDIA_URL
+
+    - MEDIA_ROOT에서 제공되는 미디어를 처리하는 URL
+
+    - 업로드 된 파일의 주소(URL)를 만들어 주는 역할
+      - 웹 서버 사요자가 사용하는public URL
+    - 비어 있지 않은 값으로 설정한다면 반드시 slash(/)로 끝나야 함
+    - MEDIA_URL은 STATIC_URL과 반드시 다른 경로로 지정해야 한다
+
+
+
+##### * 이미지 업로드()
+
+
+
+
+
+##### * 이미지 업로드(UPDATE)
+
+- 이미지는 바이너리 데이터(하나의 덩어리)이기 때문에 텍스트처럼 일부만 수정 하는 것은 불가능
+  - 새로운 사진으로 덮어 씌우는 방식을 사용
+
+
+
+##### * 이미지 Resizing
+
+- 실제 원본 이미지를 서버에 그대로 업로드 하는 것은 서버의 부담이 큰 작업
+- img 태그에서 직접 사이즈를 조정할 수 있지만 (width와 height), **업로드 될 때 이미지 자체를 resizing**
+  - django-imagekit 라이브러리 활용
+
+- django-imagekit
+
+  1. install
+
+     ```
+     $ pip install django-imagekit
+
+  2.  INSTALLED_APPS에 imagekit 추가
+
+
+
+
+
+cache(캐시) : 미리 복사해 놓는 임시 장소
+
+​	이미지들은 memory cache를 사용
+
+​	브라우저에 캐쉬 메모리 어딘가에 이미지들을 저장해두고 가져다 쓴다
+
