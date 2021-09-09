@@ -16,12 +16,14 @@ def index(request):
 
 @require_http_methods(['GET', 'POST'])
 def create(request):
+    # create
     if request.method == 'POST':
-        form = ArticleForm(request.POST, request.FILES)
+        form = ArticleForm(data=request.POST)
         if form.is_valid():
             article = form.save()
             return redirect('articles:detail', article.pk)
     else:
+    # new
         form = ArticleForm()
     context = {
         'form': form,
@@ -31,6 +33,7 @@ def create(request):
 
 @require_safe
 def detail(request, pk):
+    # article = Article.objects.get(pk=pk)
     article = get_object_or_404(Article, pk=pk)
     context = {
         'article': article,
@@ -40,6 +43,7 @@ def detail(request, pk):
 
 @require_POST
 def delete(request, pk):
+    # article = Article.objects.get(pk=pk)
     article = get_object_or_404(Article, pk=pk)
     article.delete()
     return redirect('articles:index')
@@ -47,12 +51,15 @@ def delete(request, pk):
 
 @require_http_methods(['GET', 'POST'])
 def update(request, pk):
+    # article = Article.objects.get(pk=pk)
     article = get_object_or_404(Article, pk=pk)
+    # update
     if request.method == 'POST':
-        form = ArticleForm(request.POST, request.files, instance=article)
+        form = ArticleForm(request.POST, instance=article)
         if form.is_valid():
             form.save()
             return redirect('articles:detail', article.pk)
+    # edit
     else:
         form = ArticleForm(instance=article)
     context = {

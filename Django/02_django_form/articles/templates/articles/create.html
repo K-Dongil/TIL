@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>CREATE</h1>
+  <form action="{% url 'articles:create' %}" method="POST">
+    {% csrf_token %}
+    {% for field in form%}
+      {% if field.erros %}
+        <ol>
+        {% for error in field.errors %}
+          <div class="alert alert-warning" role="alert">{{ error|escape }}<div>
+        {% endfor %}
+        </ol>
+      {% endif %}
+      {{ field.label_tag }}
+      {{ field }}
+    {% endfor %}
+    <input type="submit">
+  </form>
+  <hr>
+  <a href="{% url 'articles:index' %}">[back]</a>
+{% endblock  %}
