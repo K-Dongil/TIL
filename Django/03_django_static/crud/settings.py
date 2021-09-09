@@ -120,15 +120,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 # Store your static files in a folder called static in your app.
 # app에 있는 static은 경로를 지정하지 않아도 자동으로 찾아올 수 있다.
-STATIC_URL = '/static/'
+STATIC_URL = '/static/' # /static/ url은 STATICFILES_DIRS의 경로들 + app의 static폴더를 참고한다
+# STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
-# STATIC_ROOT = BASE_DIR / 'staticfiles'
-
 MEDIA_ROOT = BASE_DIR / 'media'
+
 MEDIA_URL = '/media/'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
