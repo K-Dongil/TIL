@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Movies</h1>
+  <a href="{% url 'movies:create' %}">[CREATE]</a>
+  <hr>
+  {% for movie in movies %}
+    <p>글 번호 : {{ movie.pk }}</p>
+    
+    <a href = {% url 'movies:detail' movie.pk%}>글 제목 : {{ movie.title }}</a>
+    <p>글 후기 : {{ movie.overview }}</p>
+    <img src ="{{ movie.poster_path }}"></img><br>
+    <a href="{% url 'movies:detail' movie.pk %}">[DETAIL]</a>
+    <hr>
+  {% endfor %}
+
+{% endblock content %}
