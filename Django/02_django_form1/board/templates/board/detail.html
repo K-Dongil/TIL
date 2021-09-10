@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ question.title}} </h1>
+<div>
+{% comment %} instanct.get_[field]_display {% endcomment %}
+  <p>created_at : {{ qeustion.created_at }} </p>
+  <p>updated_at : {{ qeustion.updated_at }} </p>
+</div>
+
+
+<h2>{{ question.category|linebreaks}} </h2>
+<p>{{ question.content|linebreaksbr}} </p>
+
+<div>
+  <a href="{% url 'board:index' %}">
+    <button>back</button>
+  </a>
+</div>
+
+<div>
+  <a href="{% url 'board:update' question.pk %}" method="POST">
+    <button>edit</button>
+  </a>
+</div>
+
+<form action="{% url 'board:delete' question.pk %}" method="POST">
+  {% csrf_token %}
+  <button>delete</button>
+</form>
+{% endblock content %}
+
+
