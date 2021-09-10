@@ -934,3 +934,18 @@ cache(캐시) : 미리 복사해 놓는 임시 장소
 
 ​	브라우저에 캐쉬 메모리 어딘가에 이미지들을 저장해두고 가져다 쓴다
 
+
+
+
+
+
+
+- Form의 역할 2가지
+  1. data validation(유혀성 검사)
+  2. HTML(<input>)생성
+
+- Django (Model) Form workflow
+
+  ![image-20210910090956889](Django.assets/image-20210910090956889.png)
+
+​	![image-20210910090358510](Django.assets/image-20210910090358510.png)
