@@ -23,7 +23,7 @@ class QuestionForm(forms.ModelForm):
     # model의 필드가 아니면, HTMl +검증은 하되 저장은 하지 않는다
     is_save = forms.BooleanField(required=False, label='wanna save?', help_text='저장하려면 체크하세요') # DB에 저장 X
     class Meta:
-        mdoel = Question
+        model = Question
         # 아래 필드들은 모델에 있어야 하며, 데이터 검증 + HTML생성을 합니다
         # title,contet, category는 필드면서 동시에 모델과 연동 is_save는 연동X
         fields = '__all__' 
