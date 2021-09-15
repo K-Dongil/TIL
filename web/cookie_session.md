@@ -24,6 +24,10 @@
 
 
 
+##### * Session : 서버와 클라이언트의 대화성 통신 또는 대화성 통신을 유지하는 정보
+
+
+
 ##### * Cookie
 
 - Server가 Client의 웹 브라우저에 전송하는 작은 데이터 조각
@@ -35,7 +39,11 @@
   - 악성코드를 설치할 수 없지만, 사용자의 행동을 추적하거나 Cookie를 훔쳐서 해당 사용자의 계정 접근권한을 획득 할 수도 있음
 
 - HTTP 쿠키는 상태가 있는 Session을 만들어 줌
+
+  ( Session : 서버와 클라이언트의 대화성 통신 또는 대화성 통신을 유지하는 정보)
+
 - Cookie는 요청이 동일한 브라우저에서 들어왔는지 아닌지를 판단할 때 주로 사용
+
   - 이를 이용해 사용자의 로그인 상태를 유지할 수 있음
   - 상태가 없는(stateless) HTTP 프로토콜에서 상태 정보를 기억 시켜주기 때문이다
 
@@ -63,6 +71,8 @@
 
 ##### * Session
 
+- 무상태 프로토콜인 HTTP인 기반에서 세션을 구현하기 위해 Client는 Session(Session Key , Client id, Session Cookie)을 Cookie에 저장, Server는 Session(Session 상태, Client 상태, Session data)을 저장소에 저장한다
+
 - Cookie안에 session id 저장되는 것
   - ID는 Session을 구별하기 위해 필요하며, Cookie에는 ID만 저장함
   - ID에 대한 value값들은 Server가 가지고 있다
@@ -72,7 +82,8 @@
   - Client가 다시 Server에 접속하면 요청과 함께 쿠키(session id가 저장된)를 서버에 전달
   - Cookie는 요청 때마다 Server에 함께 전송되므로 Server에서 session id를 확인해 알맞은 로직을 처리
 
-
+- 모든 것을 Session으로 사용하려고 하면 사용자가 많을 때 Server에 부하가 걸릴 수 있다
+  - 노출되어도 괜찮은 정보는 Cookie를 사용한다
 
 
 
@@ -81,9 +92,15 @@
 - 쿠키의 수명은 두가지 방법으로 정의
 
 1. Session Cookies
-   - 현재 세션이 종료되면 삭제됨
+
+   - 유효기간이 존재하지 않는다
+
+   - 현재 Browser(세션)이 종료되면 삭제됨
    - 브라우저가 "현재 세션(current session)"이 종료되면 시기를 정의
    - 일부 브라우저는 다시 시작할 때 세션 복원(session restoring)을 사용해 session cookies가 오래 지속 될수 있도록 함
+
 2. Persistent cookies (or Permanent cookies)
+
    - Expires 속성에 지정된 날짜 혹은 Max-Age 속성에 지정된 기간이 지나면 삭제
      - 개발자 도구 -> Application -> Expires/Max-Age에서 확인 가능
+
