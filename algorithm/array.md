@@ -12,7 +12,7 @@
 
      - 완전한 코드X, 논리적 구조를 이해할 수 있는 구도로 적은 코드
 
-       ```
+       ```python
        def CalcSum( n ):
        	sum <- 0
        	for i in ragne (1, n + 1):
@@ -108,7 +108,7 @@
 
   ![image-20210822162227016](array.assets/image-20210822162227016.png)
 
-  ```
+  ```python
   lst = [7, 4, 2, 0, 0, 6, 0, 7, 0]
   max_v = lst[0]
   result = 0
@@ -149,7 +149,7 @@
     1. 첫 번째 원소부터 인접한 원소끼리 계속 자리를 교환하면서 맨 마지막 자리까지 이동
     2. 한단계가 끝나면 가장 가장 큰 원소가 마지막 자리로 정렬
 
-    ```
+    ```python
     def BubbleSort(a): # 정렬할 List
     	for i in range(len(a)-1, 0, -1): # 범위의 끝 위치
     		for j in range(0, i):
@@ -215,7 +215,7 @@
 
     - ex)
 
-      ```
+      ```python
       data = [0, 4, 1, 3, 1, 2, 4, 1]
       
       M = 5 # 0 ~ 4, data 개수가 아닌 data원소의 범위
@@ -258,7 +258,7 @@
 
     - 슈더 코드
 
-      ```
+      ```python
       def SelectionSort(a):
       	for i in range(0, len(a)-1): # 작업구간의 시작
       		min = i # 맨 앞을 제일 작다고 가정
@@ -270,7 +270,7 @@
 
     - ex)
 
-      ```
+      ```python
       lst = [64, 25, 10, 22, 11]
       
       def selectionS(lst):
@@ -312,7 +312,7 @@
 
       - 슈더코드
 
-        ```
+        ```python
         def select(list, k):
         	for i in range(0, k): # 선택정렬과 다른 점
         		minIndex = i
@@ -325,7 +325,7 @@
 
       - ex)
 
-        ```
+        ```python
         lst = [64, 25, 10, 22, 11]
         
         def selectionAlgo(lst, k):
@@ -397,7 +397,7 @@ run + run, run + triplet, triplet + triplet
 
       - ex) {1, 2, 3}을 포함하는 모든 순열을 간단하게 생성해보기
 
-        ```
+        ```python
         # 동일한 숫자가 포함되지 않았을 때, 각 자리 수 별로 loop을 이용
         for i1 in range(1, 4):
         	for i2 in range(1, 4):
@@ -457,7 +457,7 @@ run + run, run + triplet, triplet + triplet
 
 - 구현
 
-  ```
+  ```python
   # 0 ~ 9까지의 숫자 중 6개의 카드를 뽑았을 때 3장의 카드가 연속적인 번호일 때 run, 3장의 카드가 동일한 번호를 갖는 경우 triplet
   lst =[4, 4, 4, 3, 4, 5] # 6장의 카드가 이렇게 뽑혔다고 했을 때
   counts = [0] * 10 # 0 ~ 9
@@ -493,7 +493,7 @@ run + run, run + triplet, triplet + triplet
       print('not baby-gin')
   ```
 
-  ```
+  ```python
   num = 456789 # Baby Gin 확인할 6자리 수
   c = [0] # 6자리 수로부터 각 자리 수를 추출하여 개수를 누적할 리스트
   
@@ -536,17 +536,17 @@ run + run, run + triplet, triplet + triplet
 
   - N, M을 입력받았다고 가정
 
-  1. ```
+  1. ```python
      arr = [ list(map(int, input().split())) for _ in range(N) ]	# List Comprehension
   
-  2. ```
+  2. ```python
      arr2 = [[0] * M for _ in range(N)]  # List Comprehension
      ```
      
      - arr 2 = [[0] * M] * N은 사용 불가
        - 보이는 건 2차원 배열이지만 2차원 배열 속 N개의 배열들이 모두 주소를 공유한다
      
-  3. ```
+  3. ```python
      # 빈 리스트를 하나 만들어 놓고 거기에다가 append 시키자
      arr = []
      
@@ -555,7 +555,7 @@ run + run, run + triplet, triplet + triplet
      	arr.append(tmp)
      ```
   
-  4. ```
+  4. ```python
      # 행의 길이만큼 미리 확보를 해놓고 index 접근으로 바꾸자
      arr = [0] * N
      
@@ -575,7 +575,7 @@ run + run, run + triplet, triplet + triplet
 
 1. 행 우선 조회
 
-   ```
+   ```python
    # i 행의 좌표
    # j 열의 좌표
    for i in range(len(Array)):
@@ -596,7 +596,7 @@ run + run, run + triplet, triplet + triplet
 
    - ex) 각 열의 합 중 최대값을 구하시오
 
-   ```
+   ```python
    1# i 행의 좌표
    # j 열의 좌표
    for i in range(len(Array[0])): # Array[0]의 data 값들이 각 열에 들어가는 data이므로 len
@@ -618,7 +618,7 @@ run + run, run + triplet, triplet + triplet
    - 짝수일 때는 오른쪽, 홀수일 때는 왼쪽
      - if문을 줘서 구현이 가능하다
 
-   ```
+   ```python
    for i in range(N):
    	if i%2 == 0:
    		for j in range(M-1):  # j
@@ -628,7 +628,7 @@ run + run, run + triplet, triplet + triplet
    			print(ARR[i][j])
    ```
 
-   ```
+   ```python
    # i 행의 좌표
    # j 열의 좌표
    for i in range(len(Array)): # Array[0]의 data 값들이 각 열에 들어가는 data이므로 len
@@ -661,7 +661,7 @@ run + run, run + triplet, triplet + triplet
 
      ![image-20210812011332881](array.assets/image-20210812011332881.png)
 
-     ```
+     ```python
      ARR[i][j]
      	상 : ARR[i-1][j]
      	하 : ARR[i+1][j]
@@ -721,7 +721,7 @@ run + run, run + triplet, triplet + triplet
 
    - 대각선을 기준으로 데이터 값 교환
 
-   ```
+   ```python
    # i : 행의 좌표, len(arr)
    # j : 열의 좌표, len(arr[0])
    arr = [[1,2,3], [4,5,6], [7,8,9]] # 3*3 godfuf
@@ -737,7 +737,7 @@ run + run, run + triplet, triplet + triplet
 
    - 오른쪽 대각선의 합을 구하려고 할 때
 
-     ```
+     ```python
      def r_diagonal(lst):
          sum = 0
          for i in range(len(lst)):
@@ -755,7 +755,7 @@ run + run, run + triplet, triplet + triplet
 
    - 왼쪽 대각선의 합을 구하려고 할 때
 
-     ```
+     ```python
      def l_diagonal(lst):
          sum = 0
          for i in range(len(lst)):
@@ -800,7 +800,7 @@ run + run, run + triplet, triplet + triplet
 
 - 각 원소가 부분집합에 포함되었는지를 loop 이용하여 확인하고 부분집합을 생성하는 방법
 
-  ```
+  ```python
   bit = [0, 0, 0, 0] # 집합의 원소가 4개
   for i in range(2):
   	bit[0] = i	# 0번째 원소
@@ -819,7 +819,7 @@ run + run, run + triplet, triplet + triplet
 
   - 부분집합, 부분집합 속 데이터값 출력하기
 
-    ```
+    ```python
     arr = [1, 2, 3, 4]
     bit = [0, 0, 0, 0]
     for i in range(2):
@@ -883,14 +883,14 @@ run + run, run + triplet, triplet + triplet
 
   - 4번 비트가 1인 값
 
-  ```
+  ```python
   비트값 : 1 0 0 0 0 # 16
   2 * 2 * 2 * 2 # 16
   ```
 
 - 10진법으로 표현된 값을 비트연산자를 이용하여 2진법으로 바꾸기
 
-  ```
+  ```python
   i = 15 #0b01111 비트가 5자리 수
   
   for j in range(4, -1, -1):
@@ -909,10 +909,10 @@ run + run, run + triplet, triplet + triplet
     - r = i & (1<<j) : i의 bit는 i번 째  부분집합이 어떻게 생겼는지 나타낸다.
       - 각 자리의 bit가 0인지 1인지 check하여 부분집합의 원소를 알아낸다
 
-  ```
+  ```python
   lst = [0, 1, 2, 3, 4] # 원소가 5개, 부분집합의 개수 : 2^5개
   N = 5
-  for i in range(1<<N): # i에는  arr의 부분집합에 어떤 원소가 담겨져 있는지 정보가 담겨있다, #0b11111 + 1 = 0b100000 = 1<<5 = 2^5 
+  for i in range(1<<N): # i를 2진수로 표기한 값에는 arr의 어떤 원소들로 부분집합이 이루어져있는지 정보가 담겨있다, 0b11111 + 1 = 0b100000 = 1<<5 = 2^5 
   	#부분 집합 2^5개 중 하나인 i에 대한 sumV를 구한다.
   	sumV = 0
   	for j in range(N): # j는 비트번호, 집합의 원소의 개수 (0b11111.....N개 +1 == 1<<N)
@@ -924,7 +924,7 @@ run + run, run + triplet, triplet + triplet
 
   - ex) swea 4837.py
 
-    ```
+    ```python
     A = list(range(1, 13)) # 원소가 12개, 부분집합의 개수 : 2^12개
     t = int(input()) # 테스트 케이스 수 입력 받음
     
@@ -932,7 +932,7 @@ run + run, run + triplet, triplet + triplet
         subset_element, subset_sum = map(int, input().split()) # 집합의 원소의 몇개로 부분집합이 이루어졌는지, 부분집합의 합은 몇인지 입력받는다
         want_subset = 0 # 위의 조건을 만족하는 부분집합을 counting할 변수
         
-        for j in range(1<<12): # 0b000000000000 ~ 0b111111111111 + 1 = 0b1000000000000 = 1<<12 = 2^12,  부분집합의 개수는 2^12개, i에는  arr의 부분집합에 어떤 원소가 담겨져 있는지 정보가 담겨있다
+        for j in range(1<<12): # 0b000000000000 ~ 0b111111111111 + 1 = 0b1000000000000 = 1<<12 = 2^12,  부분집합의 개수는 2^12개, i를 2진수로 표기한 값에는 arr의 어떤 원소들로 부분집합이 이루어져있는지 정보가 담겨있다
             element_count = 0 # 현재 부분집합의 원소가 몇개 있는지 couning할 변수
             element_sum = 0 # 현재 부분집합의 합을 저장해둘 변수
             for k in range(12): # 집합의 원소가 12개 이므로, k는 비트번호
@@ -947,20 +947,19 @@ run + run, run + triplet, triplet + triplet
 
 - ex) 보다 간결하게 부분집합을 생성하는 방법 (비트 연산자 이용)
 
-  ```
+  ```python
   arr = [3, 6, 7, 1, 5, 4]
   
   n = len(arr) # 원소의 개수
   
-  for i in range(1<<n): # i에는  arr의 부분집합에 어떤 원소가 담겨져 있는지 정보가 담겨있다, 1 << N : 부분 집합의 개수
+  for i in range(1<<n): # i를 2진수로 표기한 값에는 arr의 어떤 원소들로 부분집합이 이루어져있는지 정보가 담겨있다, 1 << N : 부분 집합의 개수
   	for j in range(n): # j는 비트번호, 원소의 수만큼 비트를 비교
   		if i & (1<<j): # i의 j번째 비트가 1이면 j번째 원소 출력, #True or False
   			print(arr[j], end=", ")
   	print()
-  print()
   ```
-
   
+
 
 ##### * 검색
 
@@ -993,7 +992,7 @@ run + run, run + triplet, triplet + triplet
       
     - 슈더코드
 
-      ```
+      ```python
       def sequentialSearch(a, n, key)
       	i <- 0
       	while i<n and a[i]!=key :
@@ -1006,7 +1005,7 @@ run + run, run + triplet, triplet + triplet
 
     - ex) 정렬되어 있지 않은 경우에서의 순차 검색
 
-      ```
+      ```python
       def sequential_search(key, lst): # key는 리스트에서 찾고자 하는 값
           idx = 0
           N = len(lst)
@@ -1040,7 +1039,7 @@ run + run, run + triplet, triplet + triplet
       
     - 슈더코드
 
-      ```
+      ```python
       def sequentialSearch(a, n, key)
       	i <- 0
       	while i<n and a[i]<key:
@@ -1053,7 +1052,7 @@ run + run, run + triplet, triplet + triplet
 
     - ex)
 
-      ```
+      ```python
       def sequential_search(key, lst):
           idx = 0
           N = len(lst)
@@ -1098,7 +1097,7 @@ run + run, run + triplet, triplet + triplet
 
     - 슈더코드
 
-      ```
+      ```python
       def binarySearch(a, key)
       	start <- 0
       	end <- length(a) -1
@@ -1115,7 +1114,7 @@ run + run, run + triplet, triplet + triplet
 
     - ex)
 
-      ```
+      ```python
       def binaryS(key, lst): # key는 찾고자 하는 값
       	start = 0
       	end = len(lst) - 1
