@@ -949,3 +949,182 @@ cache(캐시) : 미리 복사해 놓는 임시 장소
   ![image-20210910090956889](Django.assets/image-20210910090956889.png)
 
 ​	![image-20210910090358510](Django.assets/image-20210910090358510.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Django Authentication System
+
+- Django 인증 시스템은 django.contrib.auth에 Django contrib module
+
+  - 필수 구성은 setting.py에 이미 포함되어 있으며 INSTALLED_APPS 설정에 나열된 아래 두항목으로 구성됨
+
+    1. django.contrib.auth
+       - 인증 프레임워크의 핵심과 기본 모델(유저와 관련된 인증모델)을 포함
+    2. django.contrib.contenttypes
+       1. 사용자가 생성한 모델과 권한을 연결할 수 있다
+
+    ![image-20210915090709802](Django.assets/image-20210915090709802.png)
+
+
+
+- Django 인증 시스템은 인증과 권한 부여를 함께 제공(처리)하며, 이러한 기능이 어느정도 결합되어 일반적으로 인증 시스템이라고 한다.
+
+- Authentication(인증)
+  - 사용자의 신원 확인 : 사용자가 자신이 누구인지 확인하는 것
+- Authorization(권한,허가)
+  - 권한 부여 : 인증된 사용자가 수행할 수 있는 작업을 결정
+
+
+
+##### * auth와 관련된 app
+
+- auth와 관련된 앱의 이름은 보통 accounts라는 이름으로 사용되고 있다. (권장)
+  - auth와 관련된 app 이름이 반드시 accounts일 필요는 없음
+
+
+
+##### * Session in Django
+
+- Django의 Session은 Middleware를 통해 구현됨
+
+  ##### * Middleware(미들웨어)
+
+  - http 요청과 응답 처리 중간에서 작동하는 시스템(hooks)
+  - django는 http 요청이 들어오면 미들웨어를 거쳐 해당 URL에 등록되어 있는 view로 연결해주고, http 응답 역시 미들웨어를 거쳐서 내보냄
+  - 주로 데이터관리, Application Service, 메시징, 인증 및 API 관리를 담당
+
+- Django는 database-backed sessions 저장 방식을 기본 값으로 사용
+
+  - 세션을 DB에 저장한다 (Client에게는 session id가 담긴 Cookie를 준다)
+  - 설정을 통해 cached, file-based, cookie-based 방식으로 변경 가능
+
+- Django는 특정 session id를 포함하는 Cookie를 사용해서 각각의 Browser와 Site가 연결된 Session을 알아냄
+  - Session 정보는 Django DB의 django_session table에 저장된다
+
+- 모든 것을 Session으로 사용하려고 하면 사용자가 많을 때 Server에 부하가 걸릴 수 있다
+  - 노출되어도 괜찮은 정보는 Cookie를 사용한다
+
+
+
+##### * Authentication System in Middleware
+
+- 세션에 대해서 처리해주는 Middleware
+
+1. SessionMiddleware
+
+   - 요청 전반에 걸쳐 Session을 관리
+
+2. AuthenticationMiddleware
+
+   - Session을 사용하여 사용자를 요청과 연결
+
+   ![image-20210915101107786](Django.assets/image-20210915101107786.png)
+
+
+
+##### * 로그인
+
+- 로그인은 Session을 Create(User Create X)하는 로직과 같다
+
+- Django는 우리가 Session의 메커니즘의 생각하지 않게끔 도움을 줌
+
+  - 인증에 관한 built-in forms를 제공
+
+- 로그인 기능을 구현하기 위한 views.py에서 작성 되어야할 코드예시
+
+  ![image-20210915110609751](Django.assets/image-20210915110609751.png)
+
+- [Authentication Form](https://docs.djangoproject.com/en/3.2/topics/auth/default/)
+
+  - 사용자 로그인을 위한 form 형태를 제공한다 (로그인 창을 띄워준다)
+
+  - request를 첫번째 인자로 취한 뒤 data(request.POST)를 받을 수 있다
+
+    - form에 작성된 유저정보는 request.POST에 존재한다
+
+  - django.contrib.auth.forms에서 import해올 수 있다
+
+    ```
+    from django.contrib.auth.forms import AuthenticationForm
+    ```
+
+- Login  함수
+
+  - 현재 Session에 연결하려는 인증(가입) 된 사용자가 있는 경우 login()함수가 필요
+
+  - 사용자를 로그인할 수 있게 해주며 view 함수에서 사용 된다
+
+  - 인자로 request, user정보를 받는다
+
+  - HttpRequest 객체와 User객체가 필요
+
+  - django의 session framework를 사용하여 session에 user의 ID를 저장(== 로그인)
+
+  - django.contrib.auth에서 import해올 수 있다
+
+    ```
+    from django.contrib.auth import login
+
+- get_user()
+
+  - AuthenticationForm의 인스턴스 메서드
+
+  - user_cache는 인스턴스 생성 시에 None으로 할당되며, Authentication Form이 유효성 검사를 통과했을 경우 로그인 한 사용자 를 객체로 제공
+
+  - 인스턴스의 유효성을 먼저 확인하고, 인스턴스가 유효할 때만 user를 제공하려는 구조
+
+    ![image-20210915110436698](Django.assets/image-20210915110436698.png)
+
+
+
+##### * 로그아웃
+
+- 로그아웃은 Session을 Delete하는 로직과 같다
+
+- logout(request) 함수
+
+  - 실제로 로그아웃을 진행해주는 함수
+
+  - HttpRequest 객체를 인자로 받고 반환 값이 없음
+
+  - 사용자가 로그인하지 않은 경우 오류를 발생시키지 않음
+
+  - 현재 요청에 대한 session data를  DB에서 완전히 삭제하고, Client Cookie에서도 session id가 삭제된다
+
+    - 다른 사람이 동일한 웹 브라우저를 사용하여 로그인하고, 이전 사용자의 세션 데이터에 엑세스하는 것을 방지한다
+
+  - django.contrib.auth에서 import해올 수 있다
+
+    ```
+    from django.contrib.auth import logout
+
+
+
+
+
+##### * 로그인 사용자에 대한 접근 제한
+
+- 로그인 사용자에 대한 엑세스 제한 2가지 방법
+  1. The raw way
+     - is_authenticated attribute
+  2. The login_required decorator
