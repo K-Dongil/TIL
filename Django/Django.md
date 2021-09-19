@@ -974,6 +974,10 @@ cache(캐시) : 미리 복사해 놓는 임시 장소
 
 ## Django Authentication System
 
+- Session - Cookie 기반 Authentication
+
+  ![image-20210917090636976](Django.assets/image-20210917090636976.png)
+
 - Django 인증 시스템은 django.contrib.auth에 Django contrib module
 
   - 필수 구성은 setting.py에 이미 포함되어 있으며 INSTALLED_APPS 설정에 나열된 아래 두항목으로 구성됨
