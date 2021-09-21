@@ -1,4 +1,4 @@
-# 2 9889
+# 2 9889일 때 testcase 틀린 부분이 있었다.
 import sys
 sys.stdin = open("1493_input.txt", "r")
 
@@ -21,7 +21,9 @@ def find_position(p):
                 x += 1
                 y -= 1
             break
-    return x, y    
+    return x, y
+
+
 def find_dot(x, y):
     dot = 0
     while x != 1:
@@ -32,7 +34,6 @@ def find_dot(x, y):
     for i in range(1, y):
         dot += i
     return dot
-
 
 
 tc = int(input())
