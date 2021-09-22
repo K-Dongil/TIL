@@ -59,211 +59,217 @@
 
   ![image-20210809143449311](array.assets/image-20210809143449311.png)
 
-  - 버블 정렬 (Bubble Sort)
 
-    - **인접한 두 개의 원소를 비교**하며 자리를 계속 교환하는 방식
+1. 버블 정렬 (Bubble Sort)
 
-    1. 첫 번째 원소부터 인접한 원소끼리 계속 자리를 교환하면서 맨 마지막 자리까지 이동
-    2. 한단계가 끝나면 가장 가장 큰 원소가 마지막 자리로 정렬
+   - **인접한 두 개의 원소를 비교**하며 자리를 계속 교환하는 방식
 
-    ```python
-    def BubbleSort(a): # 정렬할 List
-    	for i in range(len(a)-1, 0, -1): # 범위의 끝 위치
-    		for j in range(0, i):
-    			if a[j] > a[j+1]:
-    				a[j], a[j+1] = a[j+1], a[j]
-    ```
+   1. 첫 번째 원소부터 인접한 원소끼리 계속 자리를 교환하면서 맨 마지막 자리까지 이동
+   2. 한단계가 끝나면 가장 가장 큰 원소가 마지막 자리로 정렬
 
-    
+   ```python
+   def BubbleSort(a): # 정렬할 List
+   	for i in range(len(a)-1, 0, -1): # 범위의 끝 위치
+   		for j in range(0, i):
+   			if a[j] > a[j+1]:
+   				a[j], a[j+1] = a[j+1], a[j]
+   ```
 
-  - 카운팅 정렬 (Counting Sort)
+   
 
-    - 항목들의 순서를 결정하기 위해 집합에 각 항목이 몇 개씩 있는지 세는 작업을 하여, 선형 시간에 정렬하는 효율적인 알고리즘
-    - **정수나 정수로 표현할 수 있는 자료**에 대해서만 적용가능
-      - **각 항목의 발생 회수를 기록**하기 위해, 정수 항목으로 인덱스 되는 카운트들의 배열에 사용
-      - 카운트들을 위한 충분한 공간을 할당하려면 집합 내의 가장 큰 정수를 알아야 함
-    - 시간 복잡도 : O(n+k) : n은 리스트 길이, k는 정수의 최대값
+2. 카운팅 정렬 (Counting Sort)
 
-    ```
-    def Counting_Sort(A, B, k)
-    # A [] -- 입력 배열(1 to k)
-    # B [] -- 정렬된 배열
-    # C [] -- 카운트 배열
-    	
-    	c = [0] * (k+1)
-    	
-    	for i in range(0, len(B)):  # N번
-    		C[A[i]] += 1
-    		
-    	for i in range(1, len(C)): # K번
-    		C[i] == C[i-1]
-    		
-    	for i in range(len(B)-1, -1, -1): # N번
-    		B[C[A[i]]-1] = A[i] # C[A[i]] -= 1
-    		C[A[i]] -= -1		# B(C[A[i]]) = A[i]
-    # 2N + K --> O(N+K)
-    ```
+   - 항목들의 순서를 결정하기 위해 집합에 각 항목이 몇 개씩 있는지 세는 작업을 하여, 선형 시간에 정렬하는 효율적인 알고리즘
+   - **정수나 정수로 표현할 수 있는 자료**에 대해서만 적용가능
+     - **각 항목의 발생 회수를 기록**하기 위해, 정수 항목으로 인덱스 되는 카운트들의 배열에 사용
+     - 카운트들을 위한 충분한 공간을 할당하려면 집합 내의 가장 큰 정수를 알아야 함
+   - 시간 복잡도 : O(n+k) : n은 리스트 길이, k는 정수의 최대값
 
-    1. Data에서 각 항목들의 발생 회수를 세고, 정수 항목들로 직접 인덱스 되는 카운트 배열에 저장
+   ```
+   def Counting_Sort(A, B, k)
+   # A [] -- 입력 배열(1 to k)
+   # B [] -- 정렬된 배열
+   # C [] -- 카운트 배열
+   	
+   	c = [0] * (k+1)
+   	
+   	for i in range(0, len(B)):  # N번
+   		C[A[i]] += 1
+   		
+   	for i in range(1, len(C)): # K번
+   		C[i] == C[i-1]
+   		
+   	for i in range(len(B)-1, -1, -1): # N번
+   		B[C[A[i]]-1] = A[i] # C[A[i]] -= 1
+   		C[A[i]] -= -1		# B(C[A[i]]) = A[i]
+   # 2N + K --> O(N+K)
+   ```
 
-       - 카운트 배열은 주어진 숫자의 범위에 따라서 달라진다 (data 개수X)
+   1. Data에서 각 항목들의 발생 회수를 세고, 정수 항목들로 직접 인덱스 되는 카운트 배열에 저장
 
-       - 카운트 배열의 원소들은 0으로 초기화 해놓구 시작해야한다
+      - 카운트 배열은 주어진 숫자의 범위에 따라서 달라진다 (data 개수X)
 
-         - counts = [0] * (주어진 숫자의 범위 중 가장 큰) 값
+      - 카운트 배열의 원소들은 0으로 초기화 해놓구 시작해야한다
 
-           ```
-           counts = [0] * 3 # [0, 0, 0]
-           ```
+        - counts = [0] * (주어진 숫자의 범위 중 가장 큰) 값
 
-    2. 정렬했을 때 각 항목 앞에 위치할 항목의 개수를 반영
+          ```
+          counts = [0] * 3 # [0, 0, 0]
+          ```
 
-       - 밑의 그림에서, data배열에서 각 항목(0~4)들에서 가장 뒤에 있는 값들은 다음과 같이 존재한다.
+   2. 정렬했을 때 각 항목 앞에 위치할 항목의 개수를 반영
 
-         0은 첫번째, 1은 네번째, 2는 5번째, 3은 6번째, 4는 8번째에 있다는 뜻이다.
+      - 밑의 그림에서, data배열에서 각 항목(0~4)들에서 가장 뒤에 있는 값들은 다음과 같이 존재한다.
 
-       <img src="array.assets/image-20210809142527830.png" alt="image-20210809142527830" style="zoom:80%;" />
+        0은 첫번째, 1은 네번째, 2는 5번째, 3은 6번째, 4는 8번째에 있다는 뜻이다.
 
-    3. data의 맨 뒤에 있는 값부터 차례대로W 정렬 된 값을 기록할 배열에 채워 넣는다 (안전정렬)
+      <img src="array.assets/image-20210809142527830.png" alt="image-20210809142527830" style="zoom:80%;" />
 
-       <img src="array.assets/image-20210822171401951.png" alt="image-20210822171401951"  />
+   3. data의 맨 뒤에 있는 값부터 차례대로W 정렬 된 값을 기록할 배열에 채워 넣는다 (안전정렬)
 
-         <img src="array.assets/image-20210822171530428.png" alt="image-20210822171530428" style="zoom:80%;" />
+      <img src="array.assets/image-20210822171401951.png" alt="image-20210822171401951"  />
 
-    - ex)
+        <img src="array.assets/image-20210822171530428.png" alt="image-20210822171530428" style="zoom:80%;" />
 
-      ```python
-      data = [0, 4, 1, 3, 1, 2, 4, 1]
-      
-      M = 5 # 0 ~ 4, data 개수가 아닌 data원소의 범위
-      N = len(data)
-      counts = [0] * M
-      temp = [0] * N
-      
-      # 데이터가 각 항목별로 몇개 있는지 센다
-      for d in data:
-          counts[d] += 1
-      
-      # 정렬했을 때 각 숫자(data)의 앞에 위치할 data 개수를 반영하기 위해 counts의 원소를 조정
-      for i in range(M-1):
-          counts[i+1] = counts[i] + counts[i+1]
-      
-      for j in range(N-1, -1, -1):
-          p = counts[data[j]] - 1
-          temp[p] = data[j]
-          counts[data[j]] -= 1
-          # p1 = data[j] # j=7, p1=1
-          # p2 = counts[p1] - 1 # p2 =3
-          # temp[p2] = p1
-          # counts[p1] -= 1
-      
-      print(temp) # [0, 1, 1, 1, 2, 3, 4, 4]
+   - ex)
 
-  - 선택 정렬 (Selection Sort)
+     ```python
+     data = [0, 4, 1, 3, 1, 2, 4, 1]
+     
+     M = 5 # 0 ~ 4, data 개수가 아닌 data원소의 범위
+     N = len(data)
+     counts = [0] * M
+     temp = [0] * N
+     
+     # 데이터가 각 항목별로 몇개 있는지 센다
+     for d in data:
+         counts[d] += 1
+     
+     # 정렬했을 때 각 숫자(data)의 앞에 위치할 data 개수를 반영하기 위해 counts의 원소를 조정
+     for i in range(M-1):
+         counts[i+1] = counts[i] + counts[i+1]
+     
+     for j in range(N-1, -1, -1):
+         p = counts[data[j]] - 1
+         temp[p] = data[j]
+         counts[data[j]] -= 1
+         # p1 = data[j] # j=7, p1=1
+         # p2 = counts[p1] - 1 # p2 =3
+         # temp[p2] = p1
+         # counts[p1] -= 1
+     
+     print(temp) # [0, 1, 1, 1, 2, 3, 4, 4]
+     ```
 
-    - 전테 데이터를 정렬하는 것이 목적, return X
+3. 선택 정렬 (Selection Sort)
 
-    - 주어진 자료들 중 가장 작은 값의 원소부터 차례대로 선택하여 위치를 교환하는 방식
+   - 전테 데이터를 정렬하는 것이 목적, return X
 
-    - 정렬 과정
-      1. 주어진 리스트 중에서 최소값을 찾는다
-      2. 그 값을 리스트의 맨 앞에 위치한 값과 교환
-      3. 맨 처음 위치를 제외한 나머지 리스트를 대상으로 위의 과정을 반복
-      4. 미정렬원소가 하나 남은 상황에서는 마지막 원소가 가장 큰 값을 갖게 된다
+   - 주어진 자료들 중 가장 작은 값의 원소부터 차례대로 선택하여 위치를 교환하는 방식
 
-    - 시간 복잡도 : O(n**2)
+   - 정렬 과정
 
-    - 슈더 코드
+     1. 주어진 리스트 중에서 최소값을 찾는다
+     2. 그 값을 리스트의 맨 앞에 위치한 값과 교환
+     3. 맨 처음 위치를 제외한 나머지 리스트를 대상으로 위의 과정을 반복
+     4. 미정렬원소가 하나 남은 상황에서는 마지막 원소가 가장 큰 값을 갖게 된다
 
-      ```python
-      def SelectionSort(a):
-      	for i in range(0, len(a)-1): # 작업구간의 시작
-      		min = i # 맨 앞을 제일 작다고 가정
-      		for j in range(i+1, len(a)):
-      			if a[min] > a[j]:
-      				min = j
-      		a[i], a[min] = a[min], a[i]
-      ```
+   - 시간 복잡도 : O(n**2)
 
-    - ex)
+   - 슈더 코드
 
-      ```python
-      lst = [64, 25, 10, 22, 11]
-      
-      def selectionS(lst):
-          N = len(lst)
-          for i in range(N-1):
-              # i 번째로 작은 값을 찾아서 i 번째 위치에 있는 자료와 교환한다
-              #i에서 시작해서
-              minP = i # minV = lst[i]
-              for j in range(i+1, N):
-                  if lst[minP] > lst[j]: # minV > lst[j]
-                      #minV = lst[j]
-                      minP = j
-      
-              lst[minP], lst[i] = lst[i], lst[minP]
-      
-      selectionS(lst)
-      print(lst) # [10, 11, 22, 25, 64]
-      ```
+     ```python
+     def SelectionSort(a):
+     	for i in range(0, len(a)-1): # 작업구간의 시작
+     		min = i # 맨 앞을 제일 작다고 가정
+     		for j in range(i+1, len(a)):
+     			if a[min] > a[j]:
+     				min = j
+     		a[i], a[min] = a[min], a[i]
+     ```
 
-    ##### * 셀렉션 알고리즘
+   - ex)
 
-    - k번째 리스트를 찾아오게는 목적이므로 return
+     ```python
+     lst = [64, 25, 10, 22, 11]
+     
+     def selectionS(lst):
+         N = len(lst)
+         for i in range(N-1):
+             # i 번째로 작은 값을 찾아서 i 번째 위치에 있는 자료와 교환한다
+             #i에서 시작해서
+             minP = i # minV = lst[i]
+             for j in range(i+1, N):
+                 if lst[minP] > lst[j]: # minV > lst[j]
+                     #minV = lst[j]
+                     minP = j
+     
+             lst[minP], lst[i] = lst[i], lst[minP]
+     
+     selectionS(lst)
+     print(lst) # [10, 11, 22, 25, 64]
+     ```
 
-    - i번째로 작은 값을 찾아서 i번째 위치에 있는 자료와 교환 (0 ~ N-2까지포함)
+   ##### * 셀렉션 알고리즘
 
-    - 저장되어 있는 자료로부터 k번째로 크거나 작은 원소를 찾는 방법
-      - 최소값, 최대값 혹은 중간값을 찾는 알고리즘
-    - 선택과정
-      1. 정렬 알고리즘을 이용하여 정렬
-      2. 원하는 순서에 있는 원소 가져오기
+   - k번째 리스트를 찾아오게는 목적이므로 return
 
-    - k번째로 작은 원소를 찾는 알고리즘
+   - i번째로 작은 값을 찾아서 i번째 위치에 있는 자료와 교환 (0 ~ N-2까지포함)
 
-      - 1번부터 k번째까지 작은 원소들들을 찾아 배열의 앞쪽으로 이동시키고, 배열의 k번째를 반환
+   - 저장되어 있는 자료로부터 k번째로 크거나 작은 원소를 찾는 방법
 
-        - 정렬을 다 한 다음에 k번째의 원소를 찾는 것이 아니라, k번만큼 셀렉정렬을 하여 k번째로 작은 데이터 값을 반환
+     - 최소값, 최대값 혹은 중간값을 찾는 알고리즘
 
-      - k가 비교적 작을 때 유용하며 O(kn)의 수행시간을 필요
+   - 선택과정
 
-      - 슈더코드
+     1. 정렬 알고리즘을 이용하여 정렬
+     2. 원하는 순서에 있는 원소 가져오기
 
-        ```python
-        def select(list, k):
-        	for i in range(0, k): # 선택정렬과 다른 점
-        		minIndex = i
-        		for j in range(i+1, len(list)):
-        			if list[minIndex] > list[j]:
-        				minIndex = j
-        		list[i], list[minIndex] = list[minIndex], list[i]
-        	return list[k-1]
-        ```
+   - k번째로 작은 원소를 찾는 알고리즘
 
-      - ex)
+     - 1번부터 k번째까지 작은 원소들들을 찾아 배열의 앞쪽으로 이동시키고, 배열의 k번째를 반환
 
-        ```python
-        lst = [64, 25, 10, 22, 11]
-        
-        def selectionAlgo(lst, k):
-            N = len(lst)
-            for i in range(k):
-                minP = i
-                for j in range(i+1, len(lst)):
-                    if lst[minP] > lst[j]:
-                        minP = j
-        
-                lst[minP], lst[i] = lst[i], lst[minP]
-            return lst[k-1]
-        k_min = selectionAlgo(lst, 2)
-        print(k_min) # 11
-        ```
+       - 정렬을 다 한 다음에 k번째의 원소를 찾는 것이 아니라, k번만큼 셀렉정렬을 하여 k번째로 작은 데이터 값을 반환
 
-  - 퀵 정렬 (Quick Sort)
+     - k가 비교적 작을 때 유용하며 O(kn)의 수행시간을 필요
 
-  - 삽입 정렬 (Insertion Sort)
+     - 슈더코드
 
-  - 병합 정렬 (Merget Sort)
+       ```python
+       def select(list, k):
+       	for i in range(0, k): # 선택정렬과 다른 점
+       		minIndex = i
+       		for j in range(i+1, len(list)):
+       			if list[minIndex] > list[j]:
+       				minIndex = j
+       		list[i], list[minIndex] = list[minIndex], list[i]
+       	return list[k-1]
+       ```
+
+     - ex)
+
+       ```python
+       lst = [64, 25, 10, 22, 11]
+       
+       def selectionAlgo(lst, k):
+           N = len(lst)
+           for i in range(k):
+               minP = i
+               for j in range(i+1, len(lst)):
+                   if lst[minP] > lst[j]:
+                       minP = j
+       
+               lst[minP], lst[i] = lst[i], lst[minP]
+           return lst[k-1]
+       k_min = selectionAlgo(lst, 2)
+       print(k_min) # 11
+       ```
+
+4. 퀵 정렬 (Quick Sort)
+
+5. 삽입 정렬 (Insertion Sort)
+
+6. 병합 정렬 (Merget Sort)
 
 
 
