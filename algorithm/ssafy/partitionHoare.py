@@ -3,7 +3,6 @@ def partition(l, r):
     i = l+1
     j = r
 
-
     while i<j:
         while i<r and lst[i] <= lst[p]:
             i += 1
