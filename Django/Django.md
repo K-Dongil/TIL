@@ -1132,3 +1132,55 @@ cache(캐시) : 미리 복사해 놓는 임시 장소
   1. The raw way
      - is_authenticated attribute
   2. The login_required decorator
+
+
+
+
+
+
+
+## Foreign Key
+
+##### * ForeignKey Field
+
+- A many-to-one relationship(1:N)
+
+- 2개의 위치 인자가 반드시 필요
+
+  1. 참조하는 model class
+  2. on_delete옵션
+     - 외래 키가 참조하는 객체가 사라졌을 때 외래 키를 가진 객체를 어떻게 처리할 지 정의
+     - 데이터 무결성을 위해서 매우 중요한 설정
+     - on_delete옵션에 사용 가능한 값들
+       - CASCADE : 부모 객체(참조 된 객체)가 삭제 됐을 때 이를 참조하는 객체도 삭제
+       - PROJECT, SET_DEFAULT, SET(), DO_NOTHING, RESTRICT
+  3. realated_name
+     - 역참조시 사용할 이름 설정
+       - comment_set 대신 설정한 이름으로 사용
+       - comment_set은 더 이상 사용 불가능
+
+  **[참고] 데이터 무결성**
+
+  - 데이터의 정확성과 일관성을 유지하고 보증하는 것을 가리키며, DB나 RDBMS 시스템의 중요한 기능
+  - 무결성 제한의 유형
+    1. 개체 무결성(Entity integrity)
+       - PK의 개념과 관련
+       - 모든 테이블이 PK를 가져야하며 PK로 선택된 열은 고유한 값이어야 하고 빈 값은 허용치 않음을 규정
+    2. 참조 무결성(Referential integrity)
+       - FK(외래 키)개념과 관련
+       - FK값이 DB의 특정 테이블의 PK값을 참조하는 것
+    3. 범위(도메인) 무결성(Domain integrity)
+       - 정의된 형식(범위)에서 관개형 DB의 모든 column이 선언되도록 규정
+
+- migrate 작업 시 필드 이름에 _id를 추가하여 데이터베이스 column 이름을 부여
+
+  - 명시적인 모델 관계 파악을 위해 참조하는 클래스 이름의 소문자(단수형)로 작성하는 것이 바람직
+
+- ex) 모델정의
+
+  ![image-20211018114124754](Django.assets/image-20211018114124754.png)
+
+- 1:N 관계 related manager
+  - 역참조('comment_set')
+  - 참조되고 있는 쪽이 나를 참조하고 있는 테이블을 참조하는 것
+
