@@ -57,4 +57,3 @@ for t in range(1, tc+1):
         white += lst.count(2)
 
     print(f'#{t} {black} {white}')
-
