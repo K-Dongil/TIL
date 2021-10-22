@@ -10,6 +10,6 @@ for t in range(tc):
     while True:
         if str(idx) not in str_num:
             break
-        idx += 1 
+        idx += 1
     
     print(f'#{t+1} {idx}')
