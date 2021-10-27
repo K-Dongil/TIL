@@ -51,11 +51,11 @@
 
 
 
-##### * DOM
+##### * DOM (데이터 구조)
 
 - HTML, XML과 같은 문서를 다루기 위한 문서 프로그래밍 인터페이스
 
-- 문서를 구조화하고 구조화된 구성 요소를 하나의 객체로 취급하여 다루는 논리적 트리 모델
+- HTML 문서를 구조화하고 구조화된 구성 요소를 하나의 객체로 취급하여 다루는 논리적 트리 모델
 
   ![image-20211027095340733](javaScript.assets/image-20211027095340733.png)
 
@@ -120,7 +120,7 @@
   - EventTarget
     - Event Listener를 가질 수 있는 객체가 구현하는 DOM 인터페이스
 
-  - Node
+  - Node(틀에 대한 개념)
     - 여러 가지 DOM 타입들이 상속하는 인터페이스 
 
   - Element
@@ -206,7 +206,7 @@
   - Document.createElement()
     - 작성한 태그 명의 HTML 요소를 생성하여 반환
     - append()와 appendChild()를 이용하여 추가하기 위해서는 createElement()를 통해서 먼저 생성이 되어야 한다
-  - Element.append()
+  - Element.append() - Element를 객체라 생각
     - 특정 부모 Node의 자식 NodeList중 마지막 자식 다음에 **Node객체나 DOMString**을 삽입
     - **여러 개**의 Node객체, DOMString을 추가할 수 있음
     - 반환 값이 없음
@@ -239,8 +239,7 @@
 
 - 메서드(삭제)
   - ChildNode.remove()
-    - Node가 속한 트리에서 해당 Node를 제거
-    - 선택한 Node를 제거
+    - 자식 Node를 선택해서 제거
   - 부모Node.removeChild(자식Node)
     - DOM에서 자식 Node를 제거하고 제거된 Node를 반환
     - Node는 인자로 들어가는 자식 Node의 부모 Node
@@ -257,11 +256,56 @@
     - 해당 요소의 지정된 값(특정 속성값, 문자열)을 반환
     - 인자(attributeName)는 값을 얻고자 하는 속성의 이름
 
+  - Element.removeAttribute(name)
+    - Element의 속성 값을 지움
+
+  - Element.hasAttribute(name)
+    - Element의 속성 값이 있는지 없는지 True, Flase값 반환
 
 
-##### * Event
+
+
+
+##### * [Event](https://developer.mozilla.org/en-US/docs/Web/API/Event) ( ~~하면 ~~ 한다)
 
 - 네트워크 활동이나 사용자와의 상호작용 같은 사건의 발생을 알리기 위한 객체
 - 이벤트 발생
   - 마우스를 클릭하거나 키보드를 누르는 등 사용자 행동으로 발생할 수도 있음
   - 특정 메서드를 호출(Element.click())하여 프로그래밍적으로도 만들어 낼 수 있음
+
+- Event기반 인터페이스
+  - AnimationEvent, ClipboardEvent, DragEvent 등
+  - UIEvent
+    - 간단한 사용자 interface event
+    - Event의 상속을 받음
+    - MouseEvent, KeyboardEvent, InputEvent, FocusEvent 등의 부모 객체 역할을 함
+
+- Event handler (Event를 처리)
+
+  - 대상에 특정 이벤트가 발생하면, 할 일을 등록하자
+
+  - EventTarget.addEventListener(target, listener[, options])
+
+    - 지정한 이벤트가 대상에 전달될 때마다 호출할 함수를 인자에 설정
+    - 이벤트를 지원하는 모든 객체(Element, Document, Window 등)를 대상으로 지정 가능
+
+    - type
+      - 반응 할 이벤트 유형(대소문자 구분 문자열)
+    - listener
+      - 지정된 타입의 이벤트가 발생했을 때 알림을 받는 객체
+      - EventListener 인터페이스 혹은 JS function 객체(콜백 함수)여야 함
+      - event 값이 인자로 자동으로 넘어온다
+
+- Event 취소
+
+  - Event.preventDefault()
+  - 현재 이벤트의 기본 동작을 중단
+  - 태그의 기본 동작을 작동하지 않게 막음
+    - ex) a태그의 기본 동작은 클릭 시 링크로 이동/ form 태그의 기본 동작은 form 데이터 전송
+  - 이벤트를 취소할 수 있는 경우, 이벤트의 전파를 막지 않고 그 이벤트를 취소
+
+  - 취소 할 수 없는 이벤트도 존재
+
+    - 이벤트의 취소 가능 여부는 event.cancelable을 사용해 확인할 수 있음
+
+    - ex) 스크롤 이벤트
