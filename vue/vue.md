@@ -130,6 +130,7 @@
 - View
   - Vue에서 View는 DOM(HTML)
   - Data의 변화에 따라서 바뀌는 대상
+    - 렌더링의 결과
 - View Model
   - vue에서 ViewModel은 Vue Instance
   - View와 Model 사이에서 Data와 DOM에 관련된 모든 일을 처리
