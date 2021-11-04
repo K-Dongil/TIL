@@ -1,7 +1,11 @@
+import sys
+sys.stdin = open("1.txt", "r")
+
 def solve(row, col, direction, cnt):
     global now_move
     if min_move < cnt: # 백트래킹
-        now_move = 100
+        now_move = 100 * 100
+        return
     if row == 99:
         now_move = cnt
     elif 0 <= row < 99 and 0 <= col < 99 and ladder[row][col+1] == 1 and (direction in ['down','right']):
