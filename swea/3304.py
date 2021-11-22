@@ -41,12 +41,9 @@ for TC in range(1, tc+1):
     result2 = []
     c = 0
 
-
     powerset(0)
     print(result1)
     t = [False] * len(str2)
     powerset1(0)
-
-
  
     print(f'#{TC} {c}')
