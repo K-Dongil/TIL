@@ -2,10 +2,11 @@ tc = int(input())
 
 for t in range(1, tc+1):
     inputBit = input()
-    originalBit = []
-    for bit in inputBit:
-        originalBit.append(int(bit))
-    bitLen = len(originalBit)
+    bitLen = len(inputBit)
+    originalBit = [False] * bitLen
+    for i in range(bitLen):
+        if inputBit[i] == '1':
+            originalBit[i] = True
     nowBit = [False] * bitLen
     change = 0
 
