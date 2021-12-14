@@ -1,32 +1,29 @@
 tc = int(input())
+result_lst = [0] * tc
 
 for t in range(1, tc+1):
-    max_day, today_percent, yesterday_percent = map(int, input().split())
-    game_result = 'Broken'
-    day = 0
-    now_win = 0
-    
-    for i in range(1, max_day+1): # 전체 날자
-        for j in range(1, i+1): # 이긴 날자
-            if (j / i) * 100 == yesterday_percent:
-                day = i
-                now_win = j
-                break
+    today, today_percent, total_percent = map(int, input().split())
+    game_result = 'Possible'
 
-    if max_day < day:
-        pass
-    else:
-        remain_day = max_day - day
-        continue_win = now_win
-        continue_lose = now_win
-        
-        for i in range(remain_day):
-            day += 1
-            continue_win += 1
-            if (continue_win / day) * 100 == today_percent or (continue_lose / day) * 100 == today_percent:
-                game_result = 'Possible'
-                break
-    
-    print(game_result)
-    
-        
+    if today == 1 and not (today_percent in [0, 100]):
+        game_result ='Broken'
+    elif 2 <= today <= 3 and not (today_percent in [0, 50, 100]):
+        game_result ='Broken'
+    elif today == 4 and not (today_percent in [0, 25 ,50, 100]):
+        game_result ='Broken'
+    elif 5 <= today <= 9 and not (today_percent in [0, 20 , 25 ,50, 100]):
+        game_result ='Broken'
+    elif 10 <= today <= 19 and not (today_percent in [0, 10, 20 , 25 ,50, 100]):
+        game_result ='Broken'
+    elif 20 <= today <= 49 and not (today_percent in [0, 5, 10, 20 , 25 ,50, 100]):
+        game_result ='Broken'
+    elif 50 <= today <= 99 and not (today_percent in [0, 2, 5, 10, 20 , 25 ,50, 100]):
+        game_result ='Broken'
+
+    if (total_percent == 0 and today_percent != 0) or (total_percent == 100 and today_percent != 100):
+        game_result = 'Broken'
+
+    result_lst[t-1] =  f'#{t} ' + game_result
+
+for result in result_lst:
+    print(result)
