@@ -14,7 +14,7 @@ for w in range(go_width):
         white_paint_cnt = 0
         black_paint_cnt = 0
         for i in range(h, h+8):
-            line = i % 2
+            line = (i - h) % 2
             for j in range(w, w+8):
                 if square[i][j] != first_white_chess[line][j - w]:
                     white_paint_cnt += 1
