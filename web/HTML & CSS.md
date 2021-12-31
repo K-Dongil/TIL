@@ -621,13 +621,15 @@ font-size, color, margin-top, margin-bottom, margin-left, margin-right, width, h
 
 - 모든 요소는 네모(박스모델)이고, 어떻게 보여지는지(display)에 따라 문서에서의 배치가 달라질 수 있다.
 
+  - HTML 요소들을 시각적으로 어떻게 보여줄지 결정하는 속성
+
 - display:block
   - [대표적인 인라인 레벨 요소](https://developer.mozilla.org/ko/docs/Web/HTML/Block-level_elements)
     - div/ ul, ol, li/ p / hr/ form 등
   - 줄 바꿈이 일어나는 요소
   - 화면 크기 전체의 가로 폭을 차지 (기본이 너비의 100%)
   - 블록 레벨 요소 안에 인라인 레벨 요소가 들어갈 수 있음
-  
+
 - display:inline
   - [대표적인 인라인 레벨 요소](https://developer.mozilla.org/ko/docs/Web/HTML/inline_elements)
     - span/ a/ img/ input, label/ b, em, i, strong 등
@@ -636,7 +638,7 @@ font-size, color, margin-top, margin-bottom, margin-left, margin-right, width, h
     - 만약 다음 줄로 넘어가고 싶다면 br태그 이용
   - width, height, margin-top, margin-bottom을 지정 불가능
   - 상하 여백은 line-height로 지정
-  
+
 - display: inline-block
 
   - block과 inline 레벨 요소의 특징을 모두 갖는다
