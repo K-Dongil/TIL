@@ -205,8 +205,9 @@ vscode
   <a> : HyperText
   <b> vs <strong> b: 표현상 굵게, strong : 강조(의미를 가지고 있다, 스크린 리더)
   <i> vs <em>
-  <span>, <br>, <img>
-  기타 등등
+  <span> : div와 그룹화하는 특성은 똑같으나 span은 inline요소
+  <br> : Enter처럼 다음 단락으로 넘어가게 해준다
+  <img> : image태그
   ```
 
   - 웹 접근성 (표현상 굵게 vs 강조)
