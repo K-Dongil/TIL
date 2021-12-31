@@ -301,8 +301,8 @@ vscode
 
   - 각 쌍은 선택한 요소의 속성, 속성에 부여할 값을 의미
 
-    - 속성 : 어떤 스타일 기능을 변경할지 결정
-    - 값 : 어떻게 스타일 기능을 변경할지 결정
+    - 속성 (Property) : 어떤 스타일 기능을 변경할지 결정
+    - 값 (Value) : 어떻게 스타일 기능을 변경할지 결정
 
     ```
     선택자 : h1, 중괄호{} 안에 속성 color와 font-size, 속성값 blue, font-size,
@@ -312,6 +312,8 @@ vscode
     	font-size : 15px;
     }
     ```
+
+    <img src="C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20220101081027184.png" alt="image-20220101081027184" style="zoom: 67%;" />
 
 - CSS 정의 방법
 
@@ -325,10 +327,10 @@ vscode
      <h1 style="color: blue">Hello</h1>
      ```
 
-  2. 내부 참조
+  2. 내부 참조(embedding)
 
      - head 태그 내에 style태그 내에 지정
-  
+
      ```
      <head>
      	h1 {
@@ -339,11 +341,11 @@ vscode
      	<h1>Hello</h1>
      </body>
      ```
-  
-  3. 외부 참조
-  
+
+  3. 외부 참조(link file)
+
      - 외부에 CSS파일을 head태그내 link태그를 통해 불러오기
-  
+
        ```
        <link rel="stylesheet" her="경로"></link>
        ```
@@ -351,8 +353,7 @@ vscode
 ##### *자주 사용하는 속성
 
 ```
-font-size, color, margin-top, margin-bottom, margin-left, margin-right, width, height,
-padding-bottom, padding-top, padding-left, padding-right, text-decoration, font-family,  font-weight, display
+font-size, color, margin-top, margin-bottom, margin-left, margin-right, width, height, padding-bottom, padding-top, padding-left, padding-right, text-decoration, font-family,  font-weight, display
 ```
 
 ##### * CSS selectors
@@ -535,7 +536,7 @@ padding-bottom, padding-top, padding-left, padding-right, text-decoration, font-
 
 
 
-##### Selectors 심화
+##### * Selectors 심화
 
 - 형제 요소
   - HTML 요소의 계층 구조에서 같은 부모 요소를 가지고 있는 요소들
@@ -616,7 +617,7 @@ padding-bottom, padding-top, padding-left, padding-right, text-decoration, font-
 
 
 
-##### * CSS Display
+##### * [CSS Display](https://developer.mozilla.org/ko/docs/Web/CSS/display)
 
 - 모든 요소는 네모(박스모델)이고, 어떻게 보여지는지(display)에 따라 문서에서의 배치가 달라질 수 있다.
 
@@ -643,7 +644,7 @@ padding-bottom, padding-top, padding-left, padding-right, text-decoration, font-
   - block처럼 width, heigth, margin 속성을 모두 지정 가능
 
 - display: none
-  - 해당 요소를 화면에 표시하지 않는다( 공간이 사라진다)
+  - 해당 요소를 화면에 표시하지 않는다(공간이 사라진다)
   - visibility: hidden은 해당 요소가 공간은 차지하나 화면에 표시만 하지 않는다.
 
 - 속성에 따른 수평 정렬
@@ -656,7 +657,7 @@ padding-bottom, padding-top, padding-left, padding-right, text-decoration, font-
 
 
 
-##### CSS position
+##### * CSS position
 
 - 문서 상에서 요소를 배치하는 방법을 지정
 
