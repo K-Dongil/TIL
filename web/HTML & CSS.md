@@ -98,7 +98,7 @@ vscode
 - DOM(Document Object Model)트리
 
   - 문서의 구조화된 표현 제공, 프로그래밍 언어가 DOM구조에 접근할 수 있는 방법 제공
-    - 문서구조, 스타일 내용등을 표현,  저장, 조작할 수 있게 해줌
+    - 문서구조, 스타일 내용 등을 표현,  저장, 조작할 수 있게 해줌
 
   - Web Page의 객체 지향 표현
 
@@ -111,7 +111,7 @@ vscode
     - 2spaces를 기준으로 들여쓰기
     - 문서를 접근할 때 객체단위로 접근하여 접근/수정
 
-    ![image-20210802222855253](HTML%20&%20CSS.assets/image-20210802222855253.png)
+    <img src="HTML%20&%20CSS.assets/image-20210802222855253.png" alt="image-20210802222855253" style="zoom:80%;" />
 
 - 요소(element)
 
@@ -173,7 +173,7 @@ vscode
     - article : 문서, 페이지, 사이트 안에서 독립적으로 구분되는 영역
     - footer : 문서 전체나 섹션의 푸터(마지막 부분)
 
-  - 의미가 있냐 vs 없냐 (의미를 파악할 수 있나 없나?)
+  - 의미가 있냐 vs 없냐 (의미를 파악할 수 있나 없나?) -이미지 경로 확인
 
     ![image-20210802100935188](C:/Users/Administrator/AppData/Roaming/Typora/typora-user-images/image-20210802100935188.png)
 
@@ -187,21 +187,22 @@ vscode
 
 - HTML은 문서를 구조화 하는 것
 
-- 인라인 / 블록 요소
+- 블록 / 인라인 요소
 
   - Block 요소는 한 칸(한 줄)을 전부 차지
   - Inline 요소는 자기 데이터크기만큼만 차지
 
-- 그룹 컨텐츠(text를 그룹으로 잡아줄 수 있는 태그?)
+- 그룹 컨텐츠(text를 그룹으로 잡아줄 수 있는 태그)
 
   ```
-  <p>, <hr>, <ol>, <ul>, <pre>, <blockquote>, <div>
+  <p> : 문단, <hr> : 헤드라인, <pre> : 주석, <blockquote> : 인용문,
+  <ol>, <ul> : 리스트, <div> : 그룹
   ```
 
 - 텍스트 관련 요소
 
   ```
-  <a>
+  <a> : HyperText
   <b> vs <strong> b: 표현상 굵게, strong : 강조(의미를 가지고 있다, 스크린 리더)
   <i> vs <em>
   <span>, <br>, <img>
