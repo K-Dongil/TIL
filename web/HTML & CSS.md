@@ -268,9 +268,10 @@ vscode
 
   - label
 
+    - for속성을 이용하여 특정 id값을 가진 input태그를 활성화
+    
     - inline요소
     - 주로 input태그(id값이 지정되어있어야 한다) 위에 label태그(for 속성을 이용)를 사용한다
-    - for속성을 이용하여 특정 id값을 가진 input태그를 활성화
 
 
 
@@ -292,7 +293,7 @@ vscode
 
 - CSS 구문
 
-  - 선택자와 중괄호 안에 속성:값; 으로 이루어져 있다
+  - 선택자와 중괄호 안에 속성:값; 형태인 선언문들로 이루어져 있다
 
     - 선택자를 통해 스타일을 지정할 HTML 요소를 선택
 
@@ -304,6 +305,8 @@ vscode
     - 값 : 어떻게 스타일 기능을 변경할지 결정
 
     ```
+    선택자 : h1, 중괄호{} 안에 속성 color와 font-size, 속성값 blue, font-size,
+    color:blue;와 font-size:15px;는 선언문
     h1 {
     	color : blue;
     	font-size : 15px;
