@@ -1,3 +1,9 @@
+##### * www(World Wide Web)
+
+- 인터넷에 연결된 컴퓨터를 통해 사람들이 정보를 공유할 수 있는 전세계적인 공간
+
+
+
 ##### * HTTP
 
 - Hyper Text Transfer Protocol
@@ -9,6 +15,18 @@
   - 클라이언트 - 서버 프로토콜이기도 함
 
     <img src="cookie_session.assets/image-20210915091807240.png" alt="image-20210915091807240" style="zoom:67%;" />
+
+  - 요청(requests)
+
+    - 브라우저인 클라이언트에 의해 전송되는 메시지
+      - Client는 URL로 요청을 보낸다
+
+  - 응답(responses)
+
+    - 서버에서 응답으로 전송되는 메시지
+      - Server는 요청에 대한 응답을 문서(텍스트)로 보낸다.
+
+    <img src="C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20220101015528028.png" alt="image-20220101015528028" style="zoom:80%;" />
 
 - 특징
 
