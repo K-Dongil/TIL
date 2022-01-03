@@ -1,10 +1,10 @@
-##### * www(World Wide Web)
+## www(World Wide Web)
 
 - 인터넷에 연결된 컴퓨터를 통해 사람들이 정보를 공유할 수 있는 전세계적인 공간
 
 
 
-##### * HTTP
+##  HTTP
 
 - Hyper Text Transfer Protocol
 
@@ -42,6 +42,99 @@
 
 
 
+##### * HTTP 메시지
+
+- 요청
+
+  - HTTP request methods
+    - 자원에 대한 행위(수행하고자 하는 동작)을 정의
+    - 주어진 리소스(자원)에 수행하길 원하는 행동을 나타냄
+    - HTTP Method 예시
+      - GET(조회), POST(작성), PUT(수정), DELETE(삭제)
+
+  <img src="C:\Users\Administrator\Desktop\TIL\web\cookie_session\image-20211025090944058.png" alt="image-20211025090944058" style="zoom:67%;" />
+
+- 응답
+
+  - HTTP response status codes
+    - 특정 HTTP 요청이 성공적으로 완료되었는지 여부를 나타냄
+      1. Information responses(1xx)
+      2. Successful responses(2xx)
+      3. Redirection messages(3xx)
+      4. Client error responses(4xx)
+      5. Server error responses(5xx)
+  - Content-Type entity header
+    - 데이터의 media type(MIME type, content type)을 나타내기 위해 사용됨
+    - 응답 내에 있는 컨텐츠의 컨텐츠 유형이 실제로 무엇지이 Clinet에게 알려줌
+
+  <img src="C:\Users\Administrator\Desktop\TIL\web\cookie_session\image-20211025091135439.png" alt="image-20211025091135439" style="zoom:67%;" />
+
+##### * 웹에서의 리소스 식별
+
+- HTTP 요청의 대상을 리소스(resource, 자원)라고 한다
+- 리소스는 문서, 사진  또는 기타 어떤 것이든 될 수 있다
+- 각 리소스는 리소스 식별을 위해 HTTP 전체에서 사용되는 URI로 식별된다
+  - 자원이 어디에 위치하는지, 어떤곳으로 이동하는지에 대한 정보는 URI에 있다
+
+##### * URI
+
+- 통합 자원 식별자
+- 인터넷의 자원을 식별하는 유일한 주소 (정보의 자원을 표현)
+- 인터넷에서 자원을 식별하거나 이름을 지정하는데 사용되는 간달한 문자열
+- 하위 개념
+  - URL, URN
+  - URL는 크게 URL과 URN으로 나눌 수 있지만, URN을 사용하는 비중이 매우 적다.
+
+- URL
+  - 통합 자원 위치 (리소스의 위치)
+  - 네트워크 상에 자원이 어디있는지 알려주기 위한 약속
+  - 과거에는 실제 자원의 위치를 나타냈지만 현재는 추상화된 의미론적인 구성
+    - ex) www.naver.com/index.html/
+  - 웹주소, 링크 라고 불린다
+- URN
+  - 통합 자원 이름
+  - URL과 달리 자원의 위치에 영향을 받지않는 유일한 이름 역할
+
+##### * URI의 구조
+
+- https://www.example.com:80/path/to/myfile.html/?key=value#quick-start
+
+1. Schema(protocol)
+   - 브라우저가 사용해야 하는 프로토콜
+   - http(s), data, file, ftp, malito
+   - **https://**
+
+2. Host(Domatin name)
+   - 요청을 받는 웹서버의 이름(주소)
+   - IP address를 직접 사용할 수도 있지만, 실 사용시 불편하므로 웹에서 그리 자주 사용되지는 않음
+     - (google의 IP address : 142.251.42.142)
+   - **www.example.com**
+3. Port
+   - 웹 서버 상의 리소스에 접근하는데 사용되는 기술적인 문(gate)
+   - HTTP 프로토콜의 표준 포트
+     - HTTP 80
+     - HTTPS 443
+   - **:80**
+4. Path
+   - 웹 서버 상의 리소스 경로
+   - 초기에는 실제 파일이 위치한 물리적 위치를 나타냈지만, 현재 추상화 형태의 구조로 표현된다.
+   - **/path/to/myfile.html** 
+5. Query (Identifier)
+   - Query String Parameters
+   - 웹 서버에 제공되는 추가적인 매개 변수
+   - &로 구분되는 key-value 목록
+   - **?key=value**
+6. Fragment
+   - Anchor
+   - 자원 안에서 북마크의 한 종류를 나타냄
+   - 브라우저에게 해당 문서(HTML)의 특정 부분을 보여주기 위한 방법
+   - 브라우저에게 알려주는 요소이기 때문에 fragment identifier(부분 식별자)라고 부르며 '#' 뒤의 부분은 요청이 서버에 보내지지 않는다
+   - **#quick-start**
+
+
+
+## Cookie & Session
+
 ##### * Session : 서버와 클라이언트의 대화성 통신 또는 대화성 통신을 유지하는 정보
 
 
@@ -51,15 +144,17 @@
 - Server가 Client의 웹 브라우저에 전송하는 작은 데이터 조각
 
 - 사용자가 웹사이트를 방문할 경우 해당 웹사이트의 서버를 통해 사용자의 컴퓨터에 설치되는 작은 기록 정보 파일
+
   - 브라우저(Client)는 Cookie를 local에 KEY-VALUE의 데이터 형식으로 저장
   - 이러한 방식으로 Cookie를 저장해 놓았다가, 동일한 Server에 재요청시 저장된 Cookie를 함께 전송
-  
+
 - 쿠키는 소프트웨어가 아니다
+
   - 프로그램처럼 실행 될수 없다
   - 악성코드를 설치할 수 없지만, 사용자의 행동을 추적하거나 Cookie를 훔쳐서 해당 사용자의 계정 접근권한을 획득 할 수도 있음
 
   
-  
+
 - Cookie는 요청이 동일한 브라우저에서 들어왔는지 아닌지를 판단할 때 주로 사용
 
   - 이를 이용해 사용자의 로그인 상태를 유지할 수 있음
@@ -67,9 +162,10 @@
 
 - 웹 페이지에 접속하면 요청한 웹 페이지를 받으며 Cookie를 저장하고, Client가 같은 Server에 재요청 시 요청과 함께 쿠키도 함께 전송
 
-  ![image-20210915093603838](cookie_session.assets/image-20210915093603838.png)
+  ![image-20210915093603838](C:\Users\Administrator\Desktop\TIL\web\cookie_session\image-20210915093603838.png)
 
 - 사용 목적
+
   1. 세션 관리(Session management)
      - 로그인, 아이디 자동 완성, 공지 하루 안보기, 팝업체크, 장바구니 등의 정보관리
   2. 개인화(Personalization)
