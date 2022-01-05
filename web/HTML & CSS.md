@@ -524,7 +524,7 @@ font-size, color, margin-top, margin-bottom, margin-left, margin-right, width, h
 
 - 상속 되는 것 예시
 
-  - Text관련 요소(font, color, text-align), opacity, visibility 등
+  - **Text관련** 요소(font, color, text-align), opacity, visibility 등
 
 - 상속 되지 않는 것 예시
 
@@ -607,7 +607,7 @@ font-size, color, margin-top, margin-bottom, margin-left, margin-right, width, h
     - selectorA 바로 아래의 selectorB 요소
   - 일반 형제 결합자
     - selecotrA ~ selectorB 
-    - selecotrA의 형제 요소 중 **뒤**에 위치하는  selectorB 요소를 **모두** 선택
+    - selecotrA의 형제 요소 중(같은라인) **뒤**에 위치하는  selectorB 요소를 **모두** 선택
   - 인접 형제 결합자
     - selecotrA+selectorB 
     - selecotrA의 형제 요소 중 **바로 뒤**에 위치하는  selectorB 요소를 선택
@@ -765,46 +765,44 @@ font-size, color, margin-top, margin-bottom, margin-left, margin-right, width, h
 
 
     - 브라우저의 스크롤 위치에 영향을 받는다
-    
     - 스크롤을 할 때 내가 지정한 위치에서 고정(부모요소가 화면에 사라질 때까지만 고정)
 
-
       - Top, Bottom, Left ,Right 중 한 값이라도 꼭 지정해줘야 한다.
-    
-      ![image-20210803104347232](HTML%20&%20CSS.assets/image-20210803104347232.png)
-    
-      ```
-      <head>
-      	section {
-            background-color: beige;
-            height: 100vh;
-            width: 70vh;
-            padding: 0px 30px;
-          }
-          aside {
-            position: sticky;
-            background-color:green;
-            height: 50px;
-            width: 100%;
-            top: 100px;
-            text-align: center;
-            color: white;
-            border: 1px solid black;
-          }
-      </head>
-      <body>
-      	<div>
-          <section>
-            <aside>aside1</aside>
-          </section>
-          <section>
-            <aside>aside2</aside>
-          </section>
-        </div>
-      </body>
-      ```
 
-​      
+        ![image-20210803104347232](HTML%20&%20CSS.assets/image-20210803104347232.png)
+
+        ```html
+        <head>
+        	section {
+              background-color: beige;
+              height: 100vh;
+              width: 70vh;
+              padding: 0px 30px;
+            }
+            aside {
+              position: sticky;
+              background-color:green;
+              height: 50px;
+              width: 100%;
+              top: 100px;
+              text-align: center;
+              color: white;
+              border: 1px solid black;
+            }
+        </head>
+        <body>
+        	<div>
+            <section>
+              <aside>aside1</aside>
+            </section>
+            <section>
+              <aside>aside2</aside>
+            </section>
+          </div>
+        </body>
+        ```
+
+    ​      
 
 
 
