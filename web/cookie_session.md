@@ -26,7 +26,7 @@
     - 서버에서 응답으로 전송되는 메시지
       - Server는 요청에 대한 응답을 문서(텍스트)로 보낸다.
 
-    <img src="C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20220101015528028.png" alt="image-20220101015528028" style="zoom:80%;" />
+    ![image-20220105140218884](cookie_session.assets/image-20220105140218884.png)
 
 - 특징
 

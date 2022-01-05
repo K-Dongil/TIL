@@ -313,7 +313,7 @@ vscode
     }
     ```
 
-    <img src="C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20220101081027184.png" alt="image-20220101081027184" style="zoom: 67%;" />
+    <img src="HTML & CSS.assets/image-20220105140416041.png" alt="image-20220105140416041" style="zoom:67%;" />
 
 - CSS 정의 방법
 
