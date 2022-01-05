@@ -415,16 +415,24 @@ font-size, color, margin-top, margin-bottom, margin-left, margin-right, width, h
       </body>
       ```
   
-  - 가상 클래스/요소(pseudo class)
-    - 링크, 동적 의사 클래스, 구조적 의사 클래스
+  - 가상 클래스(pseudo class)
+    - 요소의 특별한 상태를 지정하는 선택자에 추가된 키워드
     
-    - HTML 요소의 특별한 상태를 명시할 때 사용
+    - HTML 특정 요소의 특별한 상태를 명시할 때 사용
     
       - 실제로 클래스가 부여된 것이 아니지만, 특정한 상황에서 property 효과를 주기 위해 존재
     
+    - : 기호 사용
+    
     - 선택자:가상클래스이름 {속성: 속성값;}
     
-      <img src="HTML & CSS.assets/image-20220105235838753.png" alt="image-20220105235838753" style="zoom:67%;" />
+      | **가상 클래스** | **설명**                                                     |
+      | --------------- | ------------------------------------------------------------ |
+      | :link           | 사용자가 아직 한번도 이 링크를 통해서 연결된 페이지를 방문하지 않은 상태를 선택함.(기본 상태) |
+      | :visited        | 사용자가 한번이라도 이 링크를 통해서 연결된 페이지를 방문한 상태를 선택함. |
+      | :hover          | 사용자의 마우스 커서가 링크 위에 올라가 있는 상태를 선택함.  |
+      | :active         | 사용자가 마우스로 링크를 클릭하고 있는 상태를 선택함.        |
+      | :focus          | 포커스를 가지고 있는 input 요소를 모두 선택함.               |
     
     - ex)
     
@@ -450,7 +458,21 @@ font-size, color, margin-top, margin-bottom, margin-left, margin-right, width, h
       
       <input type="text">
       <span class="box">가상 클래스를 예제</span>
-      <a href="http://www.naver.com">naver</a>
+      <a href="http://www.naver.com">naver</a>	 
+    
+  - [가상 요소 선택자](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-elements)
+  
+    - 문서의 요소를 선택하여 특정 부분에 스타일을 지정
+  
+    - :: 기호 사용
+  
+      | 선택자         | 설명                                                 | 예                                       |
+      | -------------- | ---------------------------------------------------- | ---------------------------------------- |
+      | ::before       | 블록 요소 앞에 내용을 삽입                           | p::before, .myblock::before, div::before |
+      | ::after        | 블록 요소 뒤에 내용을 삽입                           | p::after, .myblock::after, div::after    |
+      | ::first-letter | 블록의 첫 번째 문자를 선택                           | p::first-letter, .myblock::first-letter  |
+      | ::first-line   | 블록의 첫 줄을 선택                                  | p::first-line, .myblock::first-line      |
+      | ::selection    | 사용자가 드래그로 선택한 블록 전체, 또는 일부를 선택 | p::selection, .myblock::selection        |
 
 
 
