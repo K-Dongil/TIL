@@ -367,7 +367,7 @@ font-size, color, margin-top, margin-bottom, margin-left, margin-right, width, h
   
   - 기본 선택자
     - 전체 선택자(*), 요소 선택자(HTML 태그를 직접 선택)
-    - 클래스 선택자
+    - **클래스 선택자**
       - 마침표(.)문자로 시작하며, 해당 class가 적용된 모든 항목을 선택
     - 아이디 선택자
       - (#)문자로 시작하며, 해당 id가 적용된 모든 항목을 선택
@@ -478,6 +478,8 @@ font-size, color, margin-top, margin-bottom, margin-left, margin-right, width, h
 
 ##### * CSS 우선순위
 
+- class, id선택자를 쓰는 것이 좋다. (id 선택자도 거의 쓰이지 않는다.)
+
 1. 중요도(Importance)
 
    - !important
@@ -485,10 +487,10 @@ font-size, color, margin-top, margin-bottom, margin-left, margin-right, width, h
 
 2. 운선 순위(Specificity)
 
-   - 인라인 > id선택자 > class선택자, 속성선택자, pseudo-class > 요소 선택자, pseudo-element
+   - 인라인 > id선택자 > **class선택자**, 속성선택자, pseudo-class > 요소 선택자, pseudo-element
 
      ```
-     ex) 요소 선택자 
+     ex) 요소 선택자(태그)
      p { /* 모든 P 요소에 적용 */
        color: red;
      }
