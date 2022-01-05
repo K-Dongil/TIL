@@ -415,9 +415,42 @@ font-size, color, margin-top, margin-bottom, margin-left, margin-right, width, h
       </body>
       ```
   
-  - 의사 클래스/요소(pseudo class)
-    - 링크, 동적 의사 클래스
-    - 구조적 의사 클래스
+  - 가상 클래스/요소(pseudo class)
+    - 링크, 동적 의사 클래스, 구조적 의사 클래스
+    
+    - HTML 요소의 특별한 상태를 명시할 때 사용
+    
+      - 실제로 클래스가 부여된 것이 아니지만, 특정한 상황에서 property 효과를 주기 위해 존재
+    
+    - 선택자:가상클래스이름 {속성: 속성값;}
+    
+      <img src="HTML & CSS.assets/image-20220105235838753.png" alt="image-20220105235838753" style="zoom:67%;" />
+    
+    - ex)
+    
+      ```html
+      <style>
+        .box{
+          background-color: red;
+          font-size: 40px;
+        }
+        .box:hover{
+          background-color: pink;
+        }
+        .box:active{
+          background-color: green;
+        }
+        input:focus{
+          background-color:blue;
+        }
+        a:visited{
+          color: gray;
+        }
+      </style>
+      
+      <input type="text">
+      <span class="box">가상 클래스를 예제</span>
+      <a href="http://www.naver.com">naver</a>
 
 
 
