@@ -655,12 +655,14 @@ font-size, color, margin-top, margin-bottom, margin-left, margin-right, width, h
 
   - box-sizing을 border-box으로 설정
 
+    - 기준점을 content로 잡지않고 테투리로 잡을 것
+    
     ```
     * {
     	box-sizing: border-box;
     }
     ```
-
+    
     ![image-20210802212909517](HTML%20&%20CSS.assets/image-20210802212909517-16279073520743.png)
 
 - border의 style 속성값
@@ -766,11 +768,11 @@ font-size, color, margin-top, margin-bottom, margin-left, margin-right, width, h
 
     - 브라우저의 스크롤 위치에 영향을 받는다
     - 스크롤을 할 때 내가 지정한 위치에서 고정(부모요소가 화면에 사라질 때까지만 고정)
-
+    
       - Top, Bottom, Left ,Right 중 한 값이라도 꼭 지정해줘야 한다.
-
+    
         ![image-20210803104347232](HTML%20&%20CSS.assets/image-20210803104347232.png)
-
+    
         ```html
         <head>
         	section {
@@ -801,7 +803,7 @@ font-size, color, margin-top, margin-bottom, margin-left, margin-right, width, h
           </div>
         </body>
         ```
-
+    
     ​      
 
 
