@@ -651,24 +651,25 @@ font-size, color, margin-top, margin-bottom, margin-left, margin-right, width, h
   - 기본적으로 모든 요소의 box-sizing은 content-box
   - Padding을 제외한 순수 contents 영역만을 box로 지정
 
-- 우리가 일반적으로 영역을 볼 때는 border까지의 너비를 100px 보는 것을 원함
+  - 우리가 일반적으로 영역을 볼 때는 border까지의 너비를 100px 보는 것을 원함
 
-  - box-sizing을 border-box으로 설정
-
+    - box-sizing을 border-box으로 설정
     - 기준점을 content로 잡지않고 테투리로 잡을 것
-    
+
     ```
     * {
     	box-sizing: border-box;
     }
     ```
-    
+
     ![image-20210802212909517](HTML%20&%20CSS.assets/image-20210802212909517-16279073520743.png)
+
+    <img src="HTML & CSS.assets/image-20220106222955148.png" alt="image-20220106222955148" style="zoom:80%;" />
 
 - border의 style 속성값
 
   - none, hidden, dotted(점선), dashed(굵은 점선), solid(실선)
-  
+
 - 마진(margin) 상쇄
 
   - block A의 top과 block B의 bottom에 적용된 각각의 margin이 둘 중에서 큰 마진 값으로 결합(겹쳐지게)되는 현상
@@ -819,6 +820,10 @@ font-size, color, margin-top, margin-bottom, margin-left, margin-right, width, h
 
 - 한 요소가 정상 흐름으로부터 빠져 **텍스트** 및 **인라인 요소**가 그 **주위를 감싸** 요소의 좌, 우측을 따라 배치되어야 함을 지정
 
+  - float은 인라인&텍스트 요소가 주변을 감싸게 해준다.
+  - block요소는 float 요소를 감싸는게 아니라 float 요소가 없다 생각하고 배치된다.
+    - float 요소가 기존의 흐름을 깨트렸기 때문
+
 - 이미지를 한쪽으로 띄우고 텍스트를 둘러싸는 레이아웃을 위해 도입
 
 - 이미지가 아닌 다른 요소들에도 적용해 웹 사이트의 전체 레이아웃을 만드느는 것까지 발전(배치에 사용)
@@ -848,10 +853,10 @@ font-size, color, margin-top, margin-bottom, margin-left, margin-right, width, h
   - 기본값은 inline
 
   - clear
-  
+
     - 선행 floating 요소 다음 일 수 있는지 or 그 아래로 내려가(해제되어, cleared)야 하는지를 지정
     - clear속성은 float 및 비 float 요소 모두에 적용됨
-  
+
     ```
     .clearfix::after{ #클래스 이름이 clearfix인 요소 뒤(밑)에 # ::after : 가상요소(의사요소) 설정
     	content: ""; # 내용은 필요없기 때문에 비어있다
@@ -867,7 +872,7 @@ font-size, color, margin-top, margin-bottom, margin-left, margin-right, width, h
     	<div class="box2">div</div>
     </body>
     ```
-  
+
 
 ##### * 가상요소(pseudo-elements)
 
