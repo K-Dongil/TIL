@@ -911,6 +911,7 @@ font-size, color, margin-top, margin-bottom, margin-left, margin-right, width, h
   - Flex Container(부모 요소)
     - 정렬 대상이 되는 요소들을 포함하는 부모(바깥) 요소
     - Flexbox 레이아웃을 형성하는 가장 기본적인 모델
+      - Container가 선언이 되어야 그 안에서 정렬이 가능하다
     - Flex Item들이 놓여있는 영역
     - 생성하려면 display 속성을 flex 혹은 inline-flex로 지정
     - 부모가 정렬될 자식들을 Controll
@@ -937,73 +938,128 @@ font-size, color, margin-top, margin-bottom, margin-left, margin-right, width, h
 
 2. Flex에 적용하는 속성
 
-   - 배치 방향 설정 (flex-direction)
+   - 배치 방향(메인 축) 설정 (flex-direction)
 
-     - item들이 배치되는 축의 방향을 결정하는 속성
+     - item들이 배치되는 축(메인 축)의 방향을 결정하는 속성
 
-     - 메인축 : item들이 배치된 방향의 축
+       - 메인축 : item들이 배치된 방향의 축
 
-     - 수직축(교차축) : 메인축과 수직인 축
+       - 수직축(교차축) : 메인축과 수직인 축
 
      - 메인축 방향 설정하면 교차축은 메인축에 의해 결정된다
 
-       - 메인축 방향 총 4가지 : row, row-reverse, column, column-reverse
+       - 메인축 방향 총 4가지
+
+         1. row
+
+            <img src="HTML & CSS.assets/image-20220107144822961.png" alt="image-20220107144822961" style="zoom: 25%;" />
+
+         2. row-reverse
+
+            <img src="HTML & CSS.assets/image-20220107144902698.png" alt="image-20220107144902698" style="zoom:25%;" />
+   
+         3. column
+   
+            <img src="HTML & CSS.assets/image-20220107144933272.png" alt="image-20220107144933272" style="zoom:25%;" />
+   
+         4. column-reverse
+
+            <img src="HTML & CSS.assets/image-20220107144952570.png" alt="image-20220107144952570" style="zoom:25%;" />
 
        ![image-20210804100816282](HTML%20&%20CSS.assets/image-20210804100816282.png)
-
-   - flex-wrap
-
-     - Container가 더 이상 아이템들을 한 줄에 담을 여유 공간이 없을 때 아이템 줄바꿈 설정
-
-       ```
-       .container {
-       	flex-wrap: nowrap; # 기본 값, item이 container를 빠져나감 
-       	flex-wrap: wrap; # item이 공간을 벗어나면 다음줄로 넘어 감
-       	flex-wrap: wrap-reverse;
-       }
-       ```
-
+   
    - 메인축 방향 정렬(justify-content)
-
+   
      - flex-strat(기본 값)
+   
+       <img src="HTML & CSS.assets/image-20220107144822961.png" alt="image-20220107144822961" style="zoom: 25%;" />
+   
      - center(중앙), flex-end(끝)
-     - space-between, space-around(내부간격이 외부간격의 2배)
-     - space-evenly(내부간격과 외부간격이 균등)
-
-     ![image-20210804101035009](HTML%20&%20CSS.assets/image-20210804101035009.png)
-
+   
+       <img src="HTML & CSS.assets/image-20220107145133455.png" alt="image-20220107145133455" style="zoom: 25%;" />
+   
+     - space-between
+   
+       <img src="HTML & CSS.assets/image-20220107145240376.png" alt="image-20220107145240376" style="zoom:25%;" />
+   
+     - space-around( 내부간격이 외부간격의 2배), space-evenly(내부간격과 외부간격이 균등)
+   
+       <img src="HTML & CSS.assets/image-20220107145315860.png" alt="image-20220107145315860" style="zoom:25%;" />
+   
    - 교차축 방향 정렬 속성 3가지
-     - aligin-content (메인축 기준 여러 줄)
-     - align-items(메인축 기준 한 줄 정렬)
-     - aligin-self(메인축 기준 flex item 개별요소)
-       - 부모요소 밖에서 Controll
+     - aligin-content (메인축 기준 여러줄을 정렬)
+     
+       - flex-start, flex-end, center, stretch, space-between, space-around
+     
+     - align-items(교차축 기준 한줄을 정렬)
+     
+       - stretch(기본값) : 교차축 크기만큼 늘어난다
+     
+         <img src="HTML & CSS.assets/image-20220107145438089.png" alt="image-20220107145438089" style="zoom:25%;" />
+     
+       - flex-start : 원래의 너비만큼 크기조정
+     
+         <img src="HTML & CSS.assets/image-20220107145500046.png" alt="image-20220107145500046" style="zoom:25%;" />
+     
+       - center : 교차축 기준 가운데 정렬
+     
+         <img src="HTML & CSS.assets/image-20220107145515361.png" alt="image-20220107145515361" style="zoom:25%;" />
+     
+       - flex-end : 교차축 마지막 정렬
+     
+         <img src="HTML & CSS.assets/image-20220107145528527.png" alt="image-20220107145528527" style="zoom:25%;" />
+     
+       - baseline : 크기가 다른 content(text)들이 base라인에 맞춰진다
+     
+         <img src="HTML & CSS.assets/image-20220107145556979.png" alt="image-20220107145556979" style="zoom:25%;" />
+     
+     - aligin-self(교차축 기준 선택한 요소 하나 정렬)
+     
+       - auto, flex-start, flex-end, center, baseline, stretch
+       - self는 부모에 적용하는 것이 아니라 개별 요소를 선택해서 쓴다. 
+     
+       ![image-20210804101035009](HTML%20&%20CSS.assets/image-20210804101035009.png)
      
    - 기타
-
-   - flex-wrap
-     
-     - Container가 더 이상 아이템들을 한 줄에 담을 여유 공간이 없을 때 아이템 줄바꿈 설정
-     
-       ```
-       .container {
-       	flex-wrap: nowrap; # 기본 값, item이 container를 빠져나감 
-       	flex-wrap: wrap; # item이 공간을 벗어나면 다음줄로 넘어 감
-       	flex-wrap: wrap-reverse;
-       }
-       ```
-     
-   - flex-flow
-     - flex-direction + flex-wrap의 shorthand ( 두 속성을 한꺼번에 지정할 수 있는 단축 속성)
-     
-   - flex-grow
-     - 메인 축(주축)에서 남은 공간을 각 항목에게 분배 (남은 공간에 대한 배분)
-       - 각 요소의 상대적 비율을 정하는 것X
-     - 기본 값은 0
-     
-   - order
-     - 정렬된 순서를 바꿀 수 있다
-     - 숫자가 작을 수록 start 쪽으로 온다.(앞으로 정렬)
-     - 기본 값은 0
+   
+     - flex-wrap
+   
+       - Container가 더 이상 아이템들을 한 줄에 담을 여유 공간이 없을 때 아이템 줄바꿈 설정
+   
+         - item들이 강제로 한 줄에 배치되게 할 것인지에 대한 여부결정
+   
+         ```
+         .container {
+         	flex-wrap: nowrap; # 기본 값, item이 container를 빠져나감 (강제로 한줄)
+         	flex-wrap: wrap; # item이 공간을 벗어나면 다음줄로 넘어 감
+         	# flex-wrap: wrap-reverse; # item이 공간을 벗어나면 윗줄로 넘어감
+         }
+         ```
+   
+         <img src="HTML & CSS.assets/image-20220107144610421.png" alt="image-20220107144610421" style="zoom: 50%;" />
+   
+     - flex-flow
+   
+       - 두 속성을 한꺼번에 지정할 수 있는 단축 속성
+   
+       - ```css
+         # flex-direction + flex-wrap의 shorthand
+         flex-flow: column wrap;
+         ```
+   
+         <img src="HTML & CSS.assets/image-20220107142641722.png" alt="image-20220107142641722" style="zoom: 50%;" />
+   
+     - flex-grow
+   
+       - 메인 축(주축)에서 남은 공간을 각 항목에게 분배 (남은 공간에 대한 배분)
+         - 각 요소의 상대적 비율을 정하는 것X
+       - 기본 값은 0
+   
+     - order
+   
+       - 정렬된 순서를 바꿀 수 있다
+       - 숫자가 작을 수록 start 쪽으로 온다.(앞으로 정렬)
+       - 기본 값은 0
 
 
 
