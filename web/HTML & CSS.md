@@ -1326,18 +1326,109 @@ font-size, color, margin-top, margin-bottom, margin-left, margin-right, width, h
 
       - ![image-20220108140448715](HTML & CSS.assets/image-20220108140448715.png)
 
-## Media Query
+## [Media Query](https://developer.mozilla.org/ko/docs/Web/CSS/Media_Queries/Using_media_queries)
 
-- 단말기의 유형(화면)과 특성, 수치(해상도, Viewport 너비)에 따라 웹 사이트나 앱의 스타일을 수정할때 유용
+- 단말기의 유형(화면, 출력물)과 특성, 수치(화면 해상도, Viewport 너비)에 따라 웹 사이트나 앱의 스타일을 수정할때 유용
 
 - bootstrap의 greedSystem
-- bootstrap의 breakpoint 어떻게 구혀하는가
+
+- bootstrap의 breakpoint 어떻게 구현하는가
+
+  ```html
+  <html>
+  <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE-edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Document</title>
+      <style>
+          @media (min-width: 700px){
+              h2 {color: red;}
+          }
+          @media (width: 500px){
+              h2 {color: blue;}
+          }
+          @media (max-width: 600px){
+              h2 {color: green;}
+          }
+          # orientation에서 viewport의 방향은 가로 세로 너비에 정해진다
+          @media (orientation: landscape){
+              p.orientation::after {content: "가로입니다.";}
+          }
+          @media (orientation: portrait){
+              p.orientation::after {content: "세로입니다";}
+          }
+      </style>
+  </head>
+  <body>
+      <h1>Media Query</h1>
+      <h2>가로가 700px보다 크면 RED, 500px이면 BLUE, 600px보다 작으면 GREEN</h2>
+      <p class="orientation">지금 화면 방향은?</p>
+  </body>
+  </html>
 
 - Media 타입별로 다른 스타일을 적용하기 위해 사용
-  - 화면(screen)
-  - 출력(print)
-  - 스크린 리더(speech)
-  - 모든 상황(all)
+  - 화면(screen) : 주로 화면의 대상
+  - 출력(print) : 인쇄 결과물 및 출력 미리보기 화면에 표시중인 문서
+  - 스크린 리더(speech) : 음성 합성장치가 대상
+  - 모든 상황(all) : 모든장치
+
+- 논리 연산자
+
+  - not, and, only와 같은 논리 연산자를 사용해 복잡한 쿼리를 조합가능
+    - 여러 미디어 쿼리를 쉼표로 구분해서 하나의 규칙으로 만들 수 있다
+
+  - and
+    - 다수의 미디어 특성을 조합하여 하나의 미디어 쿼리를 만들때 사용
+    - 쿼리가 참이라면 모든 구성 특성이 참을 반환해야 한다
+
+  - not
+    - 미디어 쿼리를 부정
+      - 쿼리가 거짓일 때 참을 반환, 참일때 거짓반환
+
+  - only
+    - 전체 쿼리가 일치할 때만 스타일을 적용할 때 사용
+      - 오래 된 브라우저가 스타일을 잘못 적용하지 못하도록 방지할 때 유용
+
+    - only 연산자를 사용할 경우 미디어 유형도 지정해야 한다
+
+  - , (쉼표)
+    - 다수의 미디어 쿼리를 하나의 규칙으로 조합할 때 사용
+      - 쉼표 목록 내의 쿼리 각각은 나머지와 별개로 취급
+      - 단, 하나의 쿼리만 참을 반환해도 규칙 전체가 참이 된다(논리 연산자 or처럼 동작)
+
+
+- 미디어 특성
+
+  | 이름                                                         | 요약                                                         |
+  | :----------------------------------------------------------- | :----------------------------------------------------------- |
+  | [`any-hover` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/any-hover) | 사용 가능한 입력 방식 중 하나로 사용자가 요소 위에 호버할 수 있는가? |
+  | [`any-pointer` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/any-pointer) | 사용 가능한 입력 방식 중 하나가 포인팅 장치인가? 그렇다면 얼마나 정확한가? |
+  | [`aspect-ratio` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/aspect-ratio) | 뷰포트의 가로세로비                                          |
+  | [`color` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/color) | 출력 장치의 색상 채널별 비트 수, 흑백일 땐 0                 |
+  | [`color-gamut` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/color-gamut) | 사용자 에이전트와 출력 장치가 지원하는 색상의 대략적인 범위  |
+  | [`color-index` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/color-index) | 출력 장치의 색상 검색 테이블(LUT) 항목 수, 존재하지 않을 땐 0 |
+  | [`display-mode` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/display-mode) | 웹 앱 매니페스트의 `display` 항목이 정의한 애플리케이션의 표시 모드 |
+  | [`forced-colors` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) | 사용자 에이전트가 색상 팔레트를 제한하는지 여부              |
+  | [`grid` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/grid) | 장치가 그리드와 비트맵 스크린 중 어느 것을 사용하나?         |
+  | [`height` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/height) | 뷰포트의 높이                                                |
+  | [`inverted-colors` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/inverted-colors) | 사용자 에이전트나 운영 체제가 색상을 반전 중인가?            |
+  | `light-level`                                                | 주변 환경의 광도                                             |
+  | [`monochrome` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/monochrome) | 출력 장치의, 모노크롬 프레임 버퍼의 픽셀 당 비트 수. 단색을 사용하지 않으면 0 |
+  | [`orientation` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/orientation) | 뷰포트의 방향                                                |
+  |                                                              |                                                              |
+  | [`overflow-block` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/overflow-block) | 콘텐츠가 블록 축 방향으로 뷰포트를 오버플로 할 경우 출력 장치가 어떻게 처리하는가? |
+  | [`overflow-inline` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/overflow-inline) | 콘텐츠가 인라인 축 방향으로 뷰포트를 오버플로 할 경우 스크롤 가능한가? |
+  | [`pointer` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/pointer) | 주 입력 방식이 포인팅 장치인가? 그렇다면 얼마나 정확한가?    |
+  | [`prefers-color-scheme`](https://developer.mozilla.org/ko/docs/Web/CSS/@media/prefers-color-scheme) | 라이트/다크 색채 조합 중 사용자가 선호하는 것                |
+  | [`prefers-contrast` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast) | 사용자가 시스템에 두 인접 색상 간의 고대비를 요청했는지 탐지 |
+  | [`prefers-reduced-motion` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) | 사용자가 줄어든 움직임을 선호함                              |
+  | `prefers-reduced-transparency`                               | 사용자가 줄어든 투명도를 선호함.                             |
+  | [`resolution` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/resolution) | 출력 장치의 픽셀 밀도                                        |
+  | `scan`                                                       | 출력 장치의 스캔 절차                                        |
+  | [`scripting` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/scripting) | JavaScript 등 스크립트 사용 가능 여부 탐지                   |
+  | [`update` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/update-frequency) | 출력 장치가 콘텐츠의 외형을 수정할 수 있는 주기              |
+  | [`width` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/width) | 스크롤바를 포함한 뷰포트 너비                                |
 
 
 
