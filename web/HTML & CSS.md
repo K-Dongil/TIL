@@ -889,7 +889,7 @@ font-size, color, margin-top, margin-bottom, margin-left, margin-right, width, h
   
 - Flexbox라 불리는 Flexible Box module은 Flexbox 인터페이스 내의 아이템(요소) 간 "**공간배분**"과  "**정렬**" 기능을 제공하기 위한 1차원 Layout model로 설계
 
-- 요소 간 공간 배분과 정렬 기능을 위한 **1차원(단방향) Layout**
+- 요소(아이템) 간 공간 배분과 정렬 기능을 위한 **1차원(단방향) Layout**
 
 - Flex Layout을 만들기 위한 기본적인 HTML 구조
 
@@ -1264,69 +1264,67 @@ font-size, color, margin-top, margin-bottom, margin-left, margin-right, width, h
     - columns 너비는 백분율로 설정 되므로 항상 부모 요소를 기준으로 유동적으로 크기가 조정됨
     - grid layout에서 내용은 반드시 columns 안에 있어야 하며 오직 columns만 row의 바로 하위 자식 일 수 있다
 
+  - breakpoints
+
+    - 다양한 디바이스에서 적용하기 위해 특정 px(픽셀)조건에 대한 지점(6개)을 정해 두었는데 이를 breakpoints라고 한다
+
+      <img src="HTML & CSS.assets/image-20220107210637626.png" alt="image-20220107210637626" style="zoom:80%;" />
+
+    - bootstrap은 대부분의 크기를 정의하기 위해 em 또는 rem을 사용하지만 px은 grid breakpoint에 사용
+
+      - viewport 너비가 픽셀 단위이고 글꼴 크기에 따라 변하지 않기 때문
+
+  - nesting(중첩)
+
+    - row > col-* > row > col-*의 방식으로 중첩 사용가능
+      - row - column 쌍의 구조가 column에 한번 더 존재 (grid 안에 grid가 존재)
+
+    - ```
+      <div class='container'>
+          <h2 class='text-center'>nesting</h2>
+          <div class='row'>
+              <div class='box col-6'>
+              	<div class='row'>
+                      <div class='box col-3'>1</div>
+                      <div class='box col-3'>2</div>
+                      <div class='box col-3'>3</div>
+                      <div class='box col-3'>4</div>
+                  </div>
+              </div>
+              <div class='box col-6'>1</div>
+              <div class='box col-6'>2</div>
+              <div class='box col-6'>3</div>
+          </div>
+      </div> 
+      ```
+
+      ![image-20220108135943031](HTML & CSS.assets/image-20220108135943031.png)
+
   - offset
 
     - 지정한 만큼의 column 공간을 무시하고 다음 공간부터 컨텐츠를 적용
 
-  - Nesting(중첩)
+    - .offset-*의 클래스로 column에 여백을 준다(column을 오른쪽으로 이동)
 
-    - row > col-* > row > col-*의 방식으로 중첩 사용가능
-      - row - column 쌍의 구조가 column에 한번 더 존재
+    - offset을 이용할 때도 breakpoint를 이용할 수 있다
 
-- breakpoints
+      - ex) offset-md-숫자, offset-lg-숫자
 
-  - 다양한 디바이스에서 적용하기 위해 특정 px(픽셀)조건에 대한 지점(6개)을 정해 두었는데 이를 breakpoints라고 한다
+    - ```
+      <div class="row">
+        <div class="col-md-4">.col-md-4</div>
+        <div class="col-md-4 offset-md-4">.col-md-4 .offset-md-4</div>
+      </div>
+      <div class="row">
+        <div class="col-md-3 offset-md-3">.col-md-3 .offset-md-3</div>
+        <div class="col-md-3 offset-md-3">.col-md-3 .offset-md-3</div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 offset-md-3">.col-md-6 .offset-md-3</div>
+      </div>
+      ```
 
-    <img src="HTML & CSS.assets/image-20220107210637626.png" alt="image-20220107210637626" style="zoom:80%;" />
-
-  - bootstrap은 대부분의 크기를 정의하기 위해 em 또는 rem을 사용하지만 px은 grid breakpoint에 사용
-
-    - viewport 너비가 픽셀 단위이고 글꼴 크기에 따라 변하지 않기 때문
-
-- nesting
-
-  - grid 안에 grid가 존재 (중첩)
-
-  - ```
-    <div class='container'>
-        <h2 class='text-center'>nesting</h2>
-        <div class='row'>
-            <div class='box col-6'>
-            	<div class='row'>
-                    <div class='box col-3'>1</div>
-                    <div class='box col-3'>2</div>
-                    <div class='box col-3'>3</div>
-                    <div class='box col-3'>4</div>
-                </div>
-            </div>
-            <div class='box col-6'>1</div>
-            <div class='box col-6'>2</div>
-            <div class='box col-6'>3</div>
-        </div>
-    </div> 
-    ```
-
-    ![image-20220108135943031](HTML & CSS.assets/image-20220108135943031.png)
-
-- offset
-
-  - .offset-*의 클래스로 column에 여백을 준다(column을 오른쪽으로 이동)
-
-  - ```
-    <div class="row">
-      <div class="col-md-4">.col-md-4</div>
-      <div class="col-md-4 offset-md-4">.col-md-4 .offset-md-4</div>
-    </div>
-    <div class="row">
-      <div class="col-md-3 offset-md-3">.col-md-3 .offset-md-3</div>
-      <div class="col-md-3 offset-md-3">.col-md-3 .offset-md-3</div>
-    </div>
-    <div class="row">
-      <div class="col-md-6 offset-md-3">.col-md-6 .offset-md-3</div>
-    </div>
-    ```
-
-    - ![image-20220108140448715](HTML & CSS.assets/image-20220108140448715.png)
+      - ![image-20220108140448715](HTML & CSS.assets/image-20220108140448715.png)
 
 ## Media Query
 
