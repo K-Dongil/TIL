@@ -1081,7 +1081,7 @@ font-size, color, margin-top, margin-bottom, margin-left, margin-right, width, h
           - flex-direction이 row일 때는 너비, column일 떄는 높이
         - flex-grow, flex-shrink 속성 값이 미지정인 경우, 기본 크기로 고정
    
-      - flex-grow
+      - flex-grow(유연)
    
         - 메인 축(주축)에서 남은 공간을 각 항목에게 분배 (남은 공간에 대한 배분)
    
@@ -1093,7 +1093,7 @@ font-size, color, margin-top, margin-bottom, margin-left, margin-right, width, h
    
           ![image-20220107155047225](HTML & CSS.assets/image-20220107155047225.png)
    
-      - flex-shrink
+      - flex-shrink(유연)
    
         - item이 flex-basis의 값보다 작아질 수 있는지 결정
         - 비율에 비례해서 item이 너비가 줄어들며 소수점도 사용가능
@@ -1160,31 +1160,30 @@ font-size, color, margin-top, margin-bottom, margin-left, margin-right, width, h
 
   - 온라인 상에 올려져있는 파일을 불러오는 것
   - Content Delivery(Distribution) Network
-
   - 컨텐츠(CSS, JS, Image, Text 등)을 효율적으로 전달하기 위해, 서버와 사용자 사이의 물리적 거리를 줄여 컨텐츠 로드 지연을 최소화
     - 세계 곳곳에 서버가 분산되어 있음
-
-  - 분산 된 서버로 이루어진 플랫폼
-
-    - 전 세계 사용자들이 로딩 시간을 늦추지 않고 동일한 품질의 컨텐츠를 사용할 수 있음
-
-  - 장점
-
-    1. 사용자와 가까운 서버를 통해 빠르게 전달 가능
+  
+- 분산 된 서버로 이루어진 플랫폼
+  
+  - 전 세계 사용자들이 로딩 시간을 늦추지 않고 동일한 품질의 컨텐츠를 사용할 수 있음
+  
+- 장점
+  
+  1. 사용자와 가까운 서버를 통해 빠르게 전달 가능
     2. 외부 서버를 활용함으로써 본인 서버의 부하가 적어짐
-
-  - 적용 방법
-
-    1. Bootstrap 홈페이지 -> Docs -> Quick start에 있는 CSS(link태그)와 JS(script태그)코드를
-
-    2. 각각 head태그 안에 CSS, body 끝자락에 js코드를 넣어준다
+  
+- 적용 방법
+  
+  1. Bootstrap 홈페이지 -> Docs -> Quick start에 있는 CSS(link태그)와 JS(script태그)코드를
+  
+  2. 각각 head태그 안에 CSS, body 끝자락에 js코드를 넣어준다
 
 ##### * Responsive Web Design
 
 - 다양한 화면 크기를 가진 디바이스들이 등장함에 따라 responsive web Design 개념이 등장
 - 반응형 웹은 별도의 기술 이름이 아닌 웹 디자인에  대한 접근 방식
   - 반응형 Layout 작성에 도움이 되는 사례들의 모음등을 기술하는데 사용되는 용어
-- ex)
+- ex) 기술예시
   - Media Queries, Flexbox, Bootstrap Grid System, The viewport meta tag
 
 
@@ -1198,21 +1197,136 @@ font-size, color, margin-top, margin-bottom, margin-left, margin-right, width, h
   - 12개의 column (12는 약수의 개수가 적당하다 - 구조를 여러개를 짤 수 있다)
   - 6개의 grid breakpoints (layout이 변화(=반응형이 바뀌는)되는 시점이 총 6개 존재)
 
+- class
 
+  - row
 
+    - row안에서 column이 작성되어야 한다
+    - columns의 wrapper(컬럼을 감싸고 있다)
 
+  - gutters
 
+    - grid 시스템에서 반응적으로 공간을 확보하고 컨텐츠를 정렬하는 데 사용되는 column사이의 padding
 
+    - ```html
+      # gutter
+      <div class='container'>
+          <h2 class='text-center'>gutters</h2>
+          <div class='row gx-5'>
+              <div class='col'>
+              	<div class='box'>col</div>
+              </div>
+              <div class='col'>
+              	<div class='box'>col</div>
+              </div>
+              <div class='col'>
+              	<div class='box'>col</div>
+              </div>
+          </div>
+      </div>
+      # no gutters
+      <div class='container'>
+          <h2 class='text-center'>no gutters</h2>
+          <div class='row'>
+              <div class='col'>
+              	<div class='box'>col</div>
+              </div>
+              <div class='col'>
+              	<div class='box'>col</div>
+              </div>
+              <div class='col'>
+              	<div class='box'>col</div>
+              </div>
+          </div>
+      </div>
+      # no gutters
+      <div class='container'>
+          <h2 class='text-center'>no gutters</h2>
+          <div class='row g-0'>
+              <div class='col'>
+              	<div class='box'>col</div>
+              </div>
+              <div class='col'>
+              	<div class='box'>col</div>
+              </div>
+              <div class='col'>
+              	<div class='box'>col</div>
+              </div>
+          </div>
+      </div>
+      ```
 
+      <img src="HTML & CSS.assets/image-20220108043613128.png" alt="image-20220108043613128" style="zoom:67%;" />
 
+  - col, col-*
 
+    - column class는 row 당 가능한 12개 중 사용하려는 columns 수를 나타낸다
+    - columns 너비는 백분율로 설정 되므로 항상 부모 요소를 기준으로 유동적으로 크기가 조정됨
+    - grid layout에서 내용은 반드시 columns 안에 있어야 하며 오직 columns만 row의 바로 하위 자식 일 수 있다
 
+  - offset
 
+    - 지정한 만큼의 column 공간을 무시하고 다음 공간부터 컨텐츠를 적용
 
+  - Nesting(중첩)
 
+    - row > col-* > row > col-*의 방식으로 중첩 사용가능
+      - row - column 쌍의 구조가 column에 한번 더 존재
 
+- breakpoints
 
+  - 다양한 디바이스에서 적용하기 위해 특정 px(픽셀)조건에 대한 지점(6개)을 정해 두었는데 이를 breakpoints라고 한다
 
+    <img src="HTML & CSS.assets/image-20220107210637626.png" alt="image-20220107210637626" style="zoom:80%;" />
+
+  - bootstrap은 대부분의 크기를 정의하기 위해 em 또는 rem을 사용하지만 px은 grid breakpoint에 사용
+
+    - viewport 너비가 픽셀 단위이고 글꼴 크기에 따라 변하지 않기 때문
+
+- nesting
+
+  - grid 안에 grid가 존재 (중첩)
+
+  - ```
+    <div class='container'>
+        <h2 class='text-center'>nesting</h2>
+        <div class='row'>
+            <div class='box col-6'>
+            	<div class='row'>
+                    <div class='box col-3'>1</div>
+                    <div class='box col-3'>2</div>
+                    <div class='box col-3'>3</div>
+                    <div class='box col-3'>4</div>
+                </div>
+            </div>
+            <div class='box col-6'>1</div>
+            <div class='box col-6'>2</div>
+            <div class='box col-6'>3</div>
+        </div>
+    </div> 
+    ```
+
+    ![image-20220108135943031](HTML & CSS.assets/image-20220108135943031.png)
+
+- offset
+
+  - .offset-*의 클래스로 column에 여백을 준다(column을 오른쪽으로 이동)
+
+  - ```
+    <div class="row">
+      <div class="col-md-4">.col-md-4</div>
+      <div class="col-md-4 offset-md-4">.col-md-4 .offset-md-4</div>
+    </div>
+    <div class="row">
+      <div class="col-md-3 offset-md-3">.col-md-3 .offset-md-3</div>
+      <div class="col-md-3 offset-md-3">.col-md-3 .offset-md-3</div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 offset-md-3">.col-md-6 .offset-md-3</div>
+    </div>
+    ```
+
+    - ![image-20220108140448715](HTML & CSS.assets/image-20220108140448715.png)
 
 ## Media Query
 
