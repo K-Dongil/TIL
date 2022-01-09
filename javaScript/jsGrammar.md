@@ -350,10 +350,12 @@
 
    - 가장 왼쪽의 조건식이 참이면 콜론(:) 앞의 값을 사용하고 그렇지 않으면 콜론(:) 뒤의 값을 사용
 
+     - 조건식이 ? True일 때 값 반환: False일 때 값 반환
+
    - 삼항 연산자의 결과는 변수에 할당 가능
 
    - [한 줄에 표기하는 것을 권장](https://github.com/airbnb/javascript#comparison--nested-ternaries)
-
+   
      ![image-20211028124450577](jsGrammar.assets/image-20211028124450577.png)
 
 
@@ -461,7 +463,10 @@
 
 - for...in(객체 순회 적합)
 
-  - 주로 객체(object)의 속성값들을 순회할 때 사용
+  - 주로 객체(object)의 **열거가능한** 속성값들을 순회할 때 사용
+
+    - 열거가능한 것과 조회가능한 것은 다르다
+    - defineproperty에서 enumerable이 true인 속성의 키값(인덱스)만 가져온다
 
   - 배열도 순회 가능하지만 인덱스 순으로 순회한다는 보장이 없으므로 권장X
 
@@ -486,7 +491,9 @@
 
 - for...of(배열 원소 순회)
 
-  - **반복 가능한(iterable) 객체**를 순회하며 값을 꺼낼 때 사용
+  - **반복 가능한(iterable) 객체**를 순회하며 속성값을 꺼낼 때 사용
+
+    - 객체의 요소를 반복
 
   - 실행할 코드는 중괄호 안에 작성
 
@@ -521,16 +528,367 @@
 - JavaScript에서 함수를 정의하는 방법은 주로 2가지로 구분
   - 함수 선언식
   - 함수 표현식
+- JavaScript의 함수는 일급객체
+  - 일급객체 : 변수에 할당가능, 함수의 매개변수로 전달가능, 함수의 반환 값으로 사용가능
+
+
+- 함수 선언식(function statement, declaration)
+
+  - 함수의 이름과 함께 정의하는 방식
+  - 함수의 이름(name), 매개변수(args), 몸통(중괄호 내부)로 구성되어 있다.
+
+  <img src="jsGrammar.assets/image-20220110013707453.png" alt="image-20220110013707453" style="zoom: 50%;" />
+
+- 함수 표현식(function expression)
+
+  - 함수를 표현식 내에서 정의하는 방식
+
+    - 표현식 : 어떤 하나의 값으로 결정되는 코드의 단위
+
+  - 함수의 이름을 생략하고 익명 함수로 정의가능
+
+    - 익명함수(anonymous function) : 이름이 없는 함수
+    - 익명 함수는 함수 표현식에서만 가능
+
+  - 함수의 이름(생략 가능), 매개변수(args), 몸통(중괄호 내부)으로 구성
+
+    <img src="jsGrammar.assets/image-20220110014021847.png" alt="image-20220110014021847" style="zoom:50%;" />
+
+- 기본 인자(default arguments)
+
+  - 인자 작성 시 '=' 문자 뒤 기본 인자 선언 가능
+
+    <img src="jsGrammar.assets/image-20220110014043807.png" alt="image-20220110014043807" style="zoom:50%;" />
+
+- 함수 선언식과 표현식 비교
+
+  <img src="jsGrammar.assets/image-20220110014142043.png" alt="image-20220110014142043" style="zoom: 50%;" />
+
+- 함수의 타입
+
+  - 선억식 함수와 표현식 함수 모두 타입은 function으로 동일
+
+    <img src="jsGrammar.assets/image-20220110014230557.png" alt="image-20220110014230557" style="zoom:50%;" />
+
+##### * 호이스팅
+
+- 함수 안에 있는 선언들을 모두 끌어올려서 해당 함수 유효 범위의 최상단에 선언하는 것
+
+- js에서는 함수가 실행되기 전에 함수 안에 필요한 변수값들을 모두 모아서 유효 범위의 최상단에 선언한다
+
+  - javaScript parser가 함수 실행 전 해당 함수를 한번 훑는다
+  - 함수 안에 존재하는 변수/함수선언에 대한 정보를 기억하고 있다가 실행시킨다
+  - 유효 범위 : 함수 블록 {} 안에서 유효??
+
+- 함수 내에서 아래쪽에 존재하는 내용 중 필요한 값들을 끌어 올리는 것
+
+  - 실제로 코드가 끌어올려지는 건 아니며, js parser 내부적으로 끌어올려서 처리하는 것
+  - 실제 메모리에서 변화X
+
+- 코드의 가독성과 유지보수를 위해 호이스팅이 일어나지 않도록 하는 것이 좋다
+
+  - 함수와 변수를 가급적 코드 상단부에 선언하면 호이스팅으로 인한 스코프 꼬임 현상 방지가능
+  - let/const 사용
+
+- 값이 할당되어 있지 않은 변수의 경우, 함수선언문이 변수를 덮어쓴다
+
+  - 코드
+
+    ```javascript
+    var myName = "Heee";
+    var yourName;
+    
+    function myName() { // 같은 이름의 함수 선언
+        console.log("myName Function");
+    }
+    function yourName() { // 같은 이름의 함수 선언
+        console.log("yourName Function");
+    }
+    
+    console.log(typeof myName);
+    console.log(typeof yourName);
+
+  - 위의 코드가 돌아가는 순서(js parser 내부의 호이스팅 결과)
+
+    ```javascript
+    // 1. [Hoisting] 변수 선언 
+    var myName; 
+    var yourName; 
+    
+    // 2. [Hoisting] 함수선언문
+    function myName() {
+        console.log("yuddomack");
+    }
+    function yourName() {
+        console.log("everyone");
+    }
+    
+    // 3. 변수값 할당
+    myName = "Heee";
+    
+    console.log(typeof myName); // > "string"
+    console.log(typeof yourName); // > "function"
+
+- 값이 할당되어 있는 변수의 경우, 변수가 함수선언문을 덮어쓴다
+
+  - 코드
+
+    ```javascript
+    var myName = "hi";
+    
+    function myName() {
+        console.log("yuddomack");
+    }
+    function yourName() {
+        console.log("everyone");
+    }
+    
+    var yourName = "bye";
+    
+    console.log(typeof myName);
+    console.log(typeof yourName);
+
+  - 위의 코드가 돌아가는 순서(js parser 내부의 호이스팅 결과)
+
+    ```javascript
+    // 1. [Hoisting] 변수 선언 
+    var myName; 
+    var yourName; 
+    
+    // 2. [Hoisting] 함수선언문
+    function myName() {
+        console.log("yuddomack");
+    }
+    function yourName() {
+        console.log("everyone");
+    }
+    
+    // 3. 변수값 할당
+    myName = "hi";
+    yourName = "bye";
+    
+    console.log(typeof myName); // > "string"
+    console.log(typeof yourName); // > "string"
+
+- 호이스팅 - 함수 선언식
+
+  - var로 정의한 변수처럼 hoisting 발생
+  - 코드를 구현한 위치와 관계없이 js 특징인 호이스팅에 따라 브라우저가 js를 해석할 때 맨 위로 끌어 올려진다.
+
+  - 함수 호출 이후에 선언해도 동작
+
+    <img src="jsGrammar.assets/image-20220110020845228.png" alt="image-20220110020845228" style="zoom:50%;" />
+
+  - 코드
+
+    ```javascript
+    function printName(firstname) { // 함수선언문 
+        var result = inner(); // "선언 및 할당"
+        console.log(typeof inner); // > "function"
+        console.log("name is " + result); // > "name is inner value"
+    
+        function inner() { // 함수선언문 
+            return "inner value";
+        }
+    }
+    
+    printName(); // 함수 호출 
+    ```
+
+  - 위의 코드가 돌아가는 순서(js parser 내부의 호이스팅 결과)
+
+    ```javascript
+    function printName(firstname) { 
+        var result; // [Hoisting] var 변수 "선언"
+    
+        function inner() { // [Hoisting] 함수선언문
+            return "inner value";
+        }
+    
+        result = inner(); // "할당"
+        console.log(typeof inner); // > "function"
+        console.log("name is " + result); // > "name is inner value"
+    }
+    
+    printName();
+
+- 호이스팅 - 함수 표현식
+
+  - 함수 정의 전에 호출 시 에러 발생
+
+    - 함수표현식에서는 선언과 할당의 분리가 발생한다
+
+  - 함수 표현식으로 정의된 함수는 변수로 평가되어 변수의 scope 규칙을 따름
+
+    <img src="jsGrammar.assets/image-20220110020942343.png" alt="image-20220110020942343" style="zoom:50%;" />
+
+  - 코드
+
+    ```javascript
+    function printName(firstname) { // 함수선언문
+        var inner = function() { // 함수표현식 
+            return "inner value";
+        }
+            
+        var result = inner(); // 함수 "호출"
+        console.log("name is " + result);
+    }
+    
+    printName(); // > "name is inner value"
+    ```
+
+  - 위의 코드가 돌아가는 순서(js parser 내부의 호이스팅 결과)
+
+    ```javascript
+    function printName(firstname) { 
+        var inner; // [Hoisting] 함수표현식의 변수값 "선언"
+        var result; // [Hoisting] var 변수값 "선언"
+    
+        inner = function() { // 함수표현식 "할당"
+            return "inner value";
+        }
+            
+        result = inner(); // 함수 "호출"
+        console.log("name is " + result);
+    }
+    
+    printName(); // > "name is inner value"
+
+  - inner 함수의 선언이 let/const로 되어있다면 호이스팅이 일어나지 않는다
+
+    ```javascript
+    function printName(firstname) { // 함수선언문
+        console.log(inner); // ERROR가 뜬다 >> inner에 대해 선언이 안 되어 있다.
+        let result = inner();  
+        console.log("name is " + result);
+    
+        let inner = function() { // 함수표현식 
+            return "inner value";
+        }
+    }
+    printName(); // > ReferenceError: inner is not defined
+
+- 함수표현식과 선언식의 호이스팅 차이
+
+  - 코드
+
+    ```javascript
+    foo();
+    foo2();
+    
+    function foo() { // 함수선언문
+            console.log("hello");
+    }
+    var foo2 = function() { // 함수표현식
+            console.log("hello2");
+    }
+    ```
+
+  - 위의 코드가 돌아가는 순서(js parser 내부의 호이스팅 결과)
+
+    ```javascript
+    var foo2; // [Hoisting] 함수표현식의 변수값 "선언"
+    
+    function foo() { // [Hoisting] 함수선언문
+            console.log("hello");
+    }
+    
+    foo();
+    foo2(); // ERROR!! 
+    
+    foo2 = function() { 
+            console.log("hello2");
+    }
 
 
 
+##### * 화살표 함수(Arrow Function)
 
+- 함수를 비교적 간결하게 정의할 수 있는 문법
+
+- function 키워드 생략 가능
+
+- 함수의 매개변수가 단 하나 뿐이라면, '()'도 생략가능
+
+- 함수 몸통(중괄호 내부)이 표현식 하나라면  '{}'과 return도 생략 가능
+
+  <img src="jsGrammar.assets/image-20220110023657256.png" alt="image-20220110023657256" style="zoom: 50%;" />
 
 
 
 ### 객체
 
 - 객체는 속성(property)의 집합이며 중괄호 내부에 key와 value의 쌍으로 표현
+
+  - property는 속성이라는 뜻, JS에서는 객체 내부의 속성을 의미한다
+
+  - property 6가지 속성
+
+    1. value
+
+       - property의 속성값(단지 값을 의미)
+
+    2. get & set
+
+       - 객체의 속성값에 대한 접근 권한자 역할
+       - get과 set은 그 자체로 writable의 역할을 가지고 있다
+
+    3. enumerable(열거할 수 있는)
+
+       - property가 열거할 수 있는 속성이라면 for ... in ... 루프를 사용하여 접근이가능하다
+
+       - 객체의 열거 가능한 속성의 key는 Object.keys를 이용해 반환 받을 수 있다
+
+       - 조회가능여부와 열거가능여부는 다르다
+
+         - 열거 되어있는 속성을 for ... in ... 으로 접근했을 때 루프에 의해 반환되지 않는 속성은 false이기 때문이다
+
+         ```javascript
+         var ob = {a:1, b:2};
+         ob.c = 3;
+         Object.defineProperty(ob, 'd', {
+         value: 4,
+         enumerable : false
+         });
+         
+         // enumerable속성은 조회가능여부와 엄연히 다르다.
+         ob.d; // => 4
+         
+         // enumerable속성은 열거가능여부와 관련이 있다.
+         for( var key in ob ) console.log( ob[key] );
+         // 1, 2, 3
+         
+         Object.keys( ob ); // => ["a", "b", "c"]
+
+    4. writable(쓸 수 있는)
+
+      - property가 쓸 수 있는 속성이라면 값을 수정할 수 있다
+
+    5. configurable(구성할 수 있는)
+
+      - 구성 가능한 property는 삭제 연산자를 사용하여 제거할 수 있는 여부를 의미
+
+  - 속성 설정하기
+
+    - definePropery를 통해서 만들 수 있다
+
+    - enumerable, writable, configurable 기본값은 false이다.
+
+    - ex) 열거할 수 없고, 쓸수도 없으며, 구성이 불가능하다
+
+      ```javascript
+      Object.defineProperty( obj, 'c', {
+      value: 3,
+      enumerable: false,
+      writable: false,
+      configurable: false
+      });
+
+  - 속성값 확인
+
+    - getOwnPropertyDescriptor(객체, 속성)
+
+- 객체는 non iterable
 
 - key는 문자열 타입만 가능
 
