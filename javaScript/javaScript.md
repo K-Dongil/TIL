@@ -1,5 +1,3 @@
-
-
 ## 브라우저(browser)
 
 - 웹 서버에서 이동하며 클라이언트와 서버 간 양방향으로 통신하고, HTML 문서나 파일을 출력하는 GUI 기반의 소프트 웨어
@@ -140,6 +138,39 @@
 - 프로그래밍 언어로 사용
 
   ![image-20211027101314255](javaScript.assets/image-20211027101314255.png)
+
+##### * 동작원리
+
+- 자바스크립트는 싱글 쓰레드 기반 언어
+
+  - 호출 스택이 하나 = 한 번에 한 작업만 처리 가능
+  - 호출 스택 : 프로그램 상에서 어디에 있는지를 기록하는 자료구조
+  - 호출 스택이 최대 허용치를 넘으면 브라우저에서 에러발생
+
+- setTimeout, EventListener, Ajax 같이 처리가 오래걸리는 코드는 동작순서가 뒤로 밀리고 빠르게 처리가능한 코드부터 처리한 뒤 처리된다.
+
+  - 코드
+
+    ```javascript
+    function multiply(x, y) {
+        return x * y;
+    }
+    function printSquare(x) {
+        var s = multiply(x, x);
+        console.log(s);
+    }
+    printSquare(5);
+    ```
+
+  - 실행 결과
+
+    <img src="javaScript.assets/image-20220110025944475.png" alt="image-20220110025944475" style="zoom:50%;" />
+
+- 반복문 코드를 짤 때 반복이 깊게 일어나면 js로는 구현하지 않는게 좋다.
+
+  - ex) 30초가 걸리는 어려운 연산이 있을 때 eventListener는 30초 뒤에 실행된다.
+    - 어려운 연산이 해결될 때까지 브라우저는 기능이 정지된다.
+  - 비동기 콜백이 필요
 
 
 
