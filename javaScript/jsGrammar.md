@@ -1,4 +1,4 @@
-## 자바스크립트
+## 자바스크립트 문법
 
 ##### * 세미콜론(semicolon)
 
@@ -17,11 +17,11 @@
   - 절대적인 하나의 정답은 없으며, 상황에 맞게 원칙을 정하고 일관성 있게 사용
 - 코드의 품질에 직결되는 중요한 요소
   - 코드의 가독성, 유지보수 또는 팀원과의 커뮤니케이션 등 개발 과정 전체에 영향을 끼침
-- standardjs
+- [Airbnb JavaScript Style Guide]([GitHub - airbnb/javascript: JavaScript Style Guide](https://github.com/airbnb/javascript)), [Google JavaScript Style Guide]([Google JavaScript Style Guide](https://google.github.io/styleguide/jsguide.html)), [standardjs]([JavaScript Standard Style (standardjs.com)](https://standardjs.com/#javascript-style-guide-linter-and-formatter))
 
 
 
-
+(밑에서부터는 Airbnb JavaScript 스타일 )
 
 ##### * 식별자 정의와 특징
 
@@ -39,7 +39,9 @@
 
   - 카멜 케이스(camelCase, lower-camel-case)
 
-    - 두 번째 단어의 첫 글자부터 대문자
+    - 첫 번째 단어를 제외한 단어들의 첫 글자부터 대문자
+
+      - 두 번째 단어의 첫 글자부터 대문자
 
     - 변수, 객체, 함수에 상요
 
@@ -60,7 +62,7 @@
     - 상수(constants)에 사용
 
       - 상수의 정의 : 개발자의 의도와 상관없이 변경될 가능성이 없는 값을 말함
-
+  
       <img src="jsGrammar.assets/image-20211028100952817.png" alt="image-20211028100952817" style="zoom:80%;" />
 
 
@@ -84,14 +86,13 @@
   ```javascript
   let foo // 선언
   console.log(log) // undefined
-  
   foo = 11 // 할당
   console.log(foo) // 11
   
   let bar = 0 // 선언 + 할당
   console.log(bar) // 0
   ```
-
+  
 - **const**
 
   - 재할당할 수 없는 변수 선언 시 사용
