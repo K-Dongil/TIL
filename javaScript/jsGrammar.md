@@ -74,25 +74,27 @@
 - 선언(Declaration)
 
   - 변수를 생성하는 행위 또는 시점
-
 - 할당(Assignment)
 
   - 선언된 변수에 값을 저장하는 행위 또는 시점
-
 - 초기화(Initialization)
 
   - 선언된 변수에 처음으로 값을 저장하는 행위 또는 시점
 
-  ```javascript
-  let foo // 선언
-  console.log(log) // undefined
-  foo = 11 // 할당
-  console.log(foo) // 11
-  
-  let bar = 0 // 선언 + 할당
-  console.log(bar) // 0
-  ```
-  
+
+- 변수 생성과정
+
+  - 선언 및 초기화 --> 할당
+
+    ```javascript
+    let foo // 선언
+    console.log(log) // undefined
+    foo = 11 // 할당
+    console.log(foo) // 11
+    
+    let bar = 0 // 선언 + 할당
+    console.log(bar) // 0
+
 - **const**
 
   - 재할당할 수 없는 변수 선언 시 사용
