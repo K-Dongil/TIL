@@ -850,6 +850,210 @@
 
 
 
+### 배열
+
+- 키와 속성들을 담고 있는 참조 타입의 객체(object)
+
+- 순서를 보장한다
+
+- 대괄호를 이용하여 생성하고, 0을 포함한 양의 정수 인덱스로 특정 값에 접근 가능
+
+- 배열의 길이는 array.length 형태로 접근 가능
+
+  - 배열의 마지막 원소는 array.length - 1로 접근가능
+
+    ![image-20220110032538644](jsGrammar.assets/image-20220110032538644.png)
+
+- 비열 순회 방법 비교
+
+  - for loop
+
+    - 모든 브라우저 환경에서 지원
+    - index를 활용하여 배열의 요소에 접근
+    - break, continue 사용 가능
+
+  - for ... of
+
+    - 일부 오래된 브라우저 환경에서 지원X
+    - index없이 배열의 요소에 바로 접근가능
+    - break, continue 사용 가능
+
+  - forEach
+
+    - 대부분의 브라우저 환경에서 지원
+
+    - break, continue 사용 불가능
+
+    - Aribnb Style 가이드 권장 방식
+
+      <img src="jsGrammar.assets/image-20220110040044893.png" alt="image-20220110040044893" style="zoom:67%;" />
+
+  
+
+- [메서드]([Array - JavaScript | MDN (mozilla.org)](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array#인스턴스_메서드))
+
+  - array.reverse()
+
+    - 원본 배열의 요소들의 순서를 반대로 정렬
+
+      <img src="jsGrammar.assets/image-20220110033037908.png" alt="image-20220110033037908" style="zoom:50%;" />
+
+  - array.push() & array.pop()
+
+    - 배열의 가장 마지막에 요소 추가 & 제거
+
+      <img src="jsGrammar.assets/image-20220110033127751.png" alt="image-20220110033127751" style="zoom:50%;" />
+
+  - array.unshift() & array.shift()
+
+    - 배열의 가장 앞에 요소 추가 & 제거
+
+      <img src="jsGrammar.assets/image-20220110033225617.png" alt="image-20220110033225617" style="zoom:50%;" />
+
+  - array.includes(value)
+
+    - 배열에 특정 값이 존재하는지 판별 후 참 또는 거짓 반환
+
+      <img src="jsGrammar.assets/image-20220110033259543.png" alt="image-20220110033259543" style="zoom:50%;" />\
+
+  - array.indexOf(value)
+
+    - 배열에 특정 값이 존재하는지 확인 후 가장 첫 번째로 찾은 요소의 index반환
+
+      - 만약 해당 값이 없을 경우 -1 반환
+
+      <img src="jsGrammar.assets/image-20220110033342516.png" alt="image-20220110033342516" style="zoom:50%;" />
+
+  - array.join([separator])
+
+    - 배열의 모든 요소를 연결하여 반환
+
+    - separator(구분자)는 선택적으로 지정가능하며, 생략 시 쉼표를 기본값으로 사용
+
+      <img src="jsGrammar.assets/image-20220110033432833.png" alt="image-20220110033432833" style="zoom:50%;" />
+
+  | 메서드   | 설명                                             | 비고                     |
+  | -------- | ------------------------------------------------ | ------------------------ |
+  | reverse  | 원본 배열 요소들의 순서를 반대로 정렬            |                          |
+  | push     | 배열의 가장 뒤에 요소를 추가                     |                          |
+  | pop      | 배열의 가장 뒤에 요소를 제거                     |                          |
+  | unshift  | 배열의 가장 앞에 요소를 추가                     |                          |
+  | shift    | 배열의 가장 앞에 요소를 제거                     |                          |
+  | includes | 배열에 특정 값이 존재하는지 판별 후 참/거짓 반환 |                          |
+  | indexOf  | 배열에 특정 값이 존재하는지 판별 후 인덱스 반환  | 요소가 없을 경우 -1 반환 |
+  | join     | 배열의 모든 요소를 구분자를 이용하여 연결        | 구분자 생략 시 쉼표 기준 |
+
+
+
+##### * 배열을 순회하며 특정 로직을 수행하는 메서드
+
+- 메서드 호출 시 인자로 callback함수를 받는 것이 특징
+
+  - callback함수 : 어떤 함수의 내부에서 실행될 목적으로 인자로 넘겨받는 함수를 뜻 한다.
+  - 매개변수
+    - element : 배열의 요소
+    - index : 배열 요소의 index
+    - array : 배열 자체
+
+- array.forEach(callback(element[, index[, array]]))
+
+  - 배열의 각 요소에 대해 콜백 함수를 한번씩 실행
+  - 콜백 함수는 3가지 매개변수로 구성 (element, index, array)
+  - 반환 값이 없는 메서드
+
+  <img src="jsGrammar.assets/image-20220110034059312.png" alt="image-20220110034059312" style="zoom: 50%;" />
+
+- array.map(callback(element[, index[, array]]))
+
+  - 배열의 각 요소에 대해 콜백 함수를 한번씩 실행
+
+  - 콜백 함수의 반환 값을 요소로 하는 새로운 배열 반환
+
+  - 기존 배열 전체를 다른 형태로 바꿀 때 유용
+
+  - 콜백 함수는 3가지 매개변수로 구성 (element, index, array)
+
+    <img src="jsGrammar.assets/image-20220110034533684.png" alt="image-20220110034533684" style="zoom: 50%;" />
+
+- array.filter(callback(element[, index[, array]]))
+
+  - 배열의 각 요소에 대해 콜백 함수를 한번씩 실행
+
+  - 콜백 함수의 반환 값이 참인 요소들만 모아서 새로운 배열을 반환
+
+  - 기존 배열의 요소들을 필터링할 때 유용
+
+  - 콜백 함수는 3가지 매개변수로 구성 (element, index, array)
+
+    <img src="jsGrammar.assets/image-20220110034737218.png" alt="image-20220110034737218" style="zoom:50%;" />
+
+- array.reduce(callback(acc, element[, index[, array]])[, initialValue])
+
+  - 배열의 각 요소에 대해 콜백 함수를 한 번씩 실행
+
+  - 콜백 함수의 반환 값들을 하나의 값(acc)에 누적후 반환
+
+  - 매개변수
+
+    - acc
+
+      - 이전 callback 함수의 반환 값이 누적되는 변수
+
+    - initialValue(optional)
+
+      - 최초 callback 함수 호출 시 acc에 할당되는 값, default 값은 배열의 첫번째 값
+      - 빈 배열의 경우 intialValue를 제공하지 않으면 에러 발생
+
+      <img src="jsGrammar.assets/image-20220110035051483.png" alt="image-20220110035051483" style="zoom:50%;" />
+
+  - 동작 방식
+
+    ![image-20220110035147582](jsGrammar.assets/image-20220110035147582.png)
+
+- array.find(callback(element[, index[, array]]))
+
+  - 배열의 각 요소에 대해 콜백 함수를 한번씩 실행
+
+  - 콜백 함수의 반환 값이 참이면 해당 요소를 반환
+
+  - 찾는 값이 배열에 없으면 undefined 반환
+
+    <img src="jsGrammar.assets/image-20220110035430362.png" alt="image-20220110035430362" style="zoom:50%;" />
+
+- array.some(callback(element[, index[, array]]))
+
+  - 배열의 요소 중 하나라도 주어진 판별 함수를 통과하면 참을 반환
+
+  - 모든 요소가 통과하지 못하면 거짓 반환
+
+    - 빈 배열은 항상 거짓 반환
+
+    <img src="jsGrammar.assets/image-20220110035555558.png" alt="image-20220110035555558" style="zoom:50%;" />
+
+- array.every(callback(element[, index[, array]]))
+
+  - 배열의 모든 요소가 주어진 판별 함수를 통과하면 참을 반환
+
+  - 모든 요소가 통과하지 못하면 거짓 반환
+
+    - 빈 배열은 항상 참 반환
+
+    <img src="jsGrammar.assets/image-20220110035642623.png" alt="image-20220110035642623" style="zoom:50%;" />
+
+​	
+
+| 메서드  | 설명                                                         | 비고      |
+| ------- | ------------------------------------------------------------ | --------- |
+| forEach | 배열의 각 요소에 대해 콜백 함수를 한번 씩 실행               | 반환 없음 |
+| map     | 콜백 함수의 반환 값을 요소로 하는 새로운 배열 반환           |           |
+| filter  | 콜백 함수의 반환 값이 참인 요소들만 모아서 새로운 배열을 반환 |           |
+| reduce  | 콜백 함수의 반환 값들을 하나의 값(acc)에 누적 후 반환        |           |
+| find    | 콜백 함수의 반환 값이 참이면 해당 요소를 반환                |           |
+| some    | 배열의 요소 중 하나라도 판별 함수를 통과하면 참을 반환       |           |
+| every   | 배열의 모든 요소가 판별 함수를 통과하면 참을 반환            |           |
+
+
+
 ### 객체
 
 - 객체는 속성(property)의 집합이며 중괄호 내부에 key와 value의 쌍으로 표현
