@@ -139,41 +139,6 @@
 
   ![image-20211027101314255](javaScript.assets/image-20211027101314255.png)
 
-##### * 동작원리
-
-- 자바스크립트는 싱글 쓰레드 기반 언어
-
-  - 호출 스택이 하나 = 한 번에 한 작업만 처리 가능
-  - 호출 스택 : 프로그램 상에서 어디에 있는지를 기록하는 자료구조
-  - 호출 스택이 최대 허용치를 넘으면 브라우저에서 에러발생
-
-- setTimeout, EventListener, Ajax 같이 처리가 오래걸리는 코드는 동작순서가 뒤로 밀리고 빠르게 처리가능한 코드부터 처리한 뒤 처리된다.
-
-  - 코드
-
-    ```javascript
-    function multiply(x, y) {
-        return x * y;
-    }
-    function printSquare(x) {
-        var s = multiply(x, x);
-        console.log(s);
-    }
-    printSquare(5);
-    ```
-
-  - 실행 결과
-
-    <img src="javaScript.assets/image-20220110025944475.png" alt="image-20220110025944475" style="zoom:50%;" />
-
-- 반복문 코드를 짤 때 반복이 깊게 일어나면 js로는 구현하지 않는게 좋다.
-
-  - ex) 30초가 걸리는 어려운 연산이 있을 때 eventListener는 30초 뒤에 실행된다.
-    - 어려운 연산이 해결될 때까지 브라우저는 기능이 정지된다.
-  - 비동기 콜백이 필요
-
-
-
 ##### * DOM 조작
 
 - Document는 문서 한 장(HTML)에 해당하고 이를 조작
@@ -466,3 +431,203 @@
     </script>
 </body>
 </html>
+```
+
+
+
+
+
+## AJAX
+
+- Asynchronous JavaScript And XML (비동기식 JavaScript와 XML)
+- 서버와 통신하기 위해 XMLHttpRequest 객체를 활용
+- JSON, XML, HTML 그리고 일반 텍스트 형식 등을 퐇마한 다양한 포맷을 주고 받을 수 있음
+  - AJAX의 X가 XML을 의미하긴 하지만, 요즘은 더 가벼운 용량과 JavaScript의 일부라는 장점 때문에 JSON을 더 많이 사용함
+
+- 특징
+  - 페이지 전체를 reload(새로고침)를 하지 않고서도 수행되는 비동기성
+    - 사용자의 event가 있으면 전체 페이지가 아닌 일부분만을 업데이트 할 수 있음
+  - AJAX의 주요 두가지 특징
+    1. 페이지 새로고침 없이 서버에 요청
+    2. 서버로부터 데이터를 받고 작업을 수행
+
+- Google 사용 예시
+  - Gmail
+    - 메일 전송 요청이 모두 처리 되기 전 다른 페이지로 넘어가더라도 메일은 전송 됨
+  - Google Maps
+    - 스크롤 행위 하나하나가 모두 요청이지만 페이지는 갱신X
+
+- XMLHttpRequest 객체
+  - 서버와 상호작용하기 위해 사용되며 전체 페이지의 새로고침 없이 데이터를 받아올 수 있음
+  - 사용자의 작업을 방해하지 않으면서 페이지 일부를 업데이트할 수 있음
+  - 주로 AJAX 프로그래밍에 사용
+  - 이름과 달리 XML 뿐만 아니라 모든 종류의 데이터를 받아올 수 있음
+  - 생성자
+    - XMLHttpRequest()
+
+- XMLHttpRequest 예시
+
+  - console에 todo 데이터가 출력X
+
+    - 데이터 응답을 기다리지 않고 console.log()를 먼저 실행했기 때문이다.
+
+    ```javascript
+    const request = new XMLHttpRequest()
+    const URL = 'https://jsonplaceholder.typicode.com/todos/1/'
+    
+    request.open('GET', URL)
+    request.send() // 요청
+    
+    const todo = request.response // 응답 데이터 저장
+    console.log(`data: ${todo}`) // 출력
+
+
+
+##### * 동기식
+
+- 순차적, 직렬적 Task 수행
+- 요청을 보낸 후 응답을 받아야만 다음 동작이 이루어짐(blcoking)
+
+- ex)
+
+  - 버튼 클릭 후 alert 메시지의 확인 버튼을 누를 때까지 문장이 만들어지지 않음
+
+  - 즉, alert 이후의 코드는 alert의 처리가 끝날 때까지 실행되지 않음
+
+  - 왜 이런 현상 -> JavaScript는 single threaded
+
+    <img src="javaScript.assets/image-20220110043104152.png" alt="image-20220110043104152" style="zoom: 80%;" />
+
+
+
+##### * 비동기식
+
+- 병렬적인 듯한 Task 수행
+  - JavaScript는 single threaded
+- 요청을 보낸 후 응답을 기다리지 않고 다음 동작이 이루어짐(non-blocking)
+
+- ex)
+
+  - 요청을 보내고 응답을 기다리지 않고 다음 코드가 실행됨
+
+  - 결과적으로 변수 todo에는 응답 데이터가 할당되지 않고 빈 문자열이 출력
+
+  - 그렇다면 JS는 왜 기다려주지 않는 방식으로 동작하는가?
+
+    - JavaScript는 single threaded
+
+    <img src="javaScript.assets/image-20220110043337828.png" alt="image-20220110043337828" style="zoom: 67%;" />
+
+- 사용 이유
+  - 사용자 경험 때문
+  - 매우 큰 데이터를 동반하는 앱이 있다고 가정할 때 동기식 코드라면 데이터를 모두 불러온 뒤 앱이 실행됨
+    - 데이터를 모두 불러올 때 까지는 앱이 모두 멈춘 것처럼 보임
+    - 코드 실행을 차단하여 화면이 멈추고 응답하지 않는 것 같은 사용자 경험을 제공
+  - 비동기식 코드라면 데이터를 요청하고 응답 받는 동안, 앱 실행을 함께 진행함
+    - 데이터를 불러오는 동안 지속적으로 응답하는 화면을 보여줌으로써 더욱 쾌적한 사용자 경험을 제공
+  - 웹 API 기능은 현재 비동기 코드를 사용하여 실행됨
+
+
+
+##### * Threads
+
+- 프로그램이 작업을 완료하기 위해 사용할 수 있는 단일 프로세스(일처리를 할 수 있는 머리)
+- 각 스레드는 한 번에 하나의 작업만 수행할 수 있음
+- ex) Task A -> TaskB -> Task C
+  - 다음 작업을 시작하려면 반드시 앞의 작업이 완료되어야 함
+  - 컴퓨터 CPU는 여러코어를 가지고 있기 때문에 한번에 여러 가지 일을 처리가능
+
+
+
+##### - Blocking vs Non-Blocking
+
+1. 요청
+
+<img src="javaScript.assets/image-20220110044316092.png" alt="image-20220110044316092" style="zoom:67%;" />
+
+2. 응답을 기다림
+
+   - 응답을 기다리는 동안 python은 제자리, js는 할당하는 곳으로 넘어감 (현재응답 받지못함)
+
+     ![image-20220110044453483](javaScript.assets/image-20220110044453483.png)
+
+3. 응답을 받음
+
+   - 파이썬은 응답을 받아 저장, js는 응답을 받은상태에서 이미 할당부분을 넘어 출력되는 부분
+
+     ![image-20220110044602706](javaScript.assets/image-20220110044602706.png)
+
+4. 최종
+
+   <img src="javaScript.assets/image-20220110044636134.png" alt="image-20220110044636134" style="zoom:67%;" />
+
+- JavaScript는 Sing threaded
+- 컴퓨터가 여러 개의 CPUT를 가지고 있어도 main thread라 불리는 단일 스레드에서만 작업 수행
+- 이벤트를 처리하는 Call stack이 하나인 언어라는 의미
+- 문제해결
+  1. 즉시 처리하지 못하는 이벤트들을 다른 곳(Web API)으로 보내서 처리하도록 한다
+  2. 처리된 이벤트들은 처리된 순서대로 대기실(Task queue)에 줄을 세워 놓는다
+  3. Call stack이 비면 담당장(Event Loop)가 대기 줄에서 가장 오래된 (제일 앞의)이벤트를 Call stack으로 보낸다
+
+
+
+##### * JavaScript 동작원리
+
+- 자바스크립트는 싱글 쓰레드 기반 언어
+
+  - 호출 스택이 하나 = 한 번에 한 작업만 처리 가능
+  - 호출 스택 : 프로그램 상에서 어디에 있는지를 기록하는 자료구조
+  - 호출 스택이 최대 허용치를 넘으면 브라우저에서 에러발생
+
+- setTimeout, EventListener, Ajax 같이 처리가 오래걸리는 코드는 동작순서가 뒤로 밀리고 빠르게 처리가능한 코드부터 처리한 뒤 처리된다.
+
+  - 코드
+
+    ```javascript
+    function multiply(x, y) {
+        return x * y;
+    }
+    function printSquare(x) {
+        var s = multiply(x, x);
+        console.log(s);
+    }
+    printSquare(5);
+    ```
+
+  - 실행 결과
+
+    <img src="javaScript.assets/image-20220110025944475.png" alt="image-20220110025944475" style="zoom:50%;" />
+
+- 반복문 코드를 짤 때 반복이 깊게 일어나면 js로는 구현하지 않는게 좋다.
+
+  - ex) 30초가 걸리는 어려운 연산이 있을 때 eventListener는 30초 뒤에 실행된다.
+    - 어려운 연산이 해결될 때까지 브라우저는 기능이 정지된다.
+  - 비동기 콜백이 필요
+
+
+
+##### * Concurrency model
+
+- Event loop를 기반으로 하는 동시성 모델
+
+1. Call stack
+   - 요청이 들어올 때마다 해당 요청을 순차적으로 처리하는 Stack(LIFO)형태의 자료 구조
+2. WebAPI(Browser API)
+   - JavaScript 엔진이 아닌 브라우저 영역에서 제공하는 API
+   - setTimeout(), DOM events, AJAX로 데이터를 가져오는 시간이 소요되는 일들을 처리
+     - setTimeout()의 설정시간은 출력을 보장하는 것이 아니라, TaskQueue로 넘어가는데 시간
+3. TaskQueue(Event Queue, Message Queue)
+   - 비동기 처리된 callback 함수가 대기하는 Queue(FIFO)형태의 자료 구조
+   - main  thread가 끝난 후 실행되어 후속 JavaScript코드가 차단 되는 것을 방지
+
+4. Event Loop
+   - Call Stack이 비어있는지 확인
+   - 비어 있는 경우 Task Queue에서 실행 되기 중인 callback함수가 있는지 확인
+   - Task Queue에 대기 중인 callback 함수가 있다면 가장 앞에 있는 callback 함수를 Call stack으로 push
+
+
+
+##### * Zero delays
+
+- 실제로 0ms 후에  callback함수가 시작된다는 의미가 아님
+- 실행은 Task Queue에 대기 중인 작업 수에 따라 다르며 해당 예시에서는 callback 함수의 메시지가 처리기 던에 'HI', 'Buy'가 먼저 출려됨
