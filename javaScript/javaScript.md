@@ -630,4 +630,4 @@
 ##### * Zero delays
 
 - 실제로 0ms 후에  callback함수가 시작된다는 의미가 아님
-- 실행은 Task Queue에 대기 중인 작업 수에 따라 다르며 해당 예시에서는 callback 함수의 메시지가 처리기 던에 'HI', 'Buy'가 먼저 출려됨
+- 실행은 Task Queue에 대기 중인 작업 수에 따라 다르며 해당 예시에서는 callback 함수의 메시지가 처리기 던에 'HI', 'Buy'가 먼저 출력됨
