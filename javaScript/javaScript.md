@@ -979,6 +979,37 @@
      - 각각의 callback은 주어진 순서대로 하나하나 실행하게 된다
      - Chaining은 Promise의 가장 뛰어난 장점
 
+- ex)
+
+  ```html
+  <script>
+    const URL = 'https://dog.ceo/api/breeds/image/random'
+    const myButton = document.querySelector('button')
+    
+    //버튼을 클릭하면, dog api로 요청을 보냄
+    myButton.addEventListener('click', function() {
+        axios.get(URL)
+          .then(response => {
+            return response.data
+          })
+          .then(response => {
+            const imgUrl = response.message
+            // img 태그 생성
+            const newImgTag = document.createElement('img')
+            // img 태그의 src 속성에 imgUrl 값 할당
+            newImgTag.src = imgUrl
+            // div 태그의 자식 태그로 완성된 img 태그를 삽입
+            const dogBox = document.querySelector('.dog-box')
+            dogBox.appendChild(newImgTag)
+          })
+          .catch(error => {
+            console.log(error)
+          })
+    })
+  </script>
+
+
+
 
 
 ##### * async & await
