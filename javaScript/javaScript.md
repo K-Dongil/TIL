@@ -559,6 +559,8 @@
 
 4. 최종
 
+   - 결과적으로 변수 todo에는 응답 데이터가 할당되지 않고 빈 문자열이 출력
+
    <img src="javaScript.assets/image-20220110044636134.png" alt="image-20220110044636134" style="zoom:67%;" />
 
 - JavaScript는 Sing threaded
@@ -810,6 +812,37 @@
 
 
 
+##### * Axios
+
+- Promise based HTTP client for the browser and Node.js
+  - 응답을 Promise 객체로 준다
+  - Promise 객체에는 config, data, headers, request, status, statusText 등 값들이 존재
+- 브라우저를 위한 Promise 기반의 클라이언트
+
+- 원래는 "XHR"이라는 브라우저 내장 객체를 활용해 AJAX 요청을 처리하는데, 이보다 편리한 AJAX 요청이 가능하도록 도움을 준다
+  - 확장 가능한 인터페이스와 함께 패키지로 사용이 간편한 라이브러리를 제공
+
+- [Axios를 사용하기 위해서는 설치 혹은 CDN으로 불러오기 작업 필요](https://github.com/axios/axios)
+
+  ```css
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+- XMLHttpRequest -> Axios 변경
+
+  - XMLHttpRequest를 사용했을 때 todo에 요청에 따른 응답의 값이 들어있지 않았었다
+  - Axios의 .then()을 사용하면 성공을 했을 때 콜백함수가 실행되므로 data가 제대로 넘어온다
+    - 값의 누락X
+
+  <img src="javaScript.assets/image-20220114234729030.png" alt="image-20220114234729030" style="zoom:50%;" />
+
+- ex)
+
+  <img src="javaScript.assets/image-20220115000112628.png" alt="image-20220115000112628" style="zoom: 67%;" />
+
+
+
+
+
 ##### * Promise
 
 - Promise객체는 axios.get(URL)에 대한 응답의 결과
@@ -858,6 +891,8 @@
 
   - .then이 하나라도 실패하면(거부 되면) 동작 (동기식의 'try-except'구문과 유사)
 
+  - axios에 요청을 보내는 주소가 잘못되었을 때도 .catch()가 실행된다
+
   - 이전 작업의 실패로 인해 생성된 error 객체는 catch 블록 안에서 사용할 수 있음
 
     ```javascript
@@ -883,14 +918,16 @@
 
     - .then() 세트 1개당 promise를 반환한다
 
-  - .then()과 .catch() 메서드는 모두 promise를 반환하기 때문에 chaining 가능
+  - .then()과 .catch() 메서드는 모두 promise를 반환하기 때문에 **chaining** 가능
 
     - 반환 값이 반드시 있어야함
+      - 다음 콜백함수에서 반환 값을 인자로 사용
     - 반환 값이 없다면 callback 함수가 이전의 promise 결과를 받을 수 없음
 
     ```javascript
     const myPromise = axios.get(URL)
     
+    //chaining
     axios.get(URL)
       .then(response => { // response는 myPromise(axios.get(URL))의 결과
         return response.data // 결과
@@ -941,3 +978,7 @@
   3. .then()을 여러 번 사용하여 여러 개의 callback 함수를 추가할 수 있음(Chaining)
      - 각각의 callback은 주어진 순서대로 하나하나 실행하게 된다
      - Chaining은 Promise의 가장 뛰어난 장점
+
+
+
+##### * async & await
