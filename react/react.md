@@ -51,6 +51,10 @@
 
   -  main페이지에 들어갈 HTML 짜는 곳
 
+  - return 소괄호 안에는 무조건 하나의 html tag만 시작하고 끝나야 한다. (하나의 요소)
+
+    - 하나의 요소 안에 다른 태그들이 들어가있는건 괜찮다.
+
     ```react
     function App() {
       return (
@@ -293,7 +297,7 @@
     3. 변경함수()의 인자에 수정한 복사본을 집어넣는다
        - 변경함수(수정한 복사본)
 
-  - ex) event를 이용한 state 값 바꾸기
+    ##### * event를 이용한 state 값 바꾸기
 
     - onclick={ 실행할 함수 }
     - onclick={ (event)=>{실행할 내용} }
@@ -303,12 +307,12 @@
     ```react
     function App() {
     
-      let [글제목, 글제목변경] = useState(['남자가 좋아하는 음식 추천', '살 뺄 거야', '야식 추천']);
+      let [글제목, 글제목변경] = useState(['남자가 좋아하는 음식', '살 뺄 거야', '야식 추천']);
       let [따봉, 따봉변경] = useState(0)
     
       function 제목바꾸기(){
         const newArray = [...글제목]; // deepcopy
-        newArray[0] = '여자가 좋아하는 음식 추천';
+        newArray[0] = '여자가 좋아하는 음식';
         글제목변경( newArray );
       }
     
@@ -325,7 +329,7 @@
           </div>
           <button onClick={ 제목바꾸기 }>버튼</button>
           <div className='list'>
-            <h3> { 글제목[0] } <span onClick={ 따봉바꾸기 }> { 따봉 }</span></h3>
+            <h3> { 글제목[0] } <button onClick={ 따봉바꾸기 }> { 따봉 }</button></h3>
             <p>2022년 1월월 15일 발행</p>
             <hr/>
           </div>
@@ -335,3 +339,92 @@
 
 
 
+
+
+##### * Component 문법
+
+- HTML을 줄여서 쓸 수 있는 방법
+
+  - HTML을 한 단어로 줄여서 쓴다
+
+- Component를 만드는 기준
+
+  1. 반복적으로 쓰이는 HTML 덩어리들
+  2. 자주 바뀌는 UI 부분 (자주 재렌더링 일어나는 부분)
+     - 성능적으로 좋음
+
+- Component 단점
+
+  - state 쓸 때 복잡해짐
+    - 상위 component에서 만든 state 쓰려면 props 문법 이용해야함
+
+- Component 만드는 방법
+
+  1. 함수 만들고 이름 짓기
+
+  2. 축약을 원하는 HTML 함수 안에 넣기
+
+  3. 원하는 곳에서 <함수명></함수명>
+
+     ```react
+     function App() {
+       return (
+         <div className="App">
+           {/* 재사용 하고싶은 HTML 
+           <div className='modal'>
+             <h2>제목</h2>
+             <p>날짜</p>
+             <p>상세내용</p>
+           </div>
+           */}
+     
+           {/* 사용 */}
+           <Compo></Compo>
+     
+         </div>
+       );
+     }
+     
+     function Compo(){ // 이름 짓기
+       return (
+         // 원하는 HTML 담기
+         <div className='modal'>
+           <h2>제목</h2>
+           <p>날짜</p>
+           <p>상세내용</p>
+         </div>
+       )
+     }
+
+- 유의 사항
+
+  1. 이름은 대괄호로 시작
+
+  2. 함수의 return() 안에는 태그 한개만 사용이 가능하다
+
+     - 태그 하나로 묶어야 한다.
+
+  3. return() 내부를 묶을 때 의미없이 div로 묶기 싫다면 Fragment 문법인 <></> 사용
+
+     ```react
+     function App() {/* function App도 하나의 Component */}
+       return (
+         <div className="App">
+           {/* 사용 */}
+           <Compo></Compo>
+         </div>
+       );
+     }
+     
+     function Compo(){ // 이름 짓기
+       return (
+         // 원하는 HTML 담기
+         <>
+           <div className='modal'>
+             <h2>제목</h2>
+             <p>날짜</p>
+             <p>상세내용</p>
+           </div>
+         </>
+       )
+     }
