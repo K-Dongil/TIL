@@ -220,9 +220,17 @@
 
     ```react
     // <h1 className="greeting">Hello, world!</h1>
-    const element = React.createElement(
+    // jsx 문법
+    const element = React.createElement( // element같은 객체를 React 엘리먼트라 한다
       'h1',
       {className: 'greeting'},
+      'Hello, world!'
+    );
+    
+    //js 문법
+    const element = React.createElement(
+      'h1',
+      {className:'greeting'},
       'Hello, world!'
     );
     ```
@@ -230,3 +238,100 @@
 
 
 ##### * state
+
+- 데이터를 저장할 수 있는 방법
+  1. 변수에 저장
+  2. state에 저장
+     - 웹이 App처럼 동작하게 만들기 위하여
+     - state로 만들어진 data가 변경되면 HTML이 자동으로 재렌더링이 된다
+     - 자주 바뀌는 변수, 중요한 데이터는 state를 사용
+- 변수 대신 쓰는 데이터 저장 공간
+- useState()를 이용해 만들어야 한다
+- 문자, 숫자, array, object 전부 저장가능
+
+- 사용 방법
+
+  1. import
+
+     - react에 있는 내장함수를 쓰겠다
+
+     ```react
+     import React, { useState } from 'react';
+     ```
+
+  2. useState 선언
+
+     ```react
+     useState('남자가 좋아하는 음식 추천');
+     ```
+
+  3. 코드 실행
+
+     - useState는 코드가 실행되면 array[a, b]를 생성한다
+     - 생성된 array[a, b]를 저장 (destructuring 문법)
+       - a, b는 각 변수에 저장된다
+
+     ```react
+     let [a, b] = useState('남자가 좋아하는 음식 추천');
+     실행하면 useState는 array[a, b]가 나온다.
+     a : ''안에 있는 data값 (state 데이터)
+     b : data인 state 정정해주는 함수 (state 데이터 변경 함수)
+     
+     결과 : 변수 a와 변수 b에 각각 저장된다
+
+- state 값 수정
+
+  - 리액트 원칙 : immutable data
+
+  - Array, Object data 수정 방법
+
+    1. 기존 state를 deepcopy한다
+       - [...복사할 Array] {...복사할 Object data}
+       - ...은 중괄호, 대괄호를 모두 제거해 달라는 의미
+       - 괄호를 제거 해주었으니 다시 중괄호 또는 대괄호에 담아 새로운 Object, Array를 생성
+    2. 복사본에 수정사항을 반영한다
+    3. 변경함수()의 인자에 수정한 복사본을 집어넣는다
+       - 변경함수(수정한 복사본)
+
+  - ex) event를 이용한 state 값 바꾸기
+
+    - onclick={ 실행할 함수 }
+    - onclick={ (event)=>{실행할 내용} }
+    - onclick의 중괄호 안에 함수명()가 아닌 함수명만 쓰기
+      - 함수명()는 event가 없어도 실행 된다.
+
+    ```react
+    function App() {
+    
+      let [글제목, 글제목변경] = useState(['남자가 좋아하는 음식 추천', '살 뺄 거야', '야식 추천']);
+      let [따봉, 따봉변경] = useState(0)
+    
+      function 제목바꾸기(){
+        const newArray = [...글제목]; // deepcopy
+        newArray[0] = '여자가 좋아하는 음식 추천';
+        글제목변경( newArray );
+      }
+    
+      function 따봉바꾸기(){
+        let num = 따봉;
+        num = num + 1;
+        따봉변경(num)
+      }
+    
+      return (
+        <div className="App">
+          <div className="black-nav">
+            <div>개발 Blog</div>
+          </div>
+          <button onClick={ 제목바꾸기 }>버튼</button>
+          <div className='list'>
+            <h3> { 글제목[0] } <span onClick={ 따봉바꾸기 }> { 따봉 }</span></h3>
+            <p>2022년 1월월 15일 발행</p>
+            <hr/>
+          </div>
+        </div>
+      );
+    }
+
+
+
