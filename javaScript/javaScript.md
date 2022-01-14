@@ -614,20 +614,201 @@
    - 요청이 들어올 때마다 해당 요청을 순차적으로 처리하는 Stack(LIFO)형태의 자료 구조
 2. WebAPI(Browser API)
    - JavaScript 엔진이 아닌 브라우저 영역에서 제공하는 API
+     - js는 한번에 하나(스택에서 한개의 일)만 수행 Stack에서 처리할 수 없는 일에 대해서는 Web API로 보낸다
    - setTimeout(), DOM events, AJAX로 데이터를 가져오는 시간이 소요되는 일들을 처리
      - setTimeout()의 설정시간은 출력을 보장하는 것이 아니라, TaskQueue로 넘어가는데 시간
 3. TaskQueue(Event Queue, Message Queue)
    - 비동기 처리된 callback 함수가 대기하는 Queue(FIFO)형태의 자료 구조
+     - WebAPI에서 처리되는 event들이 바로 Call Stack으로 Push되지않고 TaskQueue에서 대기
    - main  thread가 끝난 후 실행되어 후속 JavaScript코드가 차단 되는 것을 방지
-
+   
 4. Event Loop
    - Call Stack이 비어있는지 확인
    - 비어 있는 경우 Task Queue에서 실행 되기 중인 callback함수가 있는지 확인
    - Task Queue에 대기 중인 callback 함수가 있다면 가장 앞에 있는 callback 함수를 Call stack으로 push
+
+- ex)예시코드
+
+  ```javascript
+  console.log('Hi')
+  
+  setTimeout(function ssafy() {
+    console.log('SSAFY')
+  }, 3000)
+  
+  console.log('Bye')
+
+- 동작원리
+
+  1. Call Stack으로 들어가고 출력된 뒤 빠진다
+
+     <img src="C:\Users\Administrator\Desktop\TIL\javaScript\javaScript.assets\image-20220114152752700.png" alt="image-20220114152752700" style="zoom: 50%;" />
+
+  2. setTimeout이 Call Stack에 들어갔다가 ssafy 함수를 바로 실행할 수 없으므로 WebAPI로 보낸다.
+
+     ![image-20220114153124907](C:\Users\Administrator\Desktop\TIL\javaScript\javaScript.assets\image-20220114153124907.png)
+
+  3. Call Stack으로 들어가고 출력된 뒤 빠진다
+
+     <img src="C:\Users\Administrator\Desktop\TIL\javaScript\javaScript.assets\image-20220114153330419.png" alt="image-20220114153330419" style="zoom:50%;" />
+
+  4. 3초가 지나면 WebAPI에 있던 ssafy콜백함수가 Task Queue로 이동
+
+     ![image-20220114153514644](C:\Users\Administrator\Desktop\TIL\javaScript\javaScript.assets\image-20220114153514644.png)
+
+  5. ssafy 콜백함수가 Call Stack으로 이동한 뒤 호출되고 빠진다.
+
+     <img src="C:\Users\Administrator\Desktop\TIL\javaScript\javaScript.assets\image-20220114153727703.png" alt="image-20220114153727703" style="zoom:50%;" />
 
 
 
 ##### * Zero delays
 
 - 실제로 0ms 후에  callback함수가 시작된다는 의미가 아님
-- 실행은 Task Queue에 대기 중인 작업 수에 따라 다르며 해당 예시에서는 callback 함수의 메시지가 처리기 던에 'HI', 'Buy'가 먼저 출력됨
+- 실행은 Task Queue에 대기 중인 작업 수에 따라 다르며 해당 예시에서는 callback 함수의 메시지가 처리되기 전에 'HI', 'Buy'가 먼저 출력됨
+  - delay(지연)는 JavaScript가 요청을 처리하는데 필요한 최소 시간이다(보장된 시간이 아님)
+- setTimeout 함수에 특정 시간제한을 설정했더라도 대기 중인 메시지의 모든 코드가 완료될 때까지 대기해야 한다.
+
+
+
+##### * 순차적인 비동기 처리하기
+
+- Web API로 들어오는 순서는 중요하지 않고, 어떤 이벤트가 먼저 처리되느냐가 중요
+  - 실행 순서 불명확
+- 실행 순서 불명확 현상을 해결하기 위해 순차적인 비동기 처리를 위한 2가지 작성 방식
+  1. Async callbacks(비동기 콜백)
+     - 백그라운드에서 실행을 시작할 함수를 호출할 때 인자로 지정된 함수
+     - ex) addEventListener()의 두번째 인자 : 콜백함수
+  2. promise-style
+     - Modern Web APIs에서의 새로운 코드 스타일
+     - XMLHttpRequest 객체를 사용하는 구조보다 조금 더 현대적인 버전
+
+
+
+
+
+##### * Callback Function
+
+- 다른 함수에 인자로 전달된 함수
+- 외부 함수 내에서 호출되어 루틴 또는 작업을 완료함
+
+- 동기식, 비동기식 모두 사용됨
+  - 비동기 작업이 완료된 후 코드 실행을 계속하는 데 주로 사용
+- 비동기 작업이 완료된 후 코드 실행을 계속하는 데 사용되는 경우 : 비동기 콜백(Async callbacks)
+
+- JavaScript의 함수는 일급객체(일급함수)
+
+  - 다른 객체들에 적용할 수 있는 연산을 모두 지원하는 객체(함수)
+
+  - 일급 객체의 조건
+
+    1. 인자로 넘길 수 있어야 한다
+    2. 함수의 반환 값으로 사용할 수 있어야 한다
+    3. 변수에 할당할 수 있어야 한다
+
+  - Callback Function 예시
+
+    ```javascript
+    // 
+    const myFunc = function (func) {
+        return func
+    }
+    
+    const myArgumentFunc = function () {
+        return 'Hello'
+    }
+    
+    const result = myFunc(myArgumentFunc)
+    console.log(result)
+    /* 출력
+    f () {
+        return 'Hello'
+    }
+    */
+    
+    // map
+    const nums = [1, 2, 3]
+    const doubleNums = nums.map(num => {
+        return num * 2
+    })
+    console.log(doubleNums) // 출력 : [2, 4, 6]
+    
+    // Array Helper Method (array 메서드)
+    const numbers = [1, 2, 3]
+    const newNumbers = []
+    
+    numbers.forEach(num => {
+        newNumbers.push(num + 1)
+    })
+    console.log(newNumbers) // [2, 3, 4]
+    
+    // setTimeout
+    const helloworld = function () {
+        console.log('happy coding!!')
+    }
+    setTimeout(helloworld, 3000)
+    console.log('unhappy coding!!')
+    /* unhappy coding!! 먼저 출력 후 WebAPI에서 3초간 돌고 que -> callstack -> 출력 */
+    
+    //addEventListener
+    <body>
+      <button>버튼</button>
+    
+      <script>
+        const myButton = document.querySelector('button')
+    	myButton.addEventListener('click', function() { // 두번째 인자가 콜백함수
+            console.log('button clicked!!')
+        })
+      </script>
+    </body>
+    ```
+
+    <img src="C:\Users\Administrator\Desktop\TIL\javaScript\javaScript.assets\image-20220114194600254.png" alt="image-20220114194600254" style="zoom:80%;" />
+
+
+
+##### * Async callbacks
+
+- 백그라운드에서 코드 실행을 시작할 함수를 호출할 때 인자로 지정된 함수
+
+- 백그라운드 코드 실행이 끝나면 callback 함수를 호출하여 작업이 완료되었음을 알리거나, 다음 작업을 실행하게 할 수 있음
+
+  - ex) adEventListener()의 두번째 매개변수
+
+- callback 함수를 다른 함수의 인자로 전달할 때, 함수의 참조를 인자로 전달할 뿐이지 즉시 실행되지 않고, 함수의 body에서 called back됨.
+
+  - 정의된 함수는 때가 되면 callback 함수를 실행하는 역할을 함
+  - addEventListener()에서 콜백함수는 바로 실행되지 않는다
+
+- Why use callback?
+
+  - 콜백 함수는 명시적인 호출이 아닌 특정 루틴 혹은 action에 의해 호출되는 함수
+  - Django의 "요청이 들어오면", event의 경우 "특정 이벤트가 발생하면"이라는 조건으로 함수를 호출 할 수 있었던 건 "Callback function"개념 때문에 가능하다
+
+  - 비동기 로직을 수행할 때 callback 함수는 필수
+    - 명시적인 호출이 아니라 다른 함수의 매개변수로 전달하여 해당 함수 내에서 특정 시점에 호출
+
+
+
+##### * callback Hell(콜백지옥)
+
+- 순차적인 연쇄 비동기 작업을 처리하기 위해 "callback 함수를 호출하고, 그 다음 callback 함수를 호출하고, 또 그 함수의 callback 함수를 호출하고.."의 패턴이 지속적으로 반복됨
+
+  - 여러 개의 연쇄 비동기 작업을 할 때 마주하는 상황
+
+  - pyramid of doom(파멸의 피라미드)라고도 한다
+
+- 콜백지옥이 일어나면 디버깅, 코드 가독성이 어려워진다
+
+  <img src="javaScript.assets/image-20220114225441578.png" alt="image-20220114225441578" style="zoom: 67%;" />
+
+- 해결
+  1. Keep your code shallow (코드의 깊이를 얕게 유지)
+  2. Modularize (모듈화)
+  3. Handle every single error (모든 단일 오류 처리)
+  4. Promise callbacks (Promise 콜백 방식 사용)
+
+
+
+##### * Promise
+
