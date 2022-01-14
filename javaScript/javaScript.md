@@ -812,3 +812,132 @@
 
 ##### * Promise
 
+- Promise객체는 axios.get(URL)에 대한 응답의 결과
+
+  ```javascript
+  const myPromise = axios.get(URL)
+  console.log(myPromise) // 출력 : Promise Object
+
+-  비동기 작업의 최종 완료 또는 실패를 나타내는 객체
+
+  - 미래의 결과(완료 또는 실패) 값을 타나냄
+  - 미래의 어떤 상황에 대한 약속
+
+- 연쇄작업에 대해서 구조를 나눠 순차적으로 모듈화
+
+  - 순서보장, 가독성 증가
+
+- .then()과 .error()의 콜백함수가 무조건 다음 .then()이나 .catch()로 넘어가려면 return이 존재해야 한다
+
+- .then(callback함수)
+
+  - 성공(이행)에 대한 약속
+
+  - 이전 작업(promise)이 성공했을 때(이행했을 때) 수행할 작업을 나타내는 callback 함수
+
+  - 각 callback 함수는 이전 작업의 성공 결과를 인자로 전달받는다.
+
+    ```javascript
+    const myPromise = axios.get(URL)
+    
+    axios.get(URL)
+      .then(response => { // response는 myPromise(axios.get(URL))의 결과
+        return response.data // 결과
+    })
+    // 위의 .then()이 성공적으로 이행된다면 다음 .then()이 실행
+    // 다음 then()으로 오기 위해서 이전에 콜백함수가 return이 있어야 한다.
+      .then(response => { // response는 바로 위의 .then()의 결과인 response.data
+        return response.title
+    })
+
+  - 성공했을 때의 코드를 callback 함수 안에 작성
+
+- .catch(callback함수)
+
+  - 실패(거절)에 대한 약속
+
+  - .then이 하나라도 실패하면(거부 되면) 동작 (동기식의 'try-except'구문과 유사)
+
+  - 이전 작업의 실패로 인해 생성된 error 객체는 catch 블록 안에서 사용할 수 있음
+
+    ```javascript
+    const myPromise = axios.get(URL)
+    
+    axios.get(URL)
+      .catch(error => { // error는 myPromise(axios.get(URL))의 결과가 인자로 들어온다
+        console.log(error)
+    })
+
+- .finally(callback함수)
+
+  - Promise 객체를 반환
+  - 결과와 상관없이 무조건 지정된 callback 함수가 실행
+  - 어떠한 인자도 전달받지 않는다
+    - Promise가 성공되었는지 거절되었는지 판단할 수가 없기 때문
+  - 무조건 실행되어야 하는 절에서 활용
+    - .then()과 .catch() 블록에서의 코드 중복을 방지
+
+- Promise methods
+
+  - .then() 블록은 서로 다른 promise를 반환
+
+    - .then() 세트 1개당 promise를 반환한다
+
+  - .then()과 .catch() 메서드는 모두 promise를 반환하기 때문에 chaining 가능
+
+    - 반환 값이 반드시 있어야함
+    - 반환 값이 없다면 callback 함수가 이전의 promise 결과를 받을 수 없음
+
+    ```javascript
+    const myPromise = axios.get(URL)
+    
+    axios.get(URL)
+      .then(response => { // response는 myPromise(axios.get(URL))의 결과
+        return response.data // 결과
+    })
+    // 위의 .then()이 성공적으로 이행된다면 다음 .then()이 실행
+    // 다음 then()으로 오기 위해서 이전에 콜백함수가 return이 있어야 한다.
+      .then(response => { // response는 바로 위의 .then()의 결과인 response.data
+        return response.title
+    })
+      .catch(error => { // error는 위의 .then() 결과가 인자로 들어온다
+        console.log(error)
+    })
+      .finally(function () {
+        console.log('나는 마지막에 무조건 실행!!')
+    })
+
+- callback Hell를 Promise로 바꿔보기
+
+  - callback Hell
+
+    ```javascript
+    work1(function(resul1) {
+      work2(result1, function(result2) {
+        work3(result2, function(result3) {
+          console.log('최종 결과: ' + result3)
+        })
+      })
+    })
+
+  - Promise
+
+    ```javascript
+    work1().then(function(result1) {
+        return work2(result1)
+    })
+    .then(function(result2) {
+        return work3(result2)
+    })
+    .then(function(result3) {
+        console.log('최종결과: ' + result3)
+    })
+    .catch(failureCallback)
+
+- Promise가 Async callback 작성 스타일과 달리 Promise가 보장하는 특징
+  1. callback 함수는 JavaScript의 Event Loop가 현재 실행 중인 Call Stack을 완료하기 이전에는 절대 호출되지 않음
+     - Promise callback함수는 Event Queue에 배치되는 엄격한 순서로 호출됨
+  2. 비동기 작업이 성공하거나 실패한 뒤에 .then() 메서드를 이용하여 추가한 경우에도 1번과 똑같이 동작
+  3. .then()을 여러 번 사용하여 여러 개의 callback 함수를 추가할 수 있음(Chaining)
+     - 각각의 callback은 주어진 순서대로 하나하나 실행하게 된다
+     - Chaining은 Promise의 가장 뛰어난 장점
