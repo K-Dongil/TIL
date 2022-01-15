@@ -500,7 +500,7 @@
   - 주로 객체(object)의 **열거가능한** 속성값들을 순회할 때 사용
 
     - 열거가능한 것과 조회가능한 것은 다르다
-    - defineproperty에서 enumerable이 true인 속성의 키값(인덱스)만 가져온다
+    - 객체의 data인 defineproperty에서 enumerable이 true인 속성의 키값(인덱스)만 가져온다
 
   - 배열도 순회 가능하지만 인덱스 순으로 순회한다는 보장이 없으므로 권장X
 

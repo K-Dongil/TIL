@@ -1015,12 +1015,30 @@
 ##### * async & await
 
 - ES8에 등장한 비동기 코드를 작성하는 새로운 방법
+
 - 기존 Promise 시스템 위에 구축된 syntactic sugar
   - promise 구조의 then chaining을 제거
   - 비동기 코드를 조금 더 동기 코드처럼 표현
   - Syntactic sugar
     - 더 쉽게 읽고 표현할 수 있도록 설계된 프로그래밍 언어 내의 구문
     - 문법적 기능은 그대로 유지, 사용자가 직관적으로 코드를 읽을 수 있게 만듦
+
+- async & await 사용방법
+
+  1. 함수의 앞에 async라는 예약어를 붙인다
+  2. 함수의 내부 로직 중 HTTP 통신을 하는 비동기 처리 코드 앞에 await을 붙인다
+     - 비동기 처리 메서드가 꼭 Promise 객체를 반환해야 await가 의도한대로 동작
+     - await의 대상이 되는 비동기 처리 코드는Axios 등 promise를 반환하는API 호출 함수
+  3. 예외 처리
+     - .then() -> try{}
+     - .catch() -> catch{}
+
+  - ex)
+
+    ```
+    async function 함수명() {
+      await 비동기 처리 메서드명();
+    }
 
 - Promise -> async & await로 변환
 
@@ -1033,14 +1051,3 @@
     - fetchDogImage함수가 서버에서 사용자 정보를 가져오는 HTTP 통신코드라 가정
 
     <img src="javaScript.assets/image-20220115000754508.png" alt="image-20220115000754508" style="zoom:80%;" />
-
-- 함수의 앞에 async라는 예약어를 붙인다
-
-- 함수의 내부 로직 중 HTTP 통신을 하는 비동기 처리 코드 앞에 await을 붙인다
-
-  - 비동기 처리 메서드가 꼭 Promise 객체를 반환해야 await가 의도한대로 동작
-  - await의 대상이 되는 비동기 처리 코드는Axios 등 promise를 반환하는API 호출 함수
-
-- 예외 처리
-  - .then() -> try{}
-  - .catch() -> catch{}
