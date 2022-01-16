@@ -440,15 +440,19 @@
 - { 조건식 ? 참일 때 실행할 코드 : 거짓일 때 실행할 코드}
 
   ```react
-  {
-    1 < 3 ? console.log('True입니다') : console.log('False입니다')
+  function App() {/* function App도 하나의 Component */}
+    {
+      1 < 3 ? console.log('True입니다') : console.log('False입니다')
+    }
+    {
+      1 < 3 ?
+      console.log('True입니다')
+      : console.log('False입니다')
+    }
+    // True입니다 출력된다.
+    return (
+    );
   }
-  {
-    1 < 3 ?
-    console.log('True입니다')
-    : console.log('False입니다')
-  }
-  // True입니다 출력된다.
 
 
 
@@ -462,9 +466,9 @@
 
   ```react
   {
-      modal === true // 어떤 경우에 modal창을 보여줄까에 대한 조건
-      ? <Modal></Modal> // Modal 창
-      : null	// modal을 보여주고 싶지 않을 때, 아무것도 아닌 HTML을 보내고 싶을 때(텅빈 HTML)
+    modal === true // 어떤 경우에 modal창을 보여줄까에 대한 조건
+    ? <Modal></Modal> // Modal 창
+    : null // modal을 보여주고 싶지 않을 때, 아무것도 아닌 HTML을 보내고 싶을 때(텅빈 HTML)
   }
 
 - 리액트에서는 UI를 만들 때 state 데이터를 이용한다
@@ -500,6 +504,15 @@
       </div>
       );
     }
+    function Modal(){
+      return (
+       <div className="modal">
+         <h2>제목</h2>
+         <p>날짜</p>
+         <p>상세내용</p>
+       </div>
+      );
+    }
 
 
 
@@ -531,7 +544,7 @@
       let newArray = array.map(function(a){ // a는 array에 담긴 데이터
         return a*2
       }) // newArray는 [2, 4, 6, 8, 10]
-      return()
+      return();
     }
 
 - for 반복문을 쓰고 싶다면  반복된 UI를 return 해주는 함수를 만든다
@@ -563,8 +576,59 @@
            HTML 잔뜩있는 곳
            { forUI() } /* 이자리에 array에 들어있는 HTML이 표시된다 */
          </div>
-       )
+       );
      }
 
 
 
+##### * props
+
+- App Component 안에 있는 state데이터를 다른 component에 전송할 때 사용
+
+- Modal Component를 App Component에서 삼항연산자를 이용하여 Modal창 조작할 때, App이 부모 컴포넌트, Modal이 자식 컴포넌트
+
+  - App이 가진 State를 Modal Component에서 바로 쓸 수 없지만, 쓸 수 있게 Modal에 전송이 가능하다
+
+  - 자식컴포넌트는 부모 컴포넌트가 가진 state를 전송해줘야 사용이 가능하다.
+
+    <img src="react.assets/image-20220116201539302.png" alt="image-20220116201539302" style="zoom:50%;" />
+
+- props로 자식에게 state 전해주는 방법
+
+  1. <자식컴포넌트 전송할변수명={전송할state}/ >
+
+     - 전송할변수명을 보통 전송할state와 똑같이 작명한다.
+       - 밑의 예시에서는 구분을 위해 다르게 표현함.
+
+     ```react
+     function App(){
+       let [modal, modal변경] = useState(false);
+       let [글제목, 글제목변경] = useState(['남자가 좋아하는 음식', '살 뺄 거야', '야식 추천']);
+       return (
+       <div>
+         <button onClick={ ()=>{ modal변경(!modal) } }>Modal(On/Off)</button>
+     	{
+           modal === true
+           ? <Modal 전송데이터={ 글제목 }></Modal>
+           : null
+     	}
+       </div>
+       );
+     }
+     ```
+
+  2. 자식컴포넌트에서 전송된 props 파라미터를 인자에 입력 후 사용 (전송된 props들을 받아온다)
+
+     - 부모에서 전달받은 props들은 인자로 적은 '전송받은props들'에 모두 들어있다.
+
+     ```react
+     function Modal(전송받은props들){
+       return (
+        <div className="modal">
+          <h2>{ 전송받은props들.전송데이터[0] }</h2>
+          <p>날짜</p>
+          <p>상세내용</p>
+        </div>
+       );
+     }
+     ```
