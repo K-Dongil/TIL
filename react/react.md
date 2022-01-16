@@ -913,6 +913,24 @@
 
   - 한 파일에 한번만 사용이 가능하다
 
+  - Component를 파일로 관리하기
+
+    - 파일들은 대문자로 시작하는 것으로 설정한다
+
+    - Component 파일을 만들 때는 import React 필수
+
+    - Component 파일이 많아지면 src내에 폴더를 만들어 관리
+
+      ```react
+      import React, {useState} from 'react'
+      
+      function Detail(){
+        return (
+          <div>나는 component가 들어있는파일</div>
+        )
+      }
+      export default Detail;
+
 - import(가져오기)
 
   - import 변수명 from 경로
@@ -935,7 +953,11 @@
 
 
 
-##### * 페이지 나누기(라우팅)
+### 페이지 나누기(라우팅)
+
+- React Router 특징
+  - 페이지마다 다른 HTML파일이 아니다
+  - index.html 하나에 HTML 내용을 변경하면서 다른페이지처럼 보여주는 것
 
 - 여러가지 페이지를 만들고 싶을 때는 react-router-dom 라이브러리 이용
 
@@ -989,60 +1011,138 @@
      
      reportWebVitals();
 
-- Route
+##### * Route
 
-  1. App.js에서 import
+1. App.js에서 import
 
-     - Link, Route, Switch 태그 불러오기
+   - Link, Route, Switch 태그 불러오기
 
-       ```react
-       import { Link, Route, Switch } from 'react-router-dom'
+     ```react
+     import { Link, Route, Switch } from 'react-router-dom'
 
-  2. App.js에서 Route태그를 이용한 페이지 나누기
+2. App.js에서 Route태그를 이용한 페이지 나누기
 
-     - http://localhost:3000 주소로는 main페이지
+   - http://localhost:3000 주소로는 main페이지
 
-     - http://localhost:3000/detail 주소르는 detail페이지
+   - http://localhost:3000/detail 주소르는 detail페이지
 
-     - 리액트 라우터는 매칭이 되는 것들을 다 보여준다 -> exact 속성사용하기
+   - 리액트 라우터는 매칭이 되는 것들을 다 보여준다 -> exact 속성사용하기
 
-       - 경로가 정확히 일치할 때만 보여준다
+     - 경로가 정확히 일치할 때만 보여준다
 
-       ```react
-       import { Link, Route, Switch } from 'react-router-dom'
-       
-       function App() {
-         return (
-           <div className='App'>
-             <Route exact path="/">
-               <div>메인페이지</div> // main페이지 작업공간
-             </Route>
-             <Route exact path="/detail">
-               <div>detail페이지</div> // detail페이지 작업공간
-             </Route>
-           </div>
-         );
-       }
-       export default App;
+     ```react
+     import { Link, Route, Switch } from 'react-router-dom'
+     
+     function App() {
+       return (
+         <div className='App'>
+           <Route exact path="/">
+             <div>메인페이지</div> // main페이지 작업공간
+           </Route>
+           <Route exact path="/detail">
+             <div>detail페이지</div> // detail페이지 작업공간
+           </Route>
+         </div>
+       );
+     }
+     export default App;
 
-     - Route태그 안에 component라는 속성을 통해 component를 속성값으로 집어 넣을 수 있다
+   - Route태그 안에 component라는 속성을 통해 component를 속성값으로 집어 넣을 수 있다
 
-       ```react
-       function App() {
-         return (
-           <div className='App'>
-             <Route exact path="/">
-               <div>메인페이지</div> // main페이지 작업공간
-             </Route>
-             <Route exact path="/detail" component={detail}></Route>
-           </div>
-         );
-       }
-       
-       function detail(){
-         return (
-           <div>detail페이지</div>
-         )
-       }
-       ```
+     ```react
+     function App() {
+       return (
+         <div className='App'>
+           <Route exact path="/">
+             <div>메인페이지</div> // main페이지 작업공간
+           </Route>
+           <Route exact path="/detail" component={detail}></Route>
+         </div>
+       );
+     }
+     
+     function detail(){
+       return (
+         <div>detail페이지</div>
+       )
+     }
+     ```
 
+##### * Link
+
+- 페이지 이동하기 위해 쓰는 태그
+
+- Link태그에 to속성을 이용하여 이동한다
+
+  - 속성값은 이동할 주소
+
+  ```react
+  <Nav.Link ><Link to="/">Home</Link></Nav.Link>
+  <Nav.Link> <Link to='/detail'>Detail</Link> </Nav.Link>
+
+##### * history
+
+- useHistory 훅은 방문기록 등을 저장해놓은 object
+
+  - 뒤로가기, 특정경로로 이동시키기 가능
+
+- react-router-dom v5, react v16.3이상
+
+- useHistory 훅 import하기
+
+  ```react
+  import React, {useState} from 'react' // useState는 useHistory를 변수에 담기위해
+  import { useHistory } from 'react-router-dom';
+  ```
+
+- ex)
+
+  - useHistory의 goback (뒤로가기)
+
+    ```react
+    // 뒤로가는 버튼 생성
+    function App() {
+      let history = useHistory();
+      return (
+        <button onClick={()=>{
+      	  history.goBack();
+    	}}>뒤로가기</button>
+      )
+    }
+    ```
+
+  - useHistory의 push
+
+    ```react
+    // 특정 경로로 이동시키기
+    function App() {
+      let history = useHistory();
+      return (
+        <button onClick={()=>{
+      	  history.push('경로');
+    	}}>특정경로로 이동</button>
+      )
+    }
+
+##### * Switch 컴포넌트
+
+- 리액트 라우터는 매칭이 되는 것들을 다 보여준다
+
+- Switch는 여러개가 매칭이 돼도 하나만 매칭이 되게 해준다
+
+  - 중복을 허용하지 않는다
+  - 중복이 되면 맨 위의 Route를 선택한다
+
+  ```react
+  function App() {
+    return(
+      <Switch>
+        <Route path="/detail">Detail</Route>
+        <Route path="/:id">id</Route>
+      </Switch>
+    )
+  }
+
+
+
+##### 
