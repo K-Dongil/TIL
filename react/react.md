@@ -1192,6 +1192,13 @@
 
 
 
+### 스타일링
+
+##### * css reset
+
+- 모든 페이지에 필요한 CSS reset
+- 브라우저간 호환성 위해 사용
+
 ##### * styled-components 라이브러리
 
 - class 선언없이 Compontent에 CSS를 직접 넣어서 스타일링하기 (CSS in JS)
@@ -1255,10 +1262,110 @@
     function App() {
       return(
         <박스>
-          <제목 색상={ blue }>제목입니다</제목> // 보낼이름={변수명}
+          <제목 색상={ "blue" }>제목입니다</제목> // 보낼이름={변수명}
           <제목 색상="red">제목입니다</제목> // 보낼이름="일반문자"
         </박스>
       )
     }
     ```
 
+
+
+##### * SASS
+
+- CSS를 프로그래밍언어스럽게 작성가능한 Preprocessor
+
+  - css 문법을 다채롭게 만들어준다
+  - css에서 변수, 연산자, 함수, extend, import 사용가능
+
+- sass 문법
+
+  1. 변수에 데이터를 저장해서 쓸 수 있다
+
+     ```
+     $메인컬러 : #ff0000;
+     
+     .red {
+       color : $메인컬러;
+     }
+     ```
+
+  2. import를 쉽게 할 수 있다
+
+     - @import '파일주소'
+
+  3. nesting
+
+     - selector가 길어질 때 사용
+
+       ```
+       div.container h4 {
+         color: blue;
+       }
+       
+       div.container p {
+         color: green;
+       }
+       
+       div.container {
+         h4{ // div안에 있는 h4를 스타일링 줄 때
+           color:blue;
+         }
+         p{
+           color:green;
+         }
+       }
+       ```
+
+  4. extend
+
+     - 이미 만들어져 있는 스타일을 참조하고 싶을 때 사용
+
+       ```
+       .my-alert {
+         background-color: #eeeeee;
+         padding: 20px;
+         border-radius: 5px;
+         max-width: 500px;
+         width: 100%;
+         margin: auto;
+       }
+       
+       .my-alert-yellow {
+         @extend .my-alert;
+         background-color: #ffe591;
+       }
+       ```
+
+  5. 함수 생성
+
+     - 긴 코드 짤 때 함수를 만들어 축약가능
+
+       - @mixin
+
+     - 만들어진 함수를 가져다 쓸 때
+
+       - @include
+
+       ```
+       .my-alert {
+         @include 함수()
+       }
+       @mixin 함수() {
+         background-color: #eeeeee;
+         padding: 20px;
+         border-radius: 5px;
+         max-width: 500px;
+         width: 100%;
+         margin: auto;
+       }
+
+- node-sass 라이브러리
+
+  - 브라우저는 sass문법을 모른다
+  - sass로 작성한 파일을 다시 CSS로 컴파일해주는 라이브러리
+
+  - 설치
+
+    ```
+    npm install node-sass
