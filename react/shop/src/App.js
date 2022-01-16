@@ -4,6 +4,7 @@ import './App.css';
 import Data from './data.js';
 import { Link, Route, Switch } from 'react-router-dom'
 import Detail from './Detail.js';
+import axios from 'axios';
 
 function App() {
 
@@ -41,16 +42,25 @@ function App() {
               <Button variant="primary">Learn more</Button>
             </p>
           </div>
-          <div className='container'>
+          <div className="container">
             <div className="row">
               {
                 shoes.map(function(신발, i){
                   return(
-                    <Compo 전송데이터={shoes[i] } 순서={i}></Compo>
+                    <Compo 전송데이터={shoes[i] } 순서={i} key={i}></Compo>
                   )
                 })
               }
             </div>
+            <button className="btn btn-primary" onClick={()=>{
+              axios.get("https://codingapple1.github.io/shop/data2.json") // 서버에 get요청하는 코드, aixos.get(데이터 요청할URL)
+              .then((result)=>{
+                shoes변경( [...shoes, ...result.data ] )
+              })
+              .catch((result)=>{
+                console.log("실패")
+              })
+            }}>더보기</button>
           </div>
         </Route>
         <Route exact path="/detail/:id">
