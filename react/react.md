@@ -623,6 +623,11 @@
 
     <img src="react.assets/image-20220116201539302.png" alt="image-20220116201539302" style="zoom:50%;" />
 
+- Component가 여러개 중첩되어 있을 때 하위 Component에 데이터를 전달
+
+  1. props를 여러번 쓰면 된다
+  2. redux 사용
+
 - props로 자식에게 state 전해주는 방법
 
   1. <자식컴포넌트 전송할변수명={전송할state}/ >
@@ -941,6 +946,8 @@
   - import 변수명 from 경로
 
     - export한 변수이름 그대로 사용하기
+    - import Example : export default 된거 가져오기
+    - import {Example} : Example이라는 변수/함수 가져오기
 
     ```react
     // data1.js (가져올 파일명)
@@ -1328,7 +1335,9 @@
 
   1. jQuery 설치해서 $.ajax()
   2. axios 설치해서 axios.get()
+     - 요청받은 JSON데이터를 Object로 바꿔준다
   3. 쌩자바스크립트 fetch()
+     - Object로 스스로 바꿔줘야 한다
 
 - 설치 & import
 
@@ -1374,6 +1383,104 @@
       }}>더보기</button>
     )
   }
+
+
+
+### 리덕스
+
+- 쓰는 이유
+
+  1. props 없이 모든 컴포넌트가 state를 갖다쓰기 가능
+
+- 사용방법
+
+  1. 설치
+
+     ```
+     npm install redux react-redux
+     ```
+
+  2. index.js에서 createStore() import & store만들기
+
+     - createStore() 안에 state를 return하는 함수를 넣을 수 있다
+     - store안에 state 저장
+
+     ```react
+     import { createStore } from 'redux';
+     let store = createStore( ()=>{ return [ {id:0, name:'멋진신발', quan:2} ] });
+     ```
+
+  3. index.js에서 Provider 컴포넌트로 App 컴포넌트 감싸기
+
+     - Provider로 감싼 모든 Component들은 같은 State를 공유할 수 있다
+
+     ```react
+     import { Provider } from 'react-redux'
+     
+     ReactDOM.render(
+       <React.StrictMode>
+         <BrowserRouter>
+           <Provider>
+             <App />
+           </Provider>
+         </BrowserRouter>
+       </React.StrictMode>,
+       document.getElementById('root')
+     );
+     ```
+
+  4. Provider Component에 props 전송
+
+     ```react
+     let store = createStore( ()=>{ return [ {id:0, name:'멋진신발', quan:2} ] });
+     
+     ReactDOM.render(
+       <React.StrictMode>
+         <BrowserRouter>
+           <Provider store={store}>
+             <App />
+           </Provider>
+         </BrowserRouter>
+       </React.StrictMode>,
+       document.getElementById('root')
+     );
+     ```
+
+  5. state를 쓰려는 Component에서 state를 받아올 함수 + export default 설정
+
+     - state를 props로 받아올 함수 만들기
+
+       - redux store 데이터 가져와서 props로 변환해주는 함수
+       - state를 props화
+
+       ```react
+       function 함수명(state){
+         return(
+           state : state // store 안에 있던 모든 데이터를 state라는 이름의 props로 바꾸기
+         )
+       }
+
+     - export default App -> export default connect(state를 받아온 함수명)(state를 쓸 Component)
+
+       - connect 쓰기 위해서는 import 해야한다
+
+         ```react
+         import { connect } from 'react-redux';
+         
+         function Cart(props){
+           return(
+           	<p>props.state</p>
+           )
+         }
+         
+         function state를props화(state){
+           return(
+             state : state
+           )
+         }
+         
+         export default connect(state를props화)(Cart)
+         ```
 
 
 
