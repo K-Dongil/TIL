@@ -63,6 +63,7 @@
         </div>
       );
     }
+    export default App;
 
   - App.css
 
@@ -96,6 +97,8 @@
 
   - id가 root인 Tag에 App.js안에 있는 html을 넣어라. 
 
+  - App Component를 index.html(main)에서 id가 root인 것에 넣어라
+  
     ```react
     ReactDOM.render(
       <React.StrictMode>
@@ -929,4 +932,117 @@
     ```react
     // data3.js
     import { firstName, lastName } from ./data3.js
+
+
+
+##### * 페이지 나누기(라우팅)
+
+- 여러가지 페이지를 만들고 싶을 때는 react-router-dom 라이브러리 이용
+
+  ```react
+  npm install react-router-dom@5
+
+- index.js에서 react-router-dom 초기셋팅법
+
+  1. 설치한 라이브러리 import
+
+     ```react
+     import { BrowserRouter } from 'react-router-dom';
+     ```
+
+  2. App 태그를 감싸주는 BrowserRouter 태그를 생성
+
+     - 주소창은 server에 이런 페이지좀 갖다주라고 요청하는 공간
+
+     - BrowserRouter
+
+       - 라우팅을 리액트가 아니라 서버에게 요청할 수도 있어서 위험하다
+
+     - HashRouter
+
+       - 라우팅 안전하게 할 수 있게 도와준다
+
+       - 사이트 주소 뒤에 #이 붙는데 #뒤에 적는 것은 서버로 전달이 되지 않는다
+
+         ```
+         http://localhost:3000/#/
+
+       - 라우팅은 리액트가 알아서 잘 해줄 수 있다
+
+     ```react
+     import React from 'react';
+     import ReactDOM from 'react-dom';
+     import './index.css';
+     import App from './App';
+     import reportWebVitals from './reportWebVitals';
+     
+     import { BrowserRouter } from 'react-router-dom';
+     
+     ReactDOM.render(
+       <React.StrictMode>
+         <BrowserRouter>
+           <App />
+         </BrowserRouter>
+       </React.StrictMode>,
+       document.getElementById('root')
+     );
+     
+     reportWebVitals();
+
+- Route
+
+  1. App.js에서 import
+
+     - Link, Route, Switch 태그 불러오기
+
+       ```react
+       import { Link, Route, Switch } from 'react-router-dom'
+
+  2. App.js에서 Route태그를 이용한 페이지 나누기
+
+     - http://localhost:3000 주소로는 main페이지
+
+     - http://localhost:3000/detail 주소르는 detail페이지
+
+     - 리액트 라우터는 매칭이 되는 것들을 다 보여준다 -> exact 속성사용하기
+
+       - 경로가 정확히 일치할 때만 보여준다
+
+       ```react
+       import { Link, Route, Switch } from 'react-router-dom'
+       
+       function App() {
+         return (
+           <div className='App'>
+             <Route exact path="/">
+               <div>메인페이지</div> // main페이지 작업공간
+             </Route>
+             <Route exact path="/detail">
+               <div>detail페이지</div> // detail페이지 작업공간
+             </Route>
+           </div>
+         );
+       }
+       export default App;
+
+     - Route태그 안에 component라는 속성을 통해 component를 속성값으로 집어 넣을 수 있다
+
+       ```react
+       function App() {
+         return (
+           <div className='App'>
+             <Route exact path="/">
+               <div>메인페이지</div> // main페이지 작업공간
+             </Route>
+             <Route exact path="/detail" component={detail}></Route>
+           </div>
+         );
+       }
+       
+       function detail(){
+         return (
+           <div>detail페이지</div>
+         )
+       }
+       ```
 
