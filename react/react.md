@@ -1187,3 +1187,78 @@
     	let { id } = useParams(); // id는 사용자가 /:id자리에 입력한 값
     }
     ```
+
+
+
+
+
+##### * styled-components 라이브러리
+
+- class 선언없이 Compontent에 CSS를 직접 넣어서 스타일링하기 (CSS in JS)
+  - CSS를 미리 입혀놓은 Component (스타일이 귀속된 Component)
+
+1. 설치
+
+   ```
+   npm install styled-components
+
+2. import 해오기
+
+   ```react
+   import styled from 'styled-components';
+
+3. Component에 CSS 입히기
+
+   ```react
+   let 박스 = styled.div`
+     padding : 20px;
+   `;
+   
+   let 제목 = styled.h4`
+     font-size : 25px;
+   `;
+   
+   function App() {
+     return(
+       <박스>
+         <제목>제목입니다</제목>
+       </박스>
+     )
+   }
+
+- 장점 : class 겹칠일이 줄어든다
+- 단점 : 태그를 Component화 시키기 때문에 태그가 많아지면 class와 차이가 많이 나지는 않는다.
+  - 다만 class 겹치는 실수 위험이 적어든다.
+
+- 비슷한 UI가 있을 때 스타일을 달리하고 싶으면 props 문법 사용
+
+  - `` 백틱도 글자다.
+
+    - 글자 중간에 ${}를 이용하여 변수, 함수를 집어넣을 수 있다
+
+      ```
+      `글자${변수명}글자`
+      ```
+
+  - ex)
+
+    ```react
+    let 박스 = styled.div`
+      padding : 20px;
+    `;
+    
+    let 제목 = styled.h4`
+      font-size : 25px;
+      color : ${ props => props.색상 }
+    `;
+    
+    function App() {
+      return(
+        <박스>
+          <제목 색상={ blue }>제목입니다</제목> // 보낼이름={변수명}
+          <제목 색상="red">제목입니다</제목> // 보낼이름="일반문자"
+        </박스>
+      )
+    }
+    ```
+
