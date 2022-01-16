@@ -390,7 +390,7 @@
      function Compo(){ // 이름 짓기
        return (
          // 원하는 HTML 담기
-         <div className='modal'>
+         <div className='Compo'>
            <h2>제목</h2>
            <p>날짜</p>
            <p>상세내용</p>
@@ -422,7 +422,7 @@
        return (
          // 원하는 HTML 담기
          <>
-           <div className='modal'>
+           <div className='Compo'>
              <h2>제목</h2>
              <p>날짜</p>
              <p>상세내용</p>
@@ -506,7 +506,7 @@
     }
     function Modal(){
       return (
-       <div className="modal">
+       <div className="Modal">
          <h2>제목</h2>
          <p>날짜</p>
          <p>상세내용</p>
@@ -546,6 +546,32 @@
       }) // newArray는 [2, 4, 6, 8, 10]
       return();
     }
+    ```
+
+    ```react
+    function App() {
+    
+      let [글제목, 글제목변경] = useState(['남자가 좋아하는 음식', '살 뺄 거야', '야식 추천']);
+    
+      return (
+        <div className="App">
+          <div className="black-nav">
+            <div>개발 Blog</div>
+          </div>
+          {
+            글제목.map(function(글) {
+              return (
+                <div className="list">
+                  <h3> { 글 }</h3>
+                  <p>2022년 1월 16일 발행</p>
+                  <hr/>
+                </div>
+              )
+            })        
+          }
+        </div>
+      );
+    }
 
 - for 반복문을 쓰고 싶다면  반복된 UI를 return 해주는 함수를 만든다
 
@@ -572,7 +598,7 @@
          return array
        }
        return (
-         <div>
+         <div className="App">
            HTML 잔뜩있는 곳
            { forUI() } /* 이자리에 array에 들어있는 HTML이 표시된다 */
          </div>
@@ -604,12 +630,13 @@
      function App(){
        let [modal, modal변경] = useState(false);
        let [글제목, 글제목변경] = useState(['남자가 좋아하는 음식', '살 뺄 거야', '야식 추천']);
+       let 그냥데이터 = 0;
        return (
-       <div>
+       <div className="App">
          <button onClick={ ()=>{ modal변경(!modal) } }>Modal(On/Off)</button>
      	{
            modal === true
-           ? <Modal 전송데이터={ 글제목 }></Modal>
+           ? <Modal 전송데이터={ 글제목 } 전송데이터2={ 그냥데이터 } ></Modal>
            : null
      	}
        </div>
@@ -617,14 +644,14 @@
      }
      ```
 
-  2. 자식컴포넌트에서 전송된 props 파라미터를 인자에 입력 후 사용 (전송된 props들을 받아온다)
+  2. 부모컴포넌트에서 전송된 props를 인자에 입력 후 사용 (전송된 props들을 받아온다)
 
      - 부모에서 전달받은 props들은 인자로 적은 '전송받은props들'에 모두 들어있다.
 
      ```react
      function Modal(전송받은props들){
        return (
-        <div className="modal">
+        <div className="Modal">
           <h2>{ 전송받은props들.전송데이터[0] }</h2>
           <p>날짜</p>
           <p>상세내용</p>
@@ -632,3 +659,82 @@
        );
      }
      ```
+
+- 제목을 누를 때 각각 다른 모달창 띄우기
+
+  - 몇번째 제목 눌렀는지 상태정보를 state에 저장
+    - 저장한 state가 0일 때 0번째 제목, 1일 때 1번째 제목 출력, 2일 때 2번째 제목 출력
+
+  ```react
+  function App(){
+    let [modal, modal변경] = useState(false);
+    let [글제목, 글제목변경] = useState(['남자가 좋아하는 음식', '살 뺄 거야', '야식 추천']);
+    let [누른제목, 누른제목변경] = useState(0);
+    return (
+    <div className="App">
+      <button onClick={ ()=>{ 누른제목변경(0) } }>Modal1</button>
+      <button onClick={ ()=>{ 누른제목변경(1) } }>Modal2</button>
+      <button onClick={ ()=>{ 누른제목변경(2) } }>Modal3</button>
+            
+      <button onClick={ ()=>{ modal변경(!modal) } }>Modal(On/Off)</button>
+  	{
+        modal === true
+        ? <Modal 전송데이터={ 글제목 } 누른제목={누른제목} ></Modal>
+        : null
+  	}
+    </div>
+    );
+  }
+  
+  function Modal(전송받은props들){
+    return (
+     <div className="Modal">
+       <h2>{ 전송받은props들.전송데이터[누른제목] }</h2>
+       <p>날짜</p>
+       <p>상세내용</p>
+     </div>
+    );
+  }
+  ```
+
+  ```react
+  function App() {
+    let [modal, modal변경] = useState(false);
+    let [글제목, 글제목변경] = useState(['남자가 좋아하는 음식', '살 뺄 거야', '야식 추천']);
+    let [누른제목, 누른제목변경] = useState(0);
+    return (
+      <div className="App">
+        <div className="black-nav">
+          <div>개발 Blog</div>
+        </div>
+        {
+          글제목.map(function(글, i) {
+            return (
+              <div className="list">
+                <h3 onClick={ ()=>{ 누른제목변경(i) } }> { 글 }</h3>
+                <p>2022년 1월 16일 발행</p>
+                <hr/>
+              </div>
+            )
+          })        
+        }
+        <button onClick={ ()=>{ modal변경(!modal) } }>Modal(On/Off)</button>
+  	  {
+          modal === true
+          ? <Modal 전송데이터={ 글제목 } 누른제목={누른제목} ></Modal>
+          : null
+  	  }
+      </div>
+    );
+  }
+  
+  function Modal(전송받은props들){
+    return (
+     <div className="Modal">
+       <h2>{ 전송받은props들.전송데이터[누른제목] }</h2>
+       <p>날짜</p>
+       <p>상세내용</p>
+     </div>
+    );
+  }
+
