@@ -801,5 +801,132 @@
 
 
 
-##### * 프로젝트생성 & BootStrap
+##### *BootStrap
+
+- [리액트 전용 BootStratp](https://react-bootstrap.github.io/getting-started/introduction) 존재
+  - 원조 Bootstrap은 css 사이즈가 커진다.
+
+1. react boostrap 설치
+
+   ```
+   npm install react-bootstrap bootstrap
+
+2. react bootstrap 사이트의 CSS link 태그 index.html에 넣기
+
+   ```
+   <link
+     rel="stylesheet"
+     href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+     integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+     crossorigin="anonymous"
+   />
+   ```
+
+3. 쓰고자 하는 곳에 react-bootstrap import하기
+
+   - react-bootstrap에서 제공하는 것들은 모두 Component
+
+   - 밑의 Navbar를 이용하려면 Navbar말고도 Container, Nav, NavDropdown Component를 가져와야 함
+
+     ```react
+     import React from 'react'
+     import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
+     import './App.css';
+     
+     function App() {
+       return (
+         <div className='App'>
+           <Navbar bg="light" expand="lg">
+             <Container>
+               <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+               <Navbar.Toggle aria-controls="basic-navbar-nav" />
+               <Navbar.Collapse id="basic-navbar-nav">
+                 <Nav className="me-auto">
+                   <Nav.Link href="#home">Home</Nav.Link>
+                   <Nav.Link href="#link">Link</Nav.Link>
+                   <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+                     <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+                     <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
+                     <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+                     <NavDropdown.Divider />
+                     <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
+                   </NavDropdown>
+                 </Nav>
+               </Navbar.Collapse>
+             </Container>
+           </Navbar>
+         </div>
+       );
+     }
+     
+     export default App;
+
+
+
+
+
+##### * impot/export
+
+- export(가져오기)
+
+  - data가 길거나 재사용성이 높은 것은 따로 보관할 파일명.js을 만들어서 App.js같은 곳에서 불러오기
+
+    - 데이터 보관 js파일은 export default name 형식이여야 한다.
+
+      ```react
+      // data1.js
+      let name = 'KimDongil';
+      export default name;
+      ```
+
+    - 여러개의 데이터를 전달하려면 array, Object를 이용한다
+
+      - Object {} 자료형 2개를 array에 저장하여 export하기 위한 예시
+
+      ```react
+      // data2.js
+      export default [
+        {
+          name : Dongil,
+          title : "나는 최고야",
+          content : "나이는 27살"
+        },
+      
+        {
+          name : Kim,
+          title : "내 성은 Kim",
+          content : "나이는 27살"
+        },
+      ] 
+      ```
+
+    - 여러개의 변수를 export할 수 있다
+
+      ```react
+      // data3.js
+      let firstName = 'Dongil';
+      let lastName = 'kim'
+      export { firstName, lastName };
+
+  - 한 파일에 한번만 사용이 가능하다
+
+- import(가져오기)
+
+  - import 변수명 from 경로
+
+    - export한 변수이름 그대로 사용하기
+
+    ```react
+    // data1.js (가져올 파일명)
+    import name from ./data1.js;
+    ```
+
+    ```react
+    // data2.js
+    import Data from ./data2.js;
+    ```
+
+    ```react
+    // data3.js
+    import { firstName, lastName } from ./data3.js
 
