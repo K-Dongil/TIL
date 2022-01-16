@@ -6,8 +6,17 @@ $메인컬러 : #ff0000;
   color : $메인컬러;
 }
 
+@mixin 함수() {
+  background-color: #eeeeee;
+  padding: 20px;
+  border-radius: 5px;
+  max-width: 500px;
+  width: 100%;
+  margin: auto;
+}
+
 .my-alert {
-  @include 함수()
+  @include 함수();
 }
 
 .my-alert-yellow {
@@ -28,14 +37,7 @@ $메인컬러 : #ff0000;
   margin-bottom: 0;
 }
 
-@mixin 함수() {
-  background-color: #eeeeee;
-  padding: 20px;
-  border-radius: 5px;
-  max-width: 500px;
-  width: 100%;
-  margin: auto;
-}
+
 
 // div.container h4 {
 //   color: blue;
