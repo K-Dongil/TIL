@@ -1,0 +1,55 @@
+@import './reset.scss';
+
+$메인컬러 : #ff0000;
+
+.red {
+  color : $메인컬러;
+}
+
+.my-alert {
+  @include 함수()
+}
+
+.my-alert-yellow {
+  @extend .my-alert;
+  background-color: #ffe591;
+}
+
+// .my-alert2 {
+//   background-color: #eeeeee;
+//   padding: 20px;
+//   border-radius: 5px;
+//   max-width: 500px;
+//   width: 100%;
+//   margin: auto;
+// }
+
+.my-alert p {
+  margin-bottom: 0;
+}
+
+@mixin 함수() {
+  background-color: #eeeeee;
+  padding: 20px;
+  border-radius: 5px;
+  max-width: 500px;
+  width: 100%;
+  margin: auto;
+}
+
+// div.container h4 {
+//   color: blue;
+// }
+
+// div.container p {
+//   color: green;
+// }
+
+// div.container {
+//   h4{ // div안에 있는 h4를 스타일링 줄 때
+//     color:blue;
+//   }
+//   p{
+//     color:green;
+//   }
+// }
