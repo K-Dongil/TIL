@@ -874,6 +874,10 @@
 
   - data가 길거나 재사용성이 높은 것은 따로 보관할 파일명.js을 만들어서 App.js같은 곳에서 불러오기
 
+    - 중요한 데이터는 App Component에 보관하는 것이 좋다.
+
+      - 데이터는 상위 Component에서 하위 Component로 전해주는 형태가 좋다
+
     - 데이터 보관 js파일은 export default name 형식이여야 한다.
 
       ```react
@@ -1145,4 +1149,41 @@
 
 
 
-##### 
+##### * URL parameter
+
+- 비슷한 라우터들이 존재할 때
+
+  - 주소에 /:parameter 사용
+
+    - parameter는 아무렇게나 작명해도 된다
+
+      ```react
+      import { Switch, Route} from 'react-router-dom'
+      function App() {
+        return(
+          <Switch>
+            <Route path="/detail/:id">Detail</Route>
+          </Switch>
+        )
+      }
+
+  - :  콜론기호는 아무문자나 받겠다는URL 작명법
+
+  - 라우터의 useParams 훅
+
+    - useParams에는 사용자가 입력한 URL의 모든 파라미터 값들이 들어있다
+
+    - 사용하기 위해서는 import 해야한다
+
+      ```react
+      import { useParams } from 'react-router-dom';
+
+  - ex) url의 :parameter 자리에 있던 문자 사용
+
+    ```react
+    import { useParams } from 'react-router-dom';
+    
+    function Detail(props){
+    	let { id } = useParams(); // id는 사용자가 /:id자리에 입력한 값
+    }
+    ```
