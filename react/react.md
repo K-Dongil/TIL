@@ -501,3 +501,70 @@
       );
     }
 
+
+
+##### * 반복문
+
+- 리액트에서는 HTML를 반복문으로 반복시킬 수 있다
+
+- JSX 중괄호 내에 for 못 넣는다
+
+  - map() 함수를 이용해야 한다.
+
+- map 함수
+
+  - 기존 array 자료형을 변형시켜 새로운 array를 만들기 위한 함수
+
+  - array 내의 모든 데이터에 똑같은 작업을 시켜주고 싶을 때 사용
+
+  - iterableData.map( (data) => {표현식} )
+
+    - 반복가능한 데이터.map( () => {return HTML} )
+    - return해주는 HTML에 eventListener(Onclick)이 넣어져 있어도 괜찮다
+      - 다만 event에 대한 처리를 할때 주의해야 한다.
+      - ex) 버튼을 클릭했을 때 값이 변경되는 event라면 state데이터를 주의해야 한다.
+        - state 데이터가 반복된 HTML에서 모두 공유되어 있지 않게 해야한다.
+
+    ```react
+    function App (){
+      let array = [1, 2, 3, 4, 5]
+      let newArray = array.map(function(a){ // a는 array에 담긴 데이터
+        return a*2
+      }) // newArray는 [2, 4, 6, 8, 10]
+      return()
+    }
+
+- for 반복문을 쓰고 싶다면  반복된 UI를 return 해주는 함수를 만든다
+
+  1. 함수 안에서 for문을 쓰기위해 함수생성
+
+  2. 비어 있는 array를 만든다
+
+  3. for문을 이용하여 array에 HTML 추가
+
+     - array.push(HTML);
+     - for in, for of사용도 가능
+
+  4. array를 return으로 뱉어낸다
+
+  5. 만들어진 array를 JSX를 이용하여 보이고 싶은 자리에 사용한다.
+
+     ```react
+     function App (){
+       function forUI(){
+         var array = [];
+         for (var i = 0; i < 3; i++) {
+           array.push(<div>반복</div>)
+         }
+         return array
+       }
+       return (
+         <div>
+           HTML 잔뜩있는 곳
+           { forUI() } /* 이자리에 array에 들어있는 HTML이 표시된다 */
+         </div>
+       )
+     }
+
+
+
