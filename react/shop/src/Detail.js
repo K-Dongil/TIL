@@ -1,14 +1,30 @@
 import React, {useState} from 'react'
 import { useHistory, useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
+let 박스 = styled.div`
+  padding : 20px;
+`;
+
+let 제목 = styled.h4`
+  font-size : 25px;
+  color : ${ props => props.색상 }
+`;
+
 
 function Detail(props){
+
   let { id } = useParams();
   let history = useHistory();
   let firstUrl = "https://codingapple1.github.io/shop/shoes"
   let endUrl = ".jpg"
   let middleUrl = id + 1
+
   return (
     <div className="container">
+     <박스>
+      <제목 색상={'red'}>Detail</제목>
+     </박스>
      <div className="row">
         <div className="col-md-6">
           <img src={firstUrl+middleUrl+endUrl} width="100%" />
