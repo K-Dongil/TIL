@@ -533,6 +533,7 @@
   - iterableData.map( (data) => {표현식} )
 
     - 반복가능한 데이터.map( () => {return HTML} )
+    - map 반복문으로 돌린 HTML에는 key = {번호}가 필요하다
     - return해주는 HTML에 eventListener(Onclick)이 넣어져 있어도 괜찮다
       - 다만 event에 대한 처리를 할때 주의해야 한다.
       - ex) 버튼을 클릭했을 때 값이 변경되는 event라면 state데이터를 주의해야 한다.
@@ -559,9 +560,9 @@
             <div>개발 Blog</div>
           </div>
           {
-            글제목.map(function(글) {
+            글제목.map(function(글, i) {
               return (
-                <div className="list">
+                <div className="list" key={ i }>
                   <h3> { 글 }</h3>
                   <p>2022년 1월 16일 발행</p>
                   <hr/>
@@ -689,7 +690,7 @@
   function Modal(전송받은props들){
     return (
      <div className="Modal">
-       <h2>{ 전송받은props들.전송데이터[누른제목] }</h2>
+       <h2>{ 전송받은props들.전송데이터[전송받은props들.누른제목] }</h2>
        <p>날짜</p>
        <p>상세내용</p>
      </div>
@@ -710,7 +711,7 @@
         {
           글제목.map(function(글, i) {
             return (
-              <div className="list">
+              <div className="list" key={ i }>
                 <h3 onClick={ ()=>{ 누른제목변경(i) } }> { 글 }</h3>
                 <p>2022년 1월 16일 발행</p>
                 <hr/>
@@ -731,10 +732,74 @@
   function Modal(전송받은props들){
     return (
      <div className="Modal">
-       <h2>{ 전송받은props들.전송데이터[누른제목] }</h2>
+       <h2>{ 전송받은props들.전송데이터[전송받은props들.누른제목] }</h2>
        <p>날짜</p>
        <p>상세내용</p>
      </div>
     );
   }
+
+
+
+##### * input
+
+- 사용자가 input에 입력한 값을 state로 저장
+
+  - Event핸들러 onChange, onInput 사용
+    - **e.target**은 이벤트가 동작하는 곳을 가르킨다.
+    - onChange, onInput에서 **e.target.value**은 사용자가 input에 입력한 값을 가져온다
+
+  ```react
+  function App() {
+    let [입력값, 입력값변경] = useState(''); // 저장공간
+    return (
+      <div className="App">
+        <input onChange={ ()=>{ 입력값변경(e.target.value) } } />
+      </div>
+    );
+  }
+  ```
+
+- 글 작성(발행)
+
+  1. 사용자가 입력한 글 변수, state로 저장
+  2. 저장버튼 누르면 입력한 글 state를 다른 state에 추가
+     - array.unshift() 사용 : array 맨 앞에 자료 추가하는 문법
+
+  ```react
+  function App() {
+    let [입력값, 입력값변경] = useState(''); // 저장공간
+    let [글목록, 글목록변경] = useState(['남자가 좋아하는 음식', '살 뺄 거야', '야식 추천']);
+    return (
+      <div className="App">
+        <div className="black-nav">
+          <div>개발 Blog</div>
+        </div>
+        {
+          글목록.map(function(글, i) {
+            return (
+              <div className="list" key={ i }>
+                <h3 onClick={ ()=>{ 누른제목변경(i) } }> { 글 }</h3>
+                <p>2022년 1월 16일 발행</p>
+                <hr/>
+              </div>
+            )
+          })        
+        }
+        <div className="publish">
+          <input onChange={ ()=>{ 입력값변경(e.target.value) } } />
+          <button onclick={ ()=>{
+              let arrayCopy = [...글목록];
+              arrayCopy.unshift(입력값);
+              글목록변경( arrayCopy )
+            } }>저장
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+
+
+##### * 프로젝트생성 & BootStrap
 
