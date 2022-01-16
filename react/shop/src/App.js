@@ -3,21 +3,21 @@ import { Navbar, Container, Nav, NavDropdown, Button} from 'react-bootstrap';
 import './App.css';
 import Data from './data.js';
 import { Link, Route, Switch } from 'react-router-dom'
+import Detail from './Detail.js';
 
 function App() {
 
   let [shoes, shoes변경] = useState(Data);
   return (
     <div className='App'>
-      <Route exact path="/">
-        <Navbar bg="light" expand="lg">
+       <Navbar bg="light" expand="lg">
           <Container>
             <Navbar.Brand href="#home">DongilShop</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="me-auto">
-                <Nav.Link href="#home">Home</Nav.Link>
-                <Nav.Link href="#link">Link</Nav.Link>
+                <Nav.Link ><Link to="/">Home</Link></Nav.Link>
+                <Nav.Link ><Link to="/detail">Detail</Link></Nav.Link>
                 <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                   <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                   <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
@@ -29,31 +29,36 @@ function App() {
             </Navbar.Collapse>
           </Container>
         </Navbar>
-
-        <div class="jumbotron background">
-          <h1>20% Season Off</h1>
-          <p>This is a simple hero unit, a simple jumbotron-style component for calling
-            extra attention to featured content or information
-          </p>
-          <p>
-            <Button variant="primary">Learn more</Button>
-          </p>
-        </div>
-        <div className='container'>
-          <div className="row">
-            {
-              shoes.map(function(신발, i){
-                return(
-                  <Compo 전송데이터={shoes[i] } 순서={i}></Compo>
-                )
-              })
-            }
+      <Switch>
+        <Route exact path="/">
+          <div class="jumbotron background">
+            <h1>20% Season Off</h1>
+            <p>This is a simple hero unit, a simple jumbotron-style component for calling
+              extra attention to featured content or information
+            </p>
+            <p>
+              <Button variant="primary">Learn more</Button>
+            </p>
           </div>
-        </div>
-      </Route>
-      <Route exact path="/detail">
-        <div>detail페이지</div>
-      </Route>
+          <div className='container'>
+            <div className="row">
+              {
+                shoes.map(function(신발, i){
+                  return(
+                    <Compo 전송데이터={shoes[i] } 순서={i}></Compo>
+                  )
+                })
+              }
+            </div>
+          </div>
+        </Route>
+        <Route exact path="/detail">
+          <Detail/>
+        </Route>
+        <Route exact path="/:id">
+          <div>아무거나 적었을 때 이거 보여주세요</div>
+        </Route>
+      </Switch>
 
       
     </div>
