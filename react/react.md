@@ -750,6 +750,7 @@
 
   - Event핸들러 onChange, onInput 사용
     - **e.target**은 이벤트가 동작하는 곳을 가르킨다.
+      - e는 event 정보가 들어가 있는 객체
     - onChange, onInput에서 **e.target.value**은 사용자가 input에 입력한 값을 가져온다
 
   ```react
@@ -1015,7 +1016,7 @@
      
      reportWebVitals();
 
-##### * Route
+##### - Route
 
 1. App.js에서 import
 
@@ -1072,7 +1073,7 @@
      }
      ```
 
-##### * Link
+##### - Link
 
 - 페이지 이동하기 위해 쓰는 태그
 
@@ -1083,8 +1084,23 @@
   ```react
   <Nav.Link ><Link to="/">Home</Link></Nav.Link>
   <Nav.Link> <Link to='/detail'>Detail</Link> </Nav.Link>
+  ```
 
-##### * history
+- Nav.Link, Link태그는 a태그와 유사
+
+  - 위의 문제점 a태그 안의 a태그
+
+  - 문제점 해결
+
+    - Nav.Link에 to속성을 쓴다
+    - Nav.Link에 as속성, 속성값에 {Link}를 준다
+      - as속성은 태그를 속성값에 있는 값처럼 쓰이게 해준다
+
+    ```react
+    <Nav.Link as={Link} to="/">Home</Nav.Link> // Nav.Link 태그를 Link태그처럼 쓰이게 한다
+    <Nav.Link as={Link} to="/detail">Detail</Nav.Link>
+
+##### - history
 
 - useHistory 훅은 방문기록 등을 저장해놓은 object
 
@@ -1128,7 +1144,7 @@
       )
     }
 
-##### * Switch 컴포넌트
+##### - Switch 컴포넌트
 
 - 리액트 라우터는 매칭이 되는 것들을 다 보여준다
 
@@ -1149,7 +1165,7 @@
 
 
 
-##### * URL parameter
+##### - URL parameter
 
 - 비슷한 라우터들이 존재할 때
 
@@ -1187,6 +1203,120 @@
     	let { id } = useParams(); // id는 사용자가 /:id자리에 입력한 값
     }
     ```
+
+
+
+
+
+##### * Lifecycle Hooks (class 문법 - 옛날)
+
+- Component의 인생
+
+  - Component의 등장- 업데이트(재렌더링) - 퇴장
+
+- Hooks : Lifecycle(등장~퇴장) 중간에 무언가 요청(명령)을 하는 것
+
+  - ex) Component가 등장하기 전에 이 것좀 해줘
+
+- ex)
+
+  ```react
+  class Detail2 extends React.Component {
+    componentDidMount(){
+      // Detail2 컴포넌트가 Mount(등장) 되었을 때 실행할 코드
+    }
+  
+    componentWillUnmount(){
+      // Detail2 컴포넌트가 UnMount(퇴장) 되었을 때 실행할 코드
+    }
+  }
+
+##### * useEffect
+
+- useEffect는 여러개 사용했을 때 순서대로 실행된다.
+
+- import해야한다
+
+  ```react
+  import React, {useEffect} from 'react'
+
+- component가 mount(등장), update(재렌더링) 되었을 때 특정 코드를 실행
+
+  - setTimeout을 쓸 때는 동작에 따라 오류가 일어날 수도 있으므로 타이머해제가 필요하다
+    - Component 종료될 때 타이머해제 시키기!
+
+  ```react
+  // 2초 후에 alert 창을 안 보이게 하기
+  function Detail(){
+      
+    useEffect(()=>{
+      let 타이머 = setTimeout(()=> {alert변경(false)}, 2000);
+      return ()=>{ clearTimeout(타이머) }
+    });
+      
+    let [alert, alert변경] = useState(true);
+      
+    return(
+      {
+         alert == true
+         ? (<div><p>재고가 얼마 남지 않았습니다</p></div>
+           )
+         : null
+      }
+    )
+  }
+  ```
+
+- component가 update(재렌더링) 되었을 때 특정 코드를 실행
+
+  - useEffect는 업데이트 될때마다 실행이 된다.
+  - useEffect의 두번째 인자로 실행조건을 줄 수 있다
+    - 인자에 들어간 state가 변경이 될때만 useEffet 실행
+    - 실행조건은 여러개가 들어갈 수 있다
+    - 조건이 비어있다면 component가 등장할 때만 실행된다
+
+  ```react
+  function Detail(){
+      
+    let [alert, alert변경] = useState(true);
+    let [inputData, inputData변경] = useState();  
+    
+    useEffect(()=>{
+      let 타이머 = setTimeout(()=> {alert변경(false)}, 2000);
+      return ()=>{ clearTimeout(타이머) }
+    },[alert]); // alert라는 state가 변경이 될때만 useEffect실행
+      
+    return(
+        
+      { inputData }
+      <input onChange={(e)=>{inputData변경(e.target.value)}}></input> 
+        
+      {
+         alert == true
+         ? (<div><p>재고가 얼마 남지 않았습니다</p></div>
+           )
+         : null
+      }
+  
+    )
+  }
+
+- component가 unmount(퇴장) 되었을 때 특정 코드를 실행
+
+  - return 사용
+
+  ```react
+  function Detail(){
+      
+    useEffect(()=>{
+      return function 함수명() { unmount될 때 실행할 코드~~ }
+    });
+        
+    return()
+  }
+  ```
+
+  
 
 
 
@@ -1346,11 +1476,9 @@
      - 만들어진 함수를 가져다 쓸 때
 
        - @include
+       - inlclude하고자 하는 함수가 위에서 선언 되어있어야 한다.
 
        ```
-       .my-alert {
-         @include 함수()
-       }
        @mixin 함수() {
          background-color: #eeeeee;
          padding: 20px;
@@ -1358,6 +1486,9 @@
          max-width: 500px;
          width: 100%;
          margin: auto;
+       }
+       .my-alert {
+         @include 함수()
        }
 
 - node-sass 라이브러리
