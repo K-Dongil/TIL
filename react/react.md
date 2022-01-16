@@ -1316,7 +1316,64 @@
   }
   ```
 
-  
+
+
+##### * Ajax in React
+
+- Ajax : 서버에 새로고침없이 요청을 할 수 있게 해준다
+  - GET 요청 : 특정 페이지 / 자료 읽기 (새로고침 된다)
+  - POST 요청 : 서버로 중요 정보를 숨겨서 전달하고 싶을 때 (새로고침 된다)
+
+- Ajax 사용 방법
+
+  1. jQuery 설치해서 $.ajax()
+  2. axios 설치해서 axios.get()
+  3. 쌩자바스크립트 fetch()
+
+- 설치 & import
+
+  1. 설치
+
+     ```
+     npm install axios
+     ```
+
+  2. import
+
+     ```react
+     import axios from 'axios';
+     ```
+
+- axios get요청
+
+  - axios.get("데이터 요청할 URL")
+
+- axios post요청
+
+  - axios.post("데이터 요청할 URL", {id : 'example', pw : example})
+
+- ex)데이터가 들어있는 state에 ajax로 받아온 데이터 추가하기
+
+  ```react
+  import axios from 'axios';
+  function App(){
+    let [shoes, shoes변경] = useState(Data);
+    return (
+      <button className="btn btn-primary" onClick={()=>{
+        // 서버에 get요청하는 코드, aixos.get(데이터 요청할URL)
+        axios.get("https://codingapple1.github.io/shop/data2.json")
+        // axios는 promise객체를 반환한다
+        // 요청에 성공하면
+        .then((result)=>{
+          shoes변경( [...shoes, ...result.data ] )
+        })
+        // 요청에 실패함
+        .catch((result)=>{
+          console.log("실패")
+        })
+      }}>더보기</button>
+    )
+  }
 
 
 
