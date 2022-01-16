@@ -5,6 +5,7 @@ import Data from './data.js';
 import { Link, Route, Switch } from 'react-router-dom'
 import Detail from './Detail.js';
 import axios from 'axios';
+import Cart from './Cart';
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
             </Navbar.Collapse>
           </Container>
         </Navbar>
+
       <Switch>
         <Route exact path="/">
           <div class="jumbotron background">
@@ -64,12 +66,16 @@ function App() {
             }}>더보기</button>
           </div>
         </Route>
-        <Route exact path="/detail/:id">
+
+        <Route path="/detail/:id">
           <Detail shoes={shoes} 재고={재고} 재고변경={재고변경}/>
         </Route>
-        <Route exact path="/:id">
-          <div>아무거나 적었을 때 이거 보여주세요</div>
+
+        <Route path="/cart">
+          <Cart></Cart>
         </Route>
+
+
       </Switch>
 
       

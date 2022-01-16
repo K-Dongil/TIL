@@ -82,6 +82,7 @@ function Detail(props){
     </div> 
   )
 }
+
 function Info(props){
   return (
     <p>재고 : {props.재고[0]}</p>
