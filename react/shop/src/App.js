@@ -8,6 +8,7 @@ import Detail from './Detail.js';
 function App() {
 
   let [shoes, shoes변경] = useState(Data);
+  
   return (
     <div className='App'>
        <Navbar bg="light" expand="lg">
@@ -52,8 +53,8 @@ function App() {
             </div>
           </div>
         </Route>
-        <Route exact path="/detail">
-          <Detail/>
+        <Route exact path="/detail/:id">
+          <Detail shoes={shoes}/>
         </Route>
         <Route exact path="/:id">
           <div>아무거나 적었을 때 이거 보여주세요</div>
