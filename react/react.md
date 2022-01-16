@@ -2,7 +2,7 @@
 
 ##### * Why react?
 
-- react는 Web App 만들 때 사용된다.
+- react으로 Web App 만드는 것이 가능하다.
 - Web App : App이랑 사용성이 비슷한 Web
   - 다른 페이지로 넘어가거나 포스팅을 발행하거나 어떠한 행동을 할 때 새로고침X 스무스하게 동작
   - Web-App을 쉽게 만들 수 있는 라이브러리가 react
@@ -49,7 +49,7 @@
 
 - src/App.js
 
-  -  main페이지에 들어갈 HTML 짜는 곳
+  - main페이지에 들어갈 HTML 짜는 곳
 
   - return 소괄호 안에는 무조건 하나의 html tag만 시작하고 끝나야 한다. (하나의 요소)
 
@@ -145,6 +145,8 @@
 - 데이터 바인딩
 
   - html 모든 곳에 중괄호 {}로 변수를 집어넣을 수 있다
+
+    - 중괄호 안에 조건, 반복문 불가능
 
   - 데이터를 HTML에 넣어주는 것
 
@@ -291,7 +293,7 @@
 
     1. 기존 state를 deepcopy한다
        - [...복사할 Array] {...복사할 Object data}
-       - ...은 중괄호, 대괄호를 모두 제거해 달라는 의미
+         - ...은 중괄호, 대괄호를 모두 제거해 달라는 의미
        - 괄호를 제거 해주었으니 다시 중괄호 또는 대괄호에 담아 새로운 Object, Array를 생성
     2. 복사본에 수정사항을 반영한다
     3. 변경함수()의 인자에 수정한 복사본을 집어넣는다
@@ -428,3 +430,74 @@
          </>
        )
      }
+
+
+
+##### * 조건문
+
+- JSX안에서 if대신 삼항연산자 이용이 가능하다.
+
+- { 조건식 ? 참일 때 실행할 코드 : 거짓일 때 실행할 코드}
+
+  ```react
+  {
+    1 < 3 ? console.log('True입니다') : console.log('False입니다')
+  }
+  {
+    1 < 3 ?
+    console.log('True입니다')
+    : console.log('False입니다')
+  }
+  // True입니다 출력된다.
+
+
+
+##### * Modal
+
+- 삼항연산자를 활용하여 Modal을 띄운다.
+
+  1. 조건식에는 어떤 경우에 modal창을 보여줄지에 대한 표현식 (모달창을 켜고 닫는 스위치)
+  2. True일 때 띄어 줄 Modal창
+  3. False일 때 띄어 줄 값 (보통 null, 텅빈 HTML)
+
+  ```react
+  {
+      modal === true // 어떤 경우에 modal창을 보여줄까에 대한 조건
+      ? <Modal></Modal> // Modal 창
+      : null	// modal을 보여주고 싶지 않을 때, 아무것도 아닌 HTML을 보내고 싶을 때(텅빈 HTML)
+  }
+
+- 리액트에서는 UI를 만들 때 state 데이터를 이용한다
+
+  1. 모달창을 켜고 다는 스위치(state데이터로 UI를 보여줄까에 대한 true/false)
+
+     - 사이트 첫 로드시 모달창은 안보이므로 기본값은 보통 false
+
+     ```react
+     let [modal, modal변경] = useState(false);
+     ```
+
+  2. 어떠한 요소를 눌렀을 때 스위치(state 데이터)를 True로 바꿔주려한다 (Modal 띄우기 위함)
+
+     ```react
+     <h3 onClick={ ()=>{ modal변경(true) } }> { 글제목[2] }</h3>
+
+  - ex)
+
+    - !(느낌표) 기호는 true 왼쪽에 붙이면 false로 바꿔주고, false일 때는 true로 바꿔준다
+
+    ```react
+    function App(){
+      let [modal, modal변경] = useState(false);
+      return (
+      <div>
+        <button onClick={ ()=>{ modal변경(!modal) } }>Modal(On/Off)</button>
+    	{
+          modal === true
+          ? <Modal></Modal>
+          : null
+    	}
+      </div>
+      );
+    }
+
