@@ -1386,11 +1386,41 @@
 
 
 
+##### * Context API
+
+- props 전송을 하지 않고도 하위 Component들이 부모 Component값을 사용가능
+
+1. context 만들기
+
+   - createContext()는 같은 변수값을 공유할 범위를 만들어주는 문법
+
+   ```react
+   let 재고context = React.createContext()
+   ```
+
+2. 같은 값을 공유할 HTML을 범위로 감싸기
+
+   - 값 공유를 원하는 HTML들을 <범위.Provider>로 감싸고 value={공유원하는값}을 속성으로 준다
+   - 공유원하는Component에서 공유하고싶은 state데이터를 props전송없이 사용가능
+
+   ```react
+   <재고context.Provider value={공유하고싶은 데이터}>
+     <공유원하는Component></공유원하는Component>
+   </재고context.Provider>
+   ```
+
+3. 
+
+
+
 ### 리덕스
 
 - 쓰는 이유
 
   1. props 없이 모든 컴포넌트가 state를 갖다쓰기 가능
+     - 복잔한 props전송이 없다
+  2. state 데이터 관리가 용이하다
+     - redux에서는  state 데이터의 수정방법을 미리 정의한다
 
 - 사용방법
 
@@ -1452,15 +1482,16 @@
 
        - redux store 데이터 가져와서 props로 변환해주는 함수
        - state를 props화
+         - return (state : state)가 redux store를 props로 바꾸는 변환해주는 부분이다
 
        ```react
        function 함수명(state){
          return(
            state : state // store 안에 있던 모든 데이터를 state라는 이름의 props로 바꾸기
-         )
+         ) // props의 state라는 key에는 state라는 value(store의 모든 데이터)를 넣어주세요
        }
 
-     - export default App -> export default connect(state를 받아온 함수명)(state를 쓸 Component)
+     - export default state를 쓸 Component-> export default connect(state를 받아온 함수명)(state를 쓸 Component)
 
        - connect 쓰기 위해서는 import 해야한다
 
@@ -1481,6 +1512,11 @@
          
          export default connect(state를props화)(Cart)
          ```
+
+- state 데이터의 수정방법을 정의해놓기
+  - -하는중-
+
+
 
 
 
