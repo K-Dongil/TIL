@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useContext, useState} from 'react'
 import { Navbar, Container, Nav, NavDropdown, Button} from 'react-bootstrap';
 import './App.css';
 import Data from './data.js';
@@ -6,6 +6,8 @@ import { Link, Route, Switch } from 'react-router-dom'
 import Detail from './Detail.js';
 import axios from 'axios';
 import Cart from './Cart';
+
+let 재고context = React.createContext();
 
 function App() {
 
@@ -46,15 +48,17 @@ function App() {
             </p>
           </div>
           <div className="container">
-            <div className="row">
-              {
-                shoes.map(function(신발, i){
-                  return(
-                    <Compo 전송데이터={shoes[i] } 순서={i} key={i}></Compo>
-                  )
-                })
-              }
-            </div>
+            <재고context.Provider value={재고}>
+              <div className="row">
+                {
+                  shoes.map(function(신발, i){
+                    return(
+                      <Compo 전송데이터={shoes[i] } 순서={i} key={i}></Compo>
+                    )
+                  })
+                }
+              </div>
+            </재고context.Provider>
             <button className="btn btn-primary" onClick={()=>{
               axios.get("https://codingapple1.github.io/shop/data2.json") // 서버에 get요청하는 코드, aixos.get(데이터 요청할URL)
               .then((result)=>{
@@ -87,11 +91,13 @@ function Compo(props) {
   let firstUrl = "https://codingapple1.github.io/shop/shoes"
   let endUrl = ".jpg"
   let middleUrl = props.순서 + 1
+  let 재고 = useContext(재고context)
   return (
     <div className='col-md-4'>
       <img src={firstUrl+middleUrl+endUrl} width="100%"></img>
       <h4>{ props.전송데이터.title }</h4>
       <p>{ props.전송데이터.content } & { props.전송데이터.price }</p>
+      {재고}
     </div>
   )
 }
