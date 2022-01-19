@@ -1664,10 +1664,16 @@
 ##### * reducer & dispatch
 
 - reducer라는 함수로 state 데이터의 수정방법을 정의해놓기
+  - reducer는 state보관함
   - 모든 state 저장 공간이 아니다
   - 여러가지 Component들에 필요한 data를 저장하는 곳
   - Component 하나에서만 쓰는건 굳이 저장X
+  - state는 종류별로 모아두는 것이 편리
+    - 다른 종류의 state 저장하고 싶으면 reducer를 한개 더 만들어서 보관한다.
 - dispatch로 데이터 수정요청 보내기
+  - 개발환경에서 새로고침하면 redux도 초기화
+  - 개발환경에서 페이지 이동시 강제 새로고침 막아주기
+    - history.push('경로')
 
 1. reducer 함수생성
 
@@ -1703,6 +1709,7 @@
 
    - 데이터 수정요청을 할 때는 props.dispatch( {type :  '요청타입'} )
      - 요청타입 : 어떤 요청을 할 것인지 타입(타입이름)설정
+     - type은 reducer 함수의 두번째 파라미터에 저장된다.
 
    ```react
    <button onClick={()=>{ props.dispatch( { type : '요청타입'} ) }}>+</button>
@@ -1720,7 +1727,7 @@
   function reducer(state = 기본State, 액션) {
     if ( 액션.type === "수량증가" ){
       let copy = [...기본State]
-      copy[0].quan++
+      copy[0].quan++ // payload 참고
       return copy
     }else if ( 액션.type ==="수량감소") {
       let copy = [...기본State]
@@ -1838,7 +1845,37 @@
 
 
 
+##### * dispatch()로 수정요청할 때 데이터를 보내기
 
+- dispatch({ type:'타입이름', payload : 보낼데이터 })
+
+  - 타입에 대한 요청을 할 때마다 데이터가 store에 보낼데이터가 같이 전달된다
+
+- payload로 보낸 데이터는 reducer 함수의 두번째 파라미터에 저장된다.
+
+  - reducer함수에서 두번째파라미터.payload로 꺼내올 수 있다
+
+  ```react
+  // Cart.js
+  <button onClick={()=>{ props.dispatch( { type : '수량증가', payload : i} ) }}>+</button>
+  <button onClick={()=>{ props.dispatch( { type : '수량감소', payload : i} ) }}>-</button>
+  
+  // index.js
+  function reducer1(state = 기본State, 액션) {
+    if ( 액션.type === "수량증가" ){
+      let copy = [...기본State]
+      copy[액션.payload].quan++
+      return copy
+    }else if ( 액션.type ==="수량감소") {
+      let copy = [...기본State]
+      copy[액션.payload].quan--
+      return copy
+    }else{
+      return state
+    }
+  }
+
+​	
 
 ### 스타일링
 
