@@ -6,6 +6,7 @@ function Signup() {
   const [radioChecked, setRadioChecked] = useState("");
   const [useNickName, addNickName] = useState(['Dongil', 'Kimdongil'])
   const [nickBtn, deactivateNickBtn] = useState(false)
+  const [submitBtn, deactivateSubmitBtn] = useState(true)
   
 
   const changeNickName = e => {
@@ -23,7 +24,14 @@ function Signup() {
   }
 
   const checkNickName = () => {
-    if ( (nickname in useNickName) ) {
+    // 닉네임 중복에 대한 결과값을 Back에서 받아온다.
+    let resultOverlap = false
+    for (let nick of useNickName){
+      if (nickname === nick) {
+        resultOverlap = true
+      }
+    }
+    if ( resultOverlap ) {
       return (
         alert("중복입니다")
       )
@@ -39,14 +47,20 @@ function Signup() {
   useEffect( () => {
     deactivateNickBtn(false)
     }, [nickname]
-  ) 
+  )
 
-  console.log(useNickName)
-  console.log(typeof nickname)
-  console.log(typeof useNickName[0])
-  console.log(nickname)
-  console.log(useNickName)
-  console.log(nickname in useNickName)
+  useEffect( () => {
+    if (nickBtn && radioChecked && age) {
+      deactivateSubmitBtn(false)
+    }
+    }, [nickBtn, nickname, radioChecked, age]
+  )
+  // console.log(useNickName)
+  // console.log(typeof nickname)
+  // console.log(typeof useNickName[0])
+  // console.log(nickname)
+  // console.log(useNickName)
+  // console.log(nickname in useNickName)
 
   return(
     <div className="Signup">
@@ -89,7 +103,7 @@ function Signup() {
           value={ age }
           onChange={ changeAge }
         /><br/>
-        <input type='submit' value='완료' />
+        <button type="submit" disabled={ submitBtn }>완료</button>
       </form>
   
     </div>
