@@ -55,12 +55,6 @@ function Signup() {
     }
     }, [nickBtn, nickname, radioChecked, age]
   )
-  // console.log(useNickName)
-  // console.log(typeof nickname)
-  // console.log(typeof useNickName[0])
-  // console.log(nickname)
-  // console.log(useNickName)
-  // console.log(nickname in useNickName)
 
   return(
     <div className="Signup">
