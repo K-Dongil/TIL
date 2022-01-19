@@ -1664,6 +1664,9 @@
 ##### * reducer & dispatch
 
 - reducer라는 함수로 state 데이터의 수정방법을 정의해놓기
+  - 모든 state 저장 공간이 아니다
+  - 여러가지 Component들에 필요한 data를 저장하는 곳
+  - Component 하나에서만 쓰는건 굳이 저장X
 - dispatch로 데이터 수정요청 보내기
 
 1. reducer 함수생성
@@ -1746,7 +1749,7 @@
     {
       props.state.map((a, i)=>{
         return(
-          <p>a.quan</p>
+          <p>a</p>
           <button onClick={()=>{ props.dispatch( { type : '수량증가'} ) }}>+</button>
           <button onClick={()=>{ props.dispatch( { type : '수량감소'} ) }}>-</button>
     }
@@ -1758,6 +1761,80 @@
     }
   }
   export default connect(함수명)(Cart)
+  ```
+
+- reducer가 2개 이상일 때 combineReducers를 이용하여 합치는 방법
+
+  - combineReducers는 import필요
+
+    ```react
+    import { combineReducers, createStore } from 'redux';
+    ```
+
+  - createStore( combineReducers( {reducer1, reducer2, ...} ) )
+
+    ```react
+    // 두 개의 reducer
+    let alert초기값 = true;
+    
+    function reducer2(state = alert초기값, 액션) {
+      if (액션.type === "닫기버튼"){
+        state = false;
+        return state
+      }else {
+        return state
+      }
+    }
+    
+    let 기본State = [
+      {id:0, name:'멋진신발', quan:2},
+      {id:1, name:'나의신발', quan:5} 
+    ];
+    
+    function reducer1(state = 기본State, 액션) {
+      if ( 액션.type === "수량증가" ){
+        let copy = [...기본State]
+        copy[0].quan++
+        return copy
+      }else if ( 액션.type ==="수량감소") {
+        let copy = [...기본State]
+        copy[0].quan--
+        return copy
+      }else{
+        return state
+      }
+    }
+    
+    // combineReducers
+    let store = createStore( combineReducers( {reducer1, reducer2} ) );
+    ```
+
+  - state props화 구분
+
+    - props : value 설정
+
+    ```react
+    fuction Cart(props) {
+      return(
+        {
+          props.alert열렸니
+          ? (<div calssName="my-alert2">
+              <p>지금 구매하시면 신규할인 20%</p>
+              <button onClick={()=>{props.dispatch({ type : '닫기버튼'})}}>닫기</button>
+              </div>)
+          : null
+        }
+      )
+    }
+    
+    function 함수명(state) {
+      return {
+        state : state.reducer1,
+        alert열렸니 : state.reducer2
+      }
+    }
+    export default connect(함수명)(Cart)
+    ```
 
 
 
