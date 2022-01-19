@@ -1351,9 +1351,14 @@
 
   - useEffect는 업데이트 될때마다 실행이 된다.
   - useEffect의 두번째 인자로 실행조건을 줄 수 있다
+    - 두번째 인자에는 콜백함수 내에서 사용되는 모든 값을 포함한다
+      - 함수가 props, state 또는 파생된 값을 참조하고 있지 않을 때는 포함X
+      - 콜백함수내에서 정의되어서 쓰는 값들은 포함X
+
     - 인자에 들어간 state가 변경이 될때만 useEffet 실행
     - 실행조건은 여러개가 들어갈 수 있다
     - 조건이 비어있다면 component가 등장할 때만 실행된다
+
 
   ```react
   function Detail(){
@@ -1463,26 +1468,77 @@
 
 - props 전송을 하지 않고도 하위 Component들이 부모 Component값을 사용가능
 
+  <img src="react.assets/image-20220120034704185.png" alt="image-20220120034704185" style="zoom: 80%;" />
+
+- 리액트 내장문법
+
 1. context 만들기
 
-   - createContext()는 같은 변수값을 공유할 범위를 만들어주는 문법
+   - createContext()는 변수값(State)을 공유할 범위를 만들어주는 문법
 
    ```react
-   let 재고context = React.createContext()
+   let 공유context = React.createContext()
    ```
 
 2. 같은 값을 공유할 HTML을 범위로 감싸기
 
-   - 값 공유를 원하는 HTML들을 <범위.Provider>로 감싸고 value={공유원하는값}을 속성으로 준다
+   - 값 공유를 원하는 HTML들을 <범위.Provider>로 감싸고 value={공유데이터}을 속성으로 준다
    - 공유원하는Component에서 공유하고싶은 state데이터를 props전송없이 사용가능
 
    ```react
-   <재고context.Provider value={공유하고싶은 데이터}>
-     <공유원하는Component></공유원하는Component>
-   </재고context.Provider>
+   function App() {
+     let 공유context = React.createContext()
+     return(
+       <공유context.Provider value={공유하고싶은 데이터}>
+     		<공유원하는Component></공유원하는Component>
+       </공유context.Provider>
+     )
+   }
    ```
 
-3. 
+3. 범위 내의 Component에서 useContext Hook 사용
+
+   - useContext는 import가 필요
+   - 공유데이터 쓰기위해 useContext(범위이름)으로 불러온다.
+
+   ```react
+   function 공유원하는Component(){
+     let 공유 = useContext(공유context) // 공유라는 변수에 공유데이터가 들어간다
+     return (
+       <div className="Card">
+         {공유}
+       </div>
+       <Test></Test>
+     )
+   }
+   function Test() {
+     let 공유 = useContext(공유Context)
+     return(
+     	<p>{ 공유 }</p>
+     )
+   }
+   export default App;
+   ```
+
+4. 다른 파일에서 공유데이터를 사용
+
+   - 선언 구간에서 export해준다
+
+     ```react
+     function App() {
+       export let 공유context = React.createContext()
+       return(
+         <공유context.Provider value={공유하고싶은 데이터}>
+       		<공유원하는Component></공유원하는Component>
+         </공유context.Provider>
+       )
+     }
+     ```
+
+   - 받고자 하는 파일에서 import 해준다.
+
+     ```react
+     import {공유context} from '불러오는파일경로'
 
 
 
@@ -1491,6 +1547,7 @@
 - 쓰는 이유
 
   1. props 없이 모든 컴포넌트가 state를 갖다쓰기 가능
+     - 모든 Component들이 같은 값을 공유할 수 있는 저장공간 생성
      - 복잔한 props전송이 없다
   2. state 데이터 관리가 용이하다
      - redux에서는  state 데이터의 수정방법을 미리 정의한다
