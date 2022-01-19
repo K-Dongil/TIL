@@ -246,6 +246,79 @@
 
 
 
+##### * Hook
+
+- 기존에 class component에서 사용하던 것을 functional component로 사용하게 만들 수 있다.
+
+- 규칙
+  1. 최상위(at the Top Level)에서만 Hook을 호출
+     - 반복문,조건문,중첩된 함수 내에서 Hook 실행 불가
+  2. React 함수 컴포넌트 내, 커스텀 Hook내에서만 Hook호출 가눙
+     -  JavaScript 함수에서 Hook 호출 불가
+- Custom Hook
+  - 직접 만든 Hook
+  - 작명을 보통 맨 앞에 use가 붙은 use00000으로 한다.
+
+- Hook API
+
+  - useState : state관리
+  - useEffect : lifecycle 생애주기 관리
+  - useContext : 컴포넌트 간 전역 상태 관리
+
+  - useReducer(reducer함수, reducer의 기본 값)
+
+    - 현재 상태, 업데이트를 위해 필요한 정보를 담은 액션값을 전달받아 새로운 상태를 반환하는 함수
+
+    - reducer함수는 현재상태와 action 객체를 파라미터로 받아와서 새로운 상태를 반환하는 형태를 갖는다
+
+    - 결과로 state(현재 가리키고 있는 상태)와 dispatch(액션을 발생시키는 함수) 함수를 받아온다
+
+    - 다수의 하윗값을 포함하는 복잡한 정적 로직을 만드는 경우 사용
+
+      ```react
+      // 1. reducer 함수 만들기
+      function reducer(state, action) {
+          switch (action.type) {
+              case 'INCREMENT':
+                  return state + 1;
+              case 'DECREMENT':
+                  return state - 1;
+              default:
+                  //return state
+                  throw new Error('unhandled action');
+              // return state를 할 경우에는 준비하는 액션이 들어와도 별 액션이 안생기고,
+              // error 를 던져주면 콘솔에서 어떤 에러가 발생햇다는걸 볼수있음
+          }
+      }
+      
+      function Counter() {
+          // 2. useReducer 사용
+          const [number, dispatch] = useReducer(reducer, 0);
+          // [현재상태, dispatch] = useReducer(reducer함수, 초기값);
+      
+          const onIncrease = () => {
+              dispatch({
+                  type: 'INCREMENT'
+              });
+          }
+          const onDecrease = () => {
+              dispatch({
+                  type: 'DECREMENT'
+              });
+          }
+      ```
+
+  - useMemo & useCallback
+
+    - 이전 값을 기억해서 성능을 최적하하는 용도로 사용
+    - useMemo : 계산량이 많은 **함수의 반환값**을 재활용하는 용도로 사용
+    - useCallback : 리액트의 렌더링 성능을 위해 제공되는 훅
+      - 컴포넌트가 렌더링될 때마다 새로운 함수를 생성해서 자식 컴포넌트의 속성값으로 인력
+
+​			
+
+
+
 ##### * state
 
 - 데이터를 저장할 수 있는 방법
@@ -754,7 +827,7 @@
 - 사용자가 input에 입력한 값을 state로 저장
 
   - Event핸들러 onChange, onInput 사용
-    - **e.target**은 이벤트가 동작하는 곳을 가르킨다.
+    - **event.target**(e.target)은 이벤트가 동작하는 곳을 가르킨다.
       - e는 event 정보가 들어가 있는 객체
     - onChange, onInput에서 **e.target.value**은 사용자가 input에 입력한 값을 가져온다
 
@@ -1256,7 +1329,7 @@
   // 2초 후에 alert 창을 안 보이게 하기
   function Detail(){
       
-    useEffect(()=>{
+    useEffect( ()=>{
       let 타이머 = setTimeout(()=> {alert변경(false)}, 2000);
       return ()=>{ clearTimeout(타이머) }
     });
@@ -1315,7 +1388,7 @@
   ```react
   function Detail(){
       
-    useEffect(()=>{
+    useEffect( ()=>{
       return function 함수명() { unmount될 때 실행할 코드~~ }
     });
         
@@ -1373,7 +1446,7 @@
         axios.get("https://codingapple1.github.io/shop/data2.json")
         // axios는 promise객체를 반환한다
         // 요청에 성공하면
-        .then((result)=>{
+        .then( (result)=>{
           shoes변경( [...shoes, ...result.data ] )
         })
         // 요청에 실패함
@@ -1700,3 +1773,80 @@
 
     ```
     npm install node-sass
+
+```
+import React, { useState } from 'react'
+
+function Signup() {
+  const [nickname, nicknameChange] = useState("");
+  const [age, ageChange] = useState("");
+  const [radioChecked, setRadioChecked] = useState("");
+  
+
+  const changeNickName = e => {
+    nicknameChange(e.target.value);
+  }
+
+  const changeRadio = e => {
+    if (e.target.checked) { // e.target.checked는 radio버튼 클릭되면 true
+      setRadioChecked(e.target.id); 
+    }
+  }
+
+  const changeRadioChecked = e => {
+    setRadioChecked(e.target.value);
+  }
+
+  console.log(radioChecked)
+  
+
+  return(
+    <div className="Signup">
+      <form action='./login'>
+        <h2>회원가입</h2>
+        <label>별명:</label>
+        <input
+          type="text"
+          name="nickname"
+          value={ nickname }
+          onChange={ changeNickName }
+        />
+        <button>중복확인</button> <br/>
+        <label>성별:</label>
+        <label>
+          <input
+            type="radio"
+            id = "men"
+            name="radioChecked"
+            value={ radioChecked }
+            onChange={changeRadio}
+          />
+          남
+        </label>
+        <label>
+          <input
+            type="radio"
+            id = "women"
+            name="radioChecked"
+            value={ radioChecked }
+            onChange={changeRadio}
+          />
+          여
+        </label><br/>
+        <label>나이:</label>
+        <input
+          placeholder="나이를 입력해주세요"
+          type="text"
+          name="age"
+          value={ age }
+          onChange={ changeRadioChecked }
+        /><br/>
+        <input type='submit' value='완료' />
+      </form>
+  
+    </div>
+  )
+}
+
+export default Signup;
+```
