@@ -1589,9 +1589,15 @@
      );
      ```
 
-  4. Provider Component에 props 전송
+  4. createStore()안에 state저장 & Provider Component에 props 전송
+
+     - createStore은 import 필요
+     - createStore에는 state를 return하는 함수를 넣을 수 있다
+     - state를 Provider Component에 props로 전송
 
      ```react
+     import { createStore } from 'redux';
+     
      let store = createStore( ()=>{ return [ {id:0, name:'멋진신발', quan:2} ] });
      
      ReactDOM.render(
@@ -1612,11 +1618,15 @@
 
        - redux store 데이터 가져와서 props로 변환해주는 함수
        - state를 props화
+         - 데이터를 전송하기위해 key:value로 만든다
          - return (state : state)가 redux store를 props로 바꾸는 변환해주는 부분이다
 
+
        ```react
-       function 함수명(state){
+       function 함수명(state){ // store에 있던 state data를 가져오는 함수
          return(
+           // 상품명(key)에 store안 state[0]의 name이라는 데이터를 value로 매칭시킨다    
+           // 상품명 : state[0].name
            state : state // store 안에 있던 모든 데이터를 state라는 이름의 props로 바꾸기
          ) // props의 state라는 key에는 state라는 value(store의 모든 데이터)를 넣어주세요
        }
@@ -1630,7 +1640,9 @@
          
          function Cart(props){
            return(
-           	<p>props.state</p>
+           	<p>props.state</p> // 현재 props.state에는 redux에 저장되어있던 state가 있다
+           	<p>props.state.id</p>
+             <p>props.state.name</p>
            )
          }
          
@@ -1643,8 +1655,8 @@
          export default connect(state를props화)(Cart)
          ```
 
-- state 데이터의 수정방법을 정의해놓기
-  - -하는중-
+- reducer & dispatch로 데이터 수정
+  - state 데이터의 수정방법을 정의해놓기
 
 
 
