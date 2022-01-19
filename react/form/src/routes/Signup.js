@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 function Signup() {
   const [nickname, nicknameChange] = useState("");
   const [age, ageChange] = useState("");
   const [radioChecked, setRadioChecked] = useState("");
   const [useNickName, addNickName] = useState(['Dongil', 'Kimdongil'])
+  const [nickBtn, deactivateNickBtn] = useState(false)
   
 
   const changeNickName = e => {
@@ -28,11 +29,18 @@ function Signup() {
       )
     } else {
       addNickName( [...useNickName, nickname] )
+      deactivateNickBtn(true)
       return (
         alert("사용가능합니다")
       )
     }
   }
+
+  useEffect( () => {
+    deactivateNickBtn(false)
+    }, [nickname]
+  ) 
+
   console.log(useNickName)
   console.log(typeof nickname)
   console.log(typeof useNickName[0])
@@ -51,7 +59,7 @@ function Signup() {
           value={ nickname }
           onChange={ changeNickName }
         />
-        <button type="button" onClick={ checkNickName }>중복확인</button> <br/>
+        <button type="button" onClick={ checkNickName } disabled={ nickBtn }>중복확인</button> <br/>
         <label>성별:</label>
         <label>
           <input
