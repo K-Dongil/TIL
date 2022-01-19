@@ -1874,8 +1874,99 @@
       return state
     }
   }
+  ```
 
-​	
+
+
+##### * useSelector
+
+- redux store의 모든 데이터 가져와서 쉽게 props로 변환
+
+  - import 필요
+
+  - 여러개의 reducer가 존재할 시 state.정의한reducer이름 이렇게 접근한다
+
+    - useSelector에 들어오는 인자에는 모든 state가 들어온다.
+
+    - 가져오고 싶은 reducer를 선택할 수 있다
+
+      ```react
+      let state = useSelector((state) => state.가져오고싶은 reducer이름)
+
+  ```react
+  import { useSelector } from 'react-redux';
+  function Cart() {
+    //redux안에 있던 모든 state return시키면서 props
+    let state = useSelector((state) => state) 
+    return(
+  	...  
+    )
+  }
+  export default Cart;
+  
+  // 위에서 썻던 방법
+  function 함수명(state) {
+    return {
+      state : state.reducer1,
+      alert열렸니 : state.reducer2
+    }
+  }
+  
+  export default connect(함수명)(Cart)
+  ```
+
+
+
+##### * useDispatch
+
+- Hook을 이용한 redux store에 있던 data 쉽게 수정요청하기
+
+- import 필요
+
+- use useSelector&useDispatch 두개를 이용하면 props를 인자로 받아오지 않아도 된다.
+
+  ```react
+  // useSelector&useDispatch 사용
+  import { useDispatch } from 'react-redux';
+  function Cart() {
+    let state = useSelector((state) => state) // state에 reducer1, recuer2가 들어있다(가정)
+    let dispatch = useDispatch();
+    return (
+  	{
+      state.reducer2
+      ? (<div calssName="my-alert2">
+          <p>지금 구매하시면 신규할인 20%</p>
+          <button onClick={()=>{dispatch({ type : '닫기버튼'})}}>닫기</button>
+          </div>)
+      : null
+      }
+    )
+  }
+  
+  // useDispatch 이용X
+  function Cart(props) {
+    return(
+  	{
+      props.alert열렸니
+      ? (<div calssName="my-alert2">
+          <p>지금 구매하시면 신규할인 20%</p>
+          <button onClick={()=>{props.dispatch({ type : '닫기버튼'})}}>닫기</button>
+          </div>)
+      : null
+      }
+    )   
+  }
+  function 함수명(state) {
+    return {
+      state : state.reducer1,
+      alert열렸니 : state.reducer2
+    }
+  }
+  export default connect(함수명)(Cart)
+
+
+
+
 
 ### 스타일링
 
