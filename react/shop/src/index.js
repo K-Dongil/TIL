@@ -25,13 +25,18 @@ let 기본State = [
 ];
 
 function reducer1(state = 기본State, 액션) {
-  if ( 액션.type === "수량증가" ){
+  if ( 액션.type === "항목추가") {
+    let copy = [...state]
+    copy.push(액션.payload);
+    return copy
+  }
+  else if ( 액션.type === "수량증가" ){
     let copy = [...기본State]
-    copy[0].quan++
+    copy[액션.payload].quan++
     return copy
   }else if ( 액션.type ==="수량감소") {
     let copy = [...기본State]
-    copy[0].quan--
+    copy[액션.payload].quan--
     return copy
   }else{
     return state
