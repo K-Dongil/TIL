@@ -23,13 +23,21 @@ function Cart(props) {
                   <td>{ a.name }</td>
                   <td>{ a.quan }</td>
                   <td>Table cell</td>
-                  <td><button onClick={()=>{}}>+</button></td>
+                  <td>
+                    <button onClick={()=>{ props.dispatch( { type : '수량증가'} ) }}>+</button>
+                    <button onClick={()=>{ props.dispatch( { type : '수량감소'} ) }}>-</button>
+                  </td>
                 </tr>
               )
             })
           }
         </tbody>
       </Table>
+
+      <div calssName="my-alert2">
+        <p>지금 구매하시면 신규할인 20%</p>
+        <button>닫기</button>
+      </div>
     </div>
   )
 }
