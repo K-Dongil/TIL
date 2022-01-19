@@ -33,18 +33,22 @@ function Cart(props) {
           }
         </tbody>
       </Table>
-
-      <div calssName="my-alert2">
-        <p>지금 구매하시면 신규할인 20%</p>
-        <button>닫기</button>
-      </div>
+      {
+        props.alert열렸니
+        ? (<div calssName="my-alert2">
+            <p>지금 구매하시면 신규할인 20%</p>
+            <button onClick={()=>{ props.dispatch( { type : '닫기버튼'} ) }}>닫기</button>
+          </div>)
+        : null
+      }
     </div>
   )
 }
 
 function 함수명(state) {
   return {
-    state : state
+    state : state.reducer1,
+    alert열렸니 : state.reducer2
   }
 }
 
