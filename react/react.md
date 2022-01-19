@@ -686,6 +686,8 @@
 
 ##### * props
 
+- Component 요소에 props value를 지정
+
 - App Component 안에 있는 state데이터를 다른 component에 전송할 때 사용
 
 - Modal Component를 App Component에서 삼항연산자를 이용하여 Modal창 조작할 때, App이 부모 컴포넌트, Modal이 자식 컴포넌트
@@ -1544,6 +1546,8 @@
 
 ### 리덕스
 
+##### * redux
+
 - 쓰는 이유
 
   1. props 없이 모든 컴포넌트가 state를 갖다쓰기 가능
@@ -1618,14 +1622,14 @@
 
        - redux store 데이터 가져와서 props로 변환해주는 함수
        - state를 props화
-         - 데이터를 전송하기위해 key:value로 만든다
+         - 데이터를 전송하기위해 props:value로 만든다
          - return (state : state)가 redux store를 props로 바꾸는 변환해주는 부분이다
 
 
        ```react
        function 함수명(state){ // store에 있던 state data를 가져오는 함수
          return(
-           // 상품명(key)에 store안 state[0]의 name이라는 데이터를 value로 매칭시킨다    
+           // 상품명(props)에 store안 state[0]의 name이라는 데이터를 value로 매칭시킨다    
            // 상품명 : state[0].name
            state : state // store 안에 있던 모든 데이터를 state라는 이름의 props로 바꾸기
          ) // props의 state라는 key에는 state라는 value(store의 모든 데이터)를 넣어주세요
@@ -1655,10 +1659,105 @@
          export default connect(state를props화)(Cart)
          ```
 
-- reducer & dispatch로 데이터 수정
-  - state 데이터의 수정방법을 정의해놓기
 
 
+##### * reducer & dispatch
+
+- reducer라는 함수로 state 데이터의 수정방법을 정의해놓기
+- dispatch로 데이터 수정요청 보내기
+
+1. reducer 함수생성
+
+   - 항상 state(수정 or 기본 state)를 return
+   - 기본 state는 default parameter로 지정
+
+   ```react
+   import { Provider } from 'react-redux'
+   import { createStore } from 'redux';
+   
+   let 기본State = [
+     {id:0, name:'멋진신발', quan:2},
+     {id:1, name:'나의신발', quan:5} 
+   ];
+   
+   function reducer(state = 기본State, 액션) {
+     if ( state수정조건 ){
+       수정된state = 기존 state를 deepcopy한 뒤 수정
+       return 수정된state
+     }else{
+       return state
+     }
+   }
+   ```
+
+2. store만들 때 만들어 둔 reducer 집어넣기
+
+   ```react
+   let store = createStore(reducer)
+   ```
+
+3. 데이터 수정요청 보내기
+
+   - 데이터 수정요청을 할 때는 props.dispatch( {type :  '요청타입'} )
+     - 요청타입 : 어떤 요청을 할 것인지 타입(타입이름)설정
+
+   ```react
+   <button onClick={()=>{ props.dispatch( { type : '요청타입'} ) }}>+</button>
+   ```
+
+- ex)
+
+  ```react
+  // index.js
+  let 기본State = [
+    {id:0, name:'멋진신발', quan:2},
+    {id:1, name:'나의신발', quan:5} 
+  ];
+  
+  function reducer(state = 기본State, 액션) {
+    if ( 액션.type === "수량증가" ){
+      let copy = [...기본State]
+      copy[0].quan++
+      return copy
+    }else if ( 액션.type ==="수량감소") {
+      let copy = [...기본State]
+      copy[0].quan--
+      return copy
+    }else{
+      return state
+    }
+  }
+  
+  let store = createStore( reducer ) ;
+  
+  ReactDOM.render(
+    <React.StrictMode>
+      <BrowserRouter>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </BrowserRouter>
+    </React.StrictMode>,
+    document.getElementById('root')
+  );
+  
+  // Cart.js
+  function Cart(props) {
+    {
+      props.state.map((a, i)=>{
+        return(
+          <p>a.quan</p>
+          <button onClick={()=>{ props.dispatch( { type : '수량증가'} ) }}>+</button>
+          <button onClick={()=>{ props.dispatch( { type : '수량감소'} ) }}>-</button>
+    }
+  }
+  
+  function 함수명(state) {
+    return {
+      state : state
+    }
+  }
+  export default connect(함수명)(Cart)
 
 
 
