@@ -1624,28 +1624,28 @@
        - state를 props화
          - 데이터를 전송하기위해 props:value로 만든다
          - return (state : state)가 redux store를 props로 바꾸는 변환해주는 부분이다
-
-
+       
        ```react
        function 함수명(state){ // store에 있던 state data를 가져오는 함수
          return(
-           // 상품명(props)에 store안 state[0]의 name이라는 데이터를 value로 매칭시킨다    
+           // 상품명(props)에 store안 state[0]의 name이라는 데이터를 value로 매칭시킨다
            // 상품명 : state[0].name
            state : state // store 안에 있던 모든 데이터를 state라는 이름의 props로 바꾸기
          ) // props의 state라는 key에는 state라는 value(store의 모든 데이터)를 넣어주세요
        }
-
+       ```
+     
      - export default state를 쓸 Component-> export default connect(state를 받아온 함수명)(state를 쓸 Component)
-
+     
        - connect 쓰기 위해서는 import 해야한다
-
+     
          ```react
          import { connect } from 'react-redux';
          
          function Cart(props){
            return(
-           	<p>props.state</p> // 현재 props.state에는 redux에 저장되어있던 state가 있다
-           	<p>props.state.id</p>
+             <p>props.state</p> // 현재 props.state에는 redux에 저장되어있던 state가 있다
+             <p>props.state.id</p>
              <p>props.state.name</p>
            )
          }
@@ -1655,25 +1655,28 @@
              state : state
            )
          }
-         
          export default connect(state를props화)(Cart)
-         ```
 
 
 
 ##### * reducer & dispatch
 
-- reducer라는 함수로 state 데이터의 수정방법을 정의해놓기
+- reducer
+  - reducer라는 함수로 state 데이터의 수정방법을 정의해놓기
   - reducer는 state보관함
   - 모든 state 저장 공간이 아니다
-  - 여러가지 Component들에 필요한 data를 저장하는 곳
-  - Component 하나에서만 쓰는건 굳이 저장X
+    - 여러가지 Component들에 필요한 data를 저장하는 곳
+    - Component 하나에서만 쓰는건 굳이 저장X
   - state는 종류별로 모아두는 것이 편리
     - 다른 종류의 state 저장하고 싶으면 reducer를 한개 더 만들어서 보관한다.
+  - state와 action을 받아서 새로운 state를 반환하는 함수
+
 - dispatch로 데이터 수정요청 보내기
-  - 개발환경에서 새로고침하면 redux도 초기화
+  - action은 state가 어떤 동작을 할지 적어 놓은 Object
+  - 개발환경에서 미리보기 띄우는 페이지들은 이동하면 새로고침되면서 redux도 초기화
   - 개발환경에서 페이지 이동시 강제 새로고침 막아주기
     - history.push('경로')
+
 
 1. reducer 함수생성
 
@@ -1701,11 +1704,36 @@
 
 2. store만들 때 만들어 둔 reducer 집어넣기
 
+   - store는 global State를 저장한 저장소
+     - 서버는 아니지만 SPA에서 새로고침하기 전까지 살아있는 서버와 비슷하게 동작
+   - 모든 Component에서 사용가능하지만 dispatch를 통해서만 접근가능
+
    ```react
    let store = createStore(reducer)
    ```
 
-3. 데이터 수정요청 보내기
+3. connect함수를 이용해 props화 시켜주는 함수랑 연결해주기
+
+   ```react
+   // Cart.js
+   function Cart(props) {
+     {
+       props.state.map((a, i)=>{
+         return(
+           <p>a</p>
+           <button onClick={()=>{ props.dispatch( { type : '수량증가'} ) }}>+</button>
+           <button onClick={()=>{ props.dispatch( { type : '수량감소'} ) }}>-</button>
+     }
+   }
+   
+   function 함수명(state) {
+     return {
+       state : state
+     }
+   }
+   export default connect(함수명)(Cart)
+
+4. 데이터 수정요청 보내기
 
    - 데이터 수정요청을 할 때는 props.dispatch( {type :  '요청타입'} )
      - 요청타입 : 어떤 요청을 할 것인지 타입(타입이름)설정
@@ -1847,7 +1875,7 @@
 
 ##### * dispatch()로 수정요청할 때 데이터를 보내기
 
-- dispatch({ type:'타입이름', payload : 보낼데이터 })
+- store.dispatch({ type:'타입이름', payload : 보낼데이터 })
 
   - 타입에 대한 요청을 할 때마다 데이터가 store에 보낼데이터가 같이 전달된다
 
@@ -1880,7 +1908,11 @@
 
 ##### * useSelector
 
-- redux store의 모든 데이터 가져와서 쉽게 props로 변환
+- redux의 상태값이 변경되면 이전 반환값과 새로운 반환값을 비교하여, 다를 경우 Component를 re-rendering 한다.
+
+- connect 함수를 사용하지 않고도 리덕스의 상태 조회가능
+
+- redux store의 모든 **데이터 가져오기** + 쉽게 props로 변환
 
   - import 필요
 
@@ -1919,7 +1951,7 @@
 
 ##### * useDispatch
 
-- Hook을 이용한 redux store에 있던 data 쉽게 수정요청하기
+- Hook을 이용한 redux store에 있던 data 쉽게 업데이트하기
 
 - import 필요
 
@@ -1963,6 +1995,14 @@
     }
   }
   export default connect(함수명)(Cart)
+
+
+
+##### * useStore
+
+- store에 직접 접근가능
+  - useState를 이용할 때 useSelector보다 반응이 빠르다
+- 
 
 
 
