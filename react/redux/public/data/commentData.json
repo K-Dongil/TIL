@@ -1,0 +1,31 @@
+[
+  {
+    "postId": 1, 
+    "nickname": "imgood",
+    "comment": "사진 이쁘네요!!",
+    "created_at": "22-01-12"
+
+  },
+  {
+    "postId": 1, 
+    "nickname": "imgood",
+    "comment": "사진이 이쁘네요!!",
+    "created_at": "22-01-13"
+
+  },
+  {
+    "postId": 1, 
+    "nickname": "imgood",
+    "comment": "이쁘네요!!",
+    "created_at": "22-01-12"
+
+  },
+  {
+    "postId": 1, 
+    "nickname": "imgood",
+    "comment": "사진이 정말 이쁘네요!!",
+    "created_at": "22-01-13"
+
+  }
+  
+]
