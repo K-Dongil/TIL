@@ -9,7 +9,7 @@ function Signup() {
   const [submitBtn, deactivateSubmitBtn] = useState(true)
   
 
-  const changeNickName = e => {
+  const changeNickName = (e) => {
     nicknameChange(e.target.value);
   }
 
@@ -46,6 +46,8 @@ function Signup() {
 
   useEffect( () => {
     deactivateNickBtn(false)
+    deactivateSubmitBtn(true)
+    console.log(nickname)
     }, [nickname]
   )
 
