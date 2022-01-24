@@ -1,4 +1,4 @@
-## React
+## React.
 
 ##### * Why react?
 
