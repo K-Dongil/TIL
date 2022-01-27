@@ -1,10 +1,10 @@
 import './App.css';
-import Test from './Test.js'
+import SlickTest from './SlickTest.js'
 
 function App() {
   return (
     <div className="App">
-      <Test></Test>
+      <SlickTest></SlickTest>
     </div>
   );
 }
