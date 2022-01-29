@@ -1,0 +1,15 @@
+<svg viewBox="0 0 24 24">
+  <path class="line" d="M2 2L22 22" />
+  <path class="long" d="M9 15L20 4" />
+  <path class="arrow" d="M13 11V7" />
+  <path class="arrow" d="M17 11H13" />
+</svg>
+
+<!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <path class=d="M 2,2 C 3.925,3.925 8.149999999999999,8.15 12,12 C 15.85,15.85 20.075,20.075 22,22
+		"/>
+  <path class="line" d="M2 2L22 22" />
+  <path class="long" d="M9 15L20 4" />
+  <path class="arrow" d="M13 11V7" />
+  <path class="arrow" d="M17 11H13" />
+</svg> -->

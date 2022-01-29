@@ -1,0 +1,38 @@
+.SliderSlick{
+  width:100%;
+  height: 320px;
+  padding-top: 20px;
+}
+
+.carousel{
+  width:70%;
+  margin:0px auto; /* 캐러셀 가운데 정렬 */
+}
+
+.slick-track > div {
+  margin: 0px auto;
+  display:inline-block;
+}
+
+.slick-slide > div {
+  margin: 0px auto;
+  display:inline-block;
+}
+
+.slick-slide {
+  height: 350px; /* 슬라이드 높이 */
+  border: 4px solid white;
+  box-sizing: border-box;
+  visibility: hidden;
+}
+
+.slick-slide img {
+  margin: 0px auto;
+  width: 100%;
+  border: 2.5px solid white;
+  box-sizing: border-box;
+}
+
+.slick-active, .slick-current{
+  visibility: visible;
+}
