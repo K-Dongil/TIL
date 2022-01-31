@@ -1051,3 +1051,8 @@
     - fetchDogImage함수가 서버에서 사용자 정보를 가져오는 HTTP 통신코드라 가정
 
     <img src="javaScript.assets/image-20220115000754508.png" alt="image-20220115000754508" style="zoom:80%;" />
+
+
+
+##### * this
+
