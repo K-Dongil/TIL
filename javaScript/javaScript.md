@@ -1056,3 +1056,44 @@
 
 ##### * this
 
+- 실행Context 내부에 ThisBinding이라는 this를 담당하는 부분이 존재하므로, this의 bingding은 해당 실행Context가 활성화 될 때 세팅
+  - 실행 Context는 함수가 호출될 때 활성화 되기 때문에 this는 함수가 호출될 때 결정이 된다
+  - 자바스크립트의 this는 동적으로 바인딩
+  - 바인딩 : 식별자와 값을 연결하는 과정
+
+1. 전역공간
+
+   - 전역 객체를 참조한다
+     - 브라우저 환경에서는 window가 객체
+     - Node.js 환경에서는 gloabal가 객체
+
+   ```javascript
+   // 웹 브라우저에서는 window 객체가 전역 객체
+   console.log(this === window); // true
+   
+   a = 37;
+   console.log(window.a); // 37
+   
+   this.b = "MDN";
+   console.log(window.b)  // "MDN"
+   console.log(b)         // "MDN"
+
+2. 함수 & callback 호출
+
+   - 함수를 실행한 부분의 공간은 실질적으로 전역공간
+     - 함수 호출시에는 전역객체를 가르킨다.
+
+3. 메소드 호출
+
+   - 메소드를 호출한 주체를 가르킨다.
+     - 메소드 명 앞
+
+4. 생성자 함수 호출
+
+   - this가 new연산자로 생성된 인스턴스를 가르킨다.
+
+5. 화살표 함수
+
+   - 함수를 선언할 때 this에 바인딩할 객체가 정적으로 결정된다
+     - 언제나 상위 스코프의 this를 가르킨다.
+     - 자신이 종속된 인스턴스를 가르킨다.
