@@ -1082,11 +1082,50 @@
 
    - 함수를 실행한 부분의 공간은 실질적으로 전역공간
      - 함수 호출시에는 전역객체를 가르킨다.
+     - Strict mode에서는 직접 호출하면 undefined
+
+   ```javascript
+   function functionTest() { console.log(this); };
+   
+   functionTest(); // window {parent: Window, opener: null, top : Winodw, ...}
+   ```
+
+   - 함수를 event 처리기로 이용
+
+     - this는 이벤트를 발사한 요소로 설정된다.
+
+     ```javascript
+     // 처리기로 호출하면 관련 객체를 파랗게 만듦
+     function bluify(e) {
+       // 언제나 true
+       console.log(this === e.currentTarget);
+       // currentTarget과 target이 같은 객체면 true
+       console.log(this === e.target);
+       this.style.backgroundColor = '#A5D9F3';
+     }
+     
+     // 문서 내 모든 요소의 목록
+     var elements = document.getElementsByTagName('*');
+     
+     // 어떤 요소를 클릭하면 파랗게 변하도록
+     // bluify를 클릭 처리기로 등록
+     for (var i = 0; i < elements.length; i++) {
+       elements[i].addEventListener('click', bluify, false);
+     }
 
 3. 메소드 호출
 
-   - 메소드를 호출한 주체를 가르킨다.
+   - 해당 메소드를 호출한 주체를 가르킨다.
      - 메소드 명 앞
+
+   ```javascript
+   let methodTest = {
+       test: function() {
+           console.log(this);
+       },
+   };
+   
+   methodTest.test(); // {test: ƒ}
 
 4. 생성자 함수 호출
 
@@ -1096,6 +1135,7 @@
 
    - 함수를 선언할 때 this에 바인딩할 객체가 정적으로 결정된다
      - 언제나 상위 스코프의 this를 가르킨다.
+       - 화살표 함수를 정의한 객체를 나타낸다.
      - 자신이 종속된 인스턴스를 가르킨다.
 
 - Call & Apply & Bind
@@ -1104,15 +1144,35 @@
     - this가 특정 객체를 참조하도록 만들어 준다
 
   1. Call
+
      - this를 바인딩하면서 함수를 호출한다
      - 두번째 인자를 하나씩 넘겨준다
      - 함수 호출 시 this가 가르켜야 할 주체를 명시할 수 있다
      - 첫번째 인자가 없을시 자동으로 전역 객체를 지정한다
+
   2. Apply
+
      - this를 바인딩하면서 함수를 호출한다
      - 두번째 인자가 배열이다
      - 함수 호출 시 this가 가르켜야 할 주체를 명시할 수 있다
      - 첫번째 인자가 없을시 자동으로 전역 객체를 지정한다
+
   3. Bind
+
      - this가 바인딩 된 새로운 함수를 return한다
+
+       - 인자로 넣은 값으로 bind된다
+
      - 함수를 객체에 바인딩할 때 사용
+
+       ```javascript
+       let test = {
+           test: function() {
+               console.log(this);
+           },
+       };
+       
+       function functionTest() { console.log(this); };
+       
+       var bindTest = functionTest.bind(test);
+       bindTest(); // {test: f}
