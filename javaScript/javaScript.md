@@ -839,7 +839,20 @@
 
   <img src="javaScript.assets/image-20220115000112628.png" alt="image-20220115000112628" style="zoom: 67%;" />
 
-- configs
+- instance method
+
+  ```
+  axios.get(url[, config])
+  axios.post(url[, data[, config]])
+  axios.put(url[, data[, config]])
+  axios.patch(url[, data[, config]])
+  axios.delete(url[, config])
+  axios.request(config)
+  axios.head(url[, config])
+  axios.options(url[, config])
+  axios.getUri([config])
+
+- configs (구성)
 
   - url : 요청에 사용될 서버 URL
 
@@ -1107,6 +1120,38 @@
     });
     
     source.cancel('Want to cancel');
+    ```
+
+- 응답 스키마
+
+  - 요청에 따른 응답 결과는 아래의 정보들이 들어 있다
+
+    - data : 서버가 제공한 응답 데이터
+    - status : 서버 응답의 HTTP 상태 코드
+    - statusText : 서버 응답으로 부터의 HTTP 상태 메시지
+    - headers : 서버가 응답 한 헤더는 모든 헤더 이름이 소문자로 제공
+    - config : 요첨에 대해 axios에 설정된 구성 confing
+    - request : 응답을 생성한 요청
+
+    ```javascript
+    {
+      data: {},
+      status: 200,
+      statusText: 'OK',
+      headers: {},
+      config: {},
+      request: {}
+    }
+    
+    /* then을 사용하면 응답을 받을 수 있다 */
+    axios.get('/user/12345')
+      .then(function (response) {
+        console.log(response.data);
+        console.log(response.status);
+        console.log(response.statusText);
+        console.log(response.headers);
+        console.log(response.config);
+      });
 
 
 
