@@ -812,7 +812,7 @@
 
 
 
-##### * Axios
+##### * [Axios](https://axios-http.com/kr/docs/intro)
 
 - Promise based HTTP client for the browser and Node.js
   - 응답을 Promise 객체로 준다
@@ -839,7 +839,274 @@
 
   <img src="javaScript.assets/image-20220115000112628.png" alt="image-20220115000112628" style="zoom: 67%;" />
 
+- configs
 
+  - url : 요청에 사용될 서버 URL
+
+    ```javascript
+    axios({
+      url: 'http://localhost:5000',
+    });
+
+  - method : 요청에 사용될 메소드(GET, POST, PUT, PATCH, DELELTE)
+
+    - GET : 리소스 조회
+    - POST : 요청 데이터 처리
+    - PUT : 리소스를 대체, 해당 리소스가 없으면 생성
+    - PATCH : 리소스를 일부만 변경
+    - DELELTE : 리소스 삭제
+
+    ```javascript
+    axios({
+      method: 'get', /* get, post, put patch, delete */
+    });
+
+  - baseURL : url 값이 절대경로 url이 아니라면, 앞 부분에 baseURL값이 붙는다
+
+    ```javascript
+    axios({
+      url: '/users',
+      baseURL: 'http://localhost:5000/',
+    });
+
+  - transformRequest : 서버에 요청을 보내기 전에 데이터를 변환
+
+    ``` javascript
+    axios({
+      data: { id: 1 },
+      transformRequest: [function(data, headers) {
+        const payload = { ...data, key: 'some-key' };
+        return qs.stringify(payload);
+      }],
+    });
+    ```
+
+  - transformResponse : 서버에서 받은 데이터를 변경해서 then/catch로 전달
+
+    ```javascript
+    axios({
+      transformResponse: [function(data) {
+        const tmpData = JSON.parse(data);
+        return tmpData.data.map((item, i) => {
+          item.index = 1;
+          return item;
+        });
+      }],
+    }).then(result => {
+      console.info(result.data); // [ { id: 1, index: 0 }, { id: 2, index: 1 } ]
+    });
+    ```
+
+  - headers : 서버에 전송될 사용자 정의 헤더
+
+  - params : 요청 URL과 같이 전송될 매개변수
+
+    ```javascript
+     /* http://localhos:5000?key=3 이렇게 요청을 보낸 것과 동일하다 */
+    axios({
+      url: 'http://localhost:5000/',
+      params: { key: 3 },
+    });
+    ```
+
+  - paramsSerializer : params를 직렬화하는 옵션 함수
+
+    ```javascript
+    /* params에 배열을 전송할 시, 요청을 받는 서버 쪽에서는 { 'key[]:[ '1', '2', '3' ] }
+    의 형태로 받는다. 하지만 직렬화로 인해 { key: '1,2,3' } 의 형태로 받는다. */
+    axios({
+      params: { key: [1, 2, 3] },
+      paramsSerializer: paramObj => {
+        const params = new URLSearchParams();
+        for (const key in paramObj) {
+            params.append(key, paramObj[key])
+        }
+        return params.toString();
+      },
+    });
+    ```
+
+  - data : request body로 전송할 데이터 (put, post, patch에만 적용 가능)
+
+    ```javascript
+    axios({
+      data: { id: 3 },
+    });
+    ```
+
+  - timeout : 요청이 타임아웃되는 ms를 지정 (기본값 : 0)
+
+    - 요청이 해당 설정 시간보다 지연될 경우 요청 중단, catch로 에러 전달
+
+    ```javascript
+    axios({
+      timeout: 1000,
+    });
+    ```
+
+  - withCredentials : 자격 증명을 사용하여 크로스 사이트 접근 제어 요청이 필요한 경우 설정
+
+    - 서버와 클라이언트 도메인이 서로 다르면 쿠키 전송이 되지 않을 때 사용
+
+    ```javascript
+    const httpAdapter = require('axios/lib/adapters/http');
+    const settle = require('axios/lib/core/settle');
+    
+    axios({
+      url: 'http://localhost:5000/',
+      adapter: config => {
+        return new Promise((resolve, reject) => {
+          httpAdapter(config).then(response => {
+            if (response.status === 200) {
+              response.status = 503;
+            }
+            settle(resolve, reject, response);
+          }).catch(reject);
+        });
+      },
+    }).catch(err => {
+      console.error(err); // Error: Request failed with status code 503 ...
+    });
+    ```
+
+  - adapter : 커스텀 핸들링 요청을 허용, 유효한 응답(Promise)를 반환
+
+    ```javascript
+    /* response status 가 200 일 경우 503 으로 세팅해 응답하도록 adapter 를 추가 
+    정상적으로 왔을 응답이 503 에러로 처리되어 catch 에서 찍힌다*/
+    const httpAdapter = require('axios/lib/adapters/http');
+    const settle = require('axios/lib/core/settle');
+    
+    axios({
+      url: 'http://localhost:5000/',
+      adapter: config => {
+        return new Promise((resolve, reject) => {
+          httpAdapter(config).then(response => {
+            if (response.status === 200) {
+              response.status = 503;
+            }
+            settle(resolve, reject, response);
+          }).catch(reject);
+        });
+      },
+    }).catch(err => {
+      console.error(err); // Error: Request failed with status code 503 ...
+
+  - auth : HTTP 기본 인증이 사용되며 자격 증명을 제공함을 나타낸다
+
+    - 기존의 Authorization 헤더를 덮어쓰는 헤더 설정이 들어가게 된다.
+
+    ```javascript
+    axios({
+      auth: {
+        username: 'dongil',
+        password: 'test',
+      },
+    });
+    ```
+
+  - responseType : 서버에서 응답할 데이터 타입을 설정
+
+    - [ 'arraybuffer', 'blob', 'document', 'json', 'text', 'stream' ]
+
+    ```javascript
+    axios({
+      responseType: 'json'
+    });
+    ```
+
+  - responseEncoding : 응답 디코딩에 사용할 인코딩을 나타낸다
+
+    - 클라이언트 사이드 요청 또는 responseType이 stream인 경우 무시
+
+    ```javascript
+    axios({
+      responseEncoding: 'utf8' // 기본값
+    });
+    ```
+
+  - xsrfCookieName : xsrf 토큰(token)에 대한 값으로 사용할 쿠키 이름
+
+    ```javascript
+    axios({
+       xsrfCookieName: 'XSRF-TOKEN', // 기본 값
+    });
+    ```
+
+  - xsrfHeaderName : xsrf 토큰값을 운반하는 HTTP 헤더 이름
+
+    ```javascript
+    axios({
+      xsrfHeaderName: 'X-XSRF-TOKEN', // 기본 값
+    });
+    ```
+
+  - onUploadProgress : 업로드 프로그레스 이벤트를 처리
+
+    ```javascript
+    axios({
+      onUploadProgress: progressEvent => {
+        ...
+      },
+    
+    });
+    ```
+
+  - onDownloadProgress : 다운로드 프로그레스 이벤트를 처리
+
+    ```javascript
+    axios({
+      onDownloadProgress: progressEvent => {
+        ...
+      },
+    });
+    ```
+
+  - maxContentLength : HTTP 응답 콘텐츠의 최대 크기를 바이트(Bytes) 단위로 설정
+
+    ```javascript
+    axios({
+      maxContentLength: 2000,
+    });
+    ```
+
+  - vaildateStatus : 응답 상태 코드에 대해  true or false로 promise를 resolve하거나 reject
+
+    ```javascript
+    /* 응답코드 200 외에는 전부 에러로 처리 */
+    axios({
+      validateStatus: status => {
+        // return status >= 200 && status < 300; - default
+        return status !== 200;
+      },
+    });
+    ```
+
+  - maxRedirect : Node.js에서 리다이렉션이 가능한 최대 갯수를 정의
+
+    ```javascript
+    axios({
+      maxRedirect: 5,
+    });
+    ```
+
+  - cancelToken : 요청을 취소
+
+    ```javascript
+    /* cancelToken 을 넣어 보내면, 요청이 취소되어 reject 로 처리되고 그 에러가 cancel 된 요청인지도 확인가능 */
+    const axios = require('axios');
+    const CancelToken = axios.CancelToken;
+    const source = CancelToken.source();
+    
+    axios({
+      url: 'http://localhost:5000/',
+      cancelToken: source.token,
+    }).catch(err => {
+      console.error(err); // Cancel { message: 'Want to cancel' }
+      console.info(axios.isCancel(err)); // true
+    });
+    
+    source.cancel('Want to cancel');
 
 
 
