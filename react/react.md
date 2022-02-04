@@ -1271,13 +1271,22 @@
 
     - useParams에는 사용자가 입력한 URL의 모든 파라미터 값들이 들어있다
 
-    - 사용하기 위해서는 import 해야한다
+      - Object 형식으로 들어있다.
 
+      ```
+      path="/post/:postId"일 때
+      http://localhos:3000/post/1 로 접속을 한다면
+      useParams에는 {postId: '1'}이 들어있다
+      
+      이유 : URL parameter가 여러개 일 때를 생각하면 object형식으로 출력되는 것이 맞다
+  
+    - 사용하기 위해서는 import 해야한다
+  
       ```react
       import { useParams } from 'react-router-dom';
-
+  
   - ex) url의 :parameter 자리에 있던 문자 사용
-
+  
     ```react
     import { useParams } from 'react-router-dom';
     
