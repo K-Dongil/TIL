@@ -120,6 +120,9 @@
    
    Connection : 클라이언트와 서버의 연결 방식 설정 
      - HTTP/1.1은 kepp-alive 로 연결 유지하는게 디폴트.
+     
+   Keep-Alive: 연결에 대한 타임아웃과 요청 최대 개수를 어떻게 정했는지에 대해 알려준다
+     - parameter : timeout(유효 연결이 계속 열려 있어야 하는 최소한의 시간), max(요청 수)
    ```
 
 2. Request Header
