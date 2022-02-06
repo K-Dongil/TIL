@@ -23,7 +23,7 @@
   height: 350px; /* 슬라이드 높이 */
   border: 4px solid white;
   box-sizing: border-box;
-  visibility: hidden;
+  /* visibility: hidden; */
 }
 
 .slick-slide img {
@@ -33,6 +33,6 @@
   box-sizing: border-box;
 }
 
-.slick-active, .slick-current{
+/* .slick-active, .slick-current{
   visibility: visible;
-}
+} */

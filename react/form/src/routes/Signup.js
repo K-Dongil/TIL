@@ -52,6 +52,10 @@ function Signup() {
   )
 
   useEffect( () => {
+
+  }, [nickname])
+
+  useEffect( () => {
     if (nickBtn && radioChecked && age) {
       deactivateSubmitBtn(false)
     }

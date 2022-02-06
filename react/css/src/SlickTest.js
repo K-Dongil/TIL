@@ -16,7 +16,7 @@ const SliderSlick = () => {
     // fade:true, //center랑 중복 불가능
     autoplaySeed: 100,
     speed: 500,
-    slidesToShow: 2,
+    slidesToShow: 1,
     slidesToScroll: 1
     
   };
@@ -39,12 +39,13 @@ const SliderSlick = () => {
 }
 
 function CustomSlick(props) {
-  const imgSrc = "img/2.png"
+  const imgSrc = "img/abc.png"
   return(
-    <img src={imgSrc}/>
-    // <div className="divSide" key={props.index} >
-    //   <img src={imgSrc}/>
-    // </div>
+    <>
+    <div className="divSide" key={props.index} >
+      <img src={imgSrc}/>
+    </div>
+    </>
   )
 }
 
