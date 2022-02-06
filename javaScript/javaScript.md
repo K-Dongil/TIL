@@ -863,7 +863,7 @@
 
   - method : 요청에 사용될 메소드(GET, POST, PUT, PATCH, DELELTE)
 
-    - GET : 리소스 조회
+    - GET : 리소스(HTTP 요청의 대상) 조회
     - POST : 요청 데이터 처리
     - PUT : 리소스를 대체, 해당 리소스가 없으면 생성
     - PATCH : 리소스를 일부만 변경
