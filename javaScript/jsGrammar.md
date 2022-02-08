@@ -974,6 +974,12 @@
   - 콜백 함수는 3가지 매개변수로 구성 (element, index, array)
 
     <img src="jsGrammar.assets/image-20220110034533684.png" alt="image-20220110034533684" style="zoom: 50%;" />
+    
+  - 배열에 객체들이 들어있을 때 특정 key들의 value값으로만 이루어진 배열 만들기
+
+    ```javascript
+    const testList = [{a:1,b:2},{a:3,b:5} , {a:8,b:7}];
+    testList.map( (test)=> test.a);
 
 - array.filter(callback(element[, index[, array]]))
 
