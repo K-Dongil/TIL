@@ -992,6 +992,13 @@
   - 콜백 함수는 3가지 매개변수로 구성 (element, index, array)
 
     <img src="jsGrammar.assets/image-20220110034737218.png" alt="image-20220110034737218" style="zoom:50%;" />
+    
+  - ex) 특정 값을 제외한 새로운 배열을 반환
+
+    ```javascript
+    const testList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    testList.filter((test)=> test !== 10)
+    결과값 : 10을 제외한 1~9까지의 새로운 배열을 반환
 
 - array.reduce(callback(acc, element[, index[, array]])[, initialValue])
 
