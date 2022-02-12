@@ -486,8 +486,12 @@
 
      - 태그 하나로 묶어야 한다.
 
-  3. return() 내부를 묶을 때 의미없이 div로 묶기 싫다면 Fragment 문법인 <></> 사용
+  3. 컴포넌트는 컴포넌트와 관련된 state, props가 변경되면 항상 자동 재렌더링 된다.
 
+  4. 컴포넌트 안에 컴포넌트가 여러개 있을 때, 부모 컴포넌트의 props 내용이 일부 변경되면 props를 전송받고 있는 자식 컴포넌트들도 전부 재렌더링 된다.
+  
+  3. return() 내부를 묶을 때 의미없이 div로 묶기 싫다면 Fragment 문법인 <></> 사용
+  
      ```react
      function App() {/* function App도 하나의 Component */}
        return (
