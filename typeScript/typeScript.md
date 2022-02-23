@@ -73,14 +73,42 @@
 
    - javaScript는 코드를 작성하는 시점에 변수의 타입을 인지할 수 없다.
      - 개발자가 스스로 결과를 예상하고 타입을 가정한 상태에서 코딩을 하게 된다.
+   - visual Studio의 intellisense(자동 완성)이 편해진다.
 
    ```typescript
    ex) toLocaleString() : 특정 언어의 표현 방식에 맞게 숫자를 표기하는 API
    // 만약 타입을 지정하지 않는 javaScript라고 할 때 toLocaleString을 쓰다가 오류가 난다면 브라우저에서 실행했을 때만 오류를 확인할 수 있다.
    // 타입스크립트로 작성하면 total에 타입이 지정되어 있기 때문에 해당 타입에 대한 API를 미리 보기로 띄어줄 수 있다. -> API를 일일이 치는 것이 아니라 tab으로 빠르고 정확하게 작성가능
    
-   function sum(a: number, b: number): number {
+   function sum(a: number, b: number): number { // 반환해주는 type까지 명시 가능
      return a + b;
    }
    var total = sum(10, 20);
    total.toLocaleString();
+
+
+
+##### * 자바스크립트를 타입스크립트처럼 코딩하는 방법
+
+- js doc & generic & ts-check
+
+  ![image-20220223111201447](typeScript.assets/image-20220223111201447.png)
+
+  ```javascript
+  // @ts-check
+  
+  /**
+   * @param {number} a 첫번째 숫자
+   * @param {number} b 두번째 숫자
+   */
+  
+  function sum1(a, b){
+    return a + b;
+  }
+  
+  sum1(10, 20);
+  
+  // javaScript는 밑에와 같은 오류를 미리 알려주지 않는다.
+  // @ts-check를 사용하면 javaScript에서도 오류를 알려줄 수 있다. 
+  sum1(10, "20");
+  ```
