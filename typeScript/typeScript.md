@@ -153,7 +153,7 @@
   - complie 작업할 때 부가적인 옵션 부여
 - 프로젝트에서 tsc라는 명령어를 치면 TypeScript 설정 파일에 정의된 내용을 기준으로 컴파일 진행
 
-1. compilerOptions
+1. [compilerOptions](https://typescript-kr.github.io/pages/compiler-options.html)
 
    - 생략될 수 있으며 생략하면 copiler의 기본값이 사용된다
 
@@ -317,6 +317,36 @@
     age: 27
   }
   ```
+
+- any : any
+
+  - 알지 못하는 타입을 표현
+  - 타입의 일부만 알고 전체는 알지 못할 때 유용
+
+  ```typescript
+  let notSure: any = 5;
+  notSure = "string";
+  notSure = true; // 성공
+  
+  // 여러 다른 타입이 섞인 배열에서 사용가능
+  let list: any[] = [1, true, "string"]
+  ```
+
+- void : void
+
+  - 어떤 타입도 존재할 수 없음을 나타낸다
+  - void는 보통 함수에서 반환값이 없을 때 반환 타입을 표현하기 위해 쓰인다
+
+  - void를 타입으로 사용하면 `null`과 `undefined`만 할당 가능
+    - null은 `strictNullChecks`을 사용하지 않아야 할당가능
+
+  ```typescript
+  function warnUser(): void {
+      console.log("No Return");
+  }
+  
+  let unusable: void = undefined;
+  unusable = null; //strictNullChecks을 사용하지 않을 때 가능
 
 
 
