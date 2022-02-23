@@ -91,7 +91,7 @@
 
 ##### * 자바스크립트를 타입스크립트처럼 코딩하는 방법
 
-- js doc & generic & ts-check
+- js doc & ts-check
 
   ![image-20220223111201447](typeScript.assets/image-20220223111201447.png)
 
@@ -159,10 +159,10 @@
 
    | 옵션                           | 타입      | 기본값                                                 | 설명                                                         |
    | ------------------------------ | --------- | ------------------------------------------------------ | ------------------------------------------------------------ |
-   | `allowJs`                      | `boolean` | `false`                                                | *js 파일들 ts에서 import해서 쓸 수 있는지* <br />JavaScript 파일의 컴파일을 허용합니다<br />(기존에 존재하는 자바스크립트 프로젝트에 타입스크립트를 점진적으로 적용할 때 사용하면 좋은 속성) |
+   | `allowJs`                      | `boolean` | `false`                                                | js 파일들 ts에서 import해서 쓸 수 있는지 <br />JavaScript 파일의 컴파일을 허용합니다<br />(기존에 존재하는 자바스크립트 프로젝트에 타입스크립트를 점진적으로 적용할 때 사용하면 좋은 속성) |
    | `checkJs`                      | `boolean` | `false`                                                | `.js` 파일에 오류를 보고. `--allowJs`와 함께 사용<br />일반 js 파일에서도 에러체크 여부 |
    | `noImplicitAny`                | `boolean` | `false`                                                | `any` 타입 금지여부<br /> (암시한 표현식과 선언에 오류를 발생) |
-   | `target`                       | `string`  | `"ES3"`                                                | ECMAScript 대상 버전 지정<br />'es3', 'es5', 'es2015', 'es2016', 'es2017','es2018', 'esnext' |
+   | `target`                       | `string`  | `"ES3"`                                                | TypeScript 파일을 compile 했을 때 빌드 디렉토리에 생성되는 JavaScript의 버전을 의미<br />'es3', 'es5', 'es2015', 'es2016', 'es2017','es2018', 'esnext' |
    | `module`                       | `string`  |                                                        | 모듈 코드 생성 지정<br />무슨 import 문법 쓸건지 "commonjs", "amd", "es2015", "esnext" |
    | `jsx`                          | `string`  | `"Preserve"`                                           | tsx 파일을 jsx로 어떻게 컴파일할 것인지 'preserve', 'react-native', 'react' |
    | `declaration`                  | `boolean` | `false`                                                | 컴파일시 .d.ts 파일도 자동으로 함께생성 (현재쓰는 모든 타입이 정의된 파일) |
@@ -237,20 +237,7 @@
    }
    ```
 
-6. target
-
-   - TypeScript 파일을 compile 했을 때 빌드 디렉토리에 생성되는 JavaScript의 버전을 의미한다
-     - 기본값인 ex3부터 es6 등 esnext까지 존재
-
-   ```typescript
-   {
-     "compilerOptions": {
-       "target": "esnext"
-     }
-   }
-   ```
-
-7. lib
+6. lib
 
    - TypeScript 파일을 JavaScript로 compile할 때 포함될 라이브러리의 목록
 
@@ -317,6 +304,23 @@
     age: 27
   }
   ```
+
+  - type을 object로 정의할 때 object 내부의 속성을 가져오면 오류가 발생한다
+
+    - object안에 어떠한 속성이 들어있는 지 보장을 할 수 없다
+
+    ```typescript
+    const obj: object = {test: 1, test1:"objTest"}
+    console.log(obj.test) // object 타입의 obj에는 test가 들어있는지 없는지 보장X 
+    ```
+
+  - object 내부의 속성을 사용하려면 타입을 정의할 때 object 안에 있는 속성들의 타입을 정확하게 기입
+
+    - 객체의 모습(형상, shape)이 어떤 property(속성)으로 구성되어있는지 제대로 타입표기
+
+    ```typescript
+    const obj: {test: number, test1: string} = {test: 1, test1:"objTest"}
+    console.log(obj.test) // obj에는 test가 들어있는지 알 수 있기에 오류X
 
 - any : any
 
@@ -396,5 +400,23 @@
   sum(10); // 10
   ```
 
-  
+- object type
 
+  - parameter의 type을 object로 정의할 때 object 내부의 속성을 가져오면 오류가 발생한다
+
+    - object안에 어떠한 속성이 들어있는 지 보장을 할 수 없다
+
+    ```typescript
+    function simpleTest(index: number, todo: object): void {
+      todo.test = true; // object 타입의 todo에는 test가 들어있는지 없는지 보장X 
+    }
+    ```
+
+  - object 내부의 속성을 사용하려면 타입을 정의할 때 object 안에 있는 속성들의 타입을 정확하게 기입
+
+    - 객체의 모습(형상, shape)이 어떤 property(속성)으로 구성되어있는지 제대로 타입표기
+
+    ```typescript
+    function simpleTest(index: number, todo: {test: boolean, test1: number}): void {
+      todo.test = true; // todo에는 test가 들어있는지 알 수 있기에 오류X
+    }
