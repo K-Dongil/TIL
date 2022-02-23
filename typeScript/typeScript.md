@@ -3,47 +3,11 @@
 ##### * TypeScript?
 
 - 타입스크립트는 자바스크립트에 타입을 부여한 언어  (TypeScript is Typed JavaScript at Any Scale)
-
   - 자바스크립트의 확장된 언어
     - JavaScript의 기능들을 제공하면서 그 위에 자체 레이어를 추가
   - TypeScript는 JavaSciprt 위에 레이어로서 자리잡고 있다.
-
 - 자바스크립트와 다르게 브라우저에서 실행하기 위해 컴파일(파일을 한번 변환)해줘야 한다
-
   - 컴파일 : ts 파일을 js 파일로 변환하는 작업
-
-  - node기반으로 사용하는 자바스크립트 라이브러리를 설치
-
-    - tsc(typeScript complie)이라고 하는  명령어를 수행하기 위해 localSystem level에 설치
-
-    ```
-    npm install typescript -g
-    ```
-
-
-
-##### * typeScript 사용법
-
-- typeScript는 브라우저에서 실행되기 위해서는 컴파일 작업이 필요하다
-- ts확장자 파일을 js로 변환해주는 complie 작업을 반복하지 않기 위해서는 webpack이용 
-
-1. node기반으로 사용하는 자바스크립트 라이브러리를 설치
-
-   - tsc(typeScript complie)이라고 하는  명령어를 수행하기 위해 localSystem level에 설치
-
-   ```
-   npm install typescript -g
-   ```
-
-2. ts확장자 파일을 js로 변환해주는 complie 작업
-
-   ```
-   tsc 파일명.ts
-   ```
-
-3. complie 작업 완료 후 js확장자 파일이 생긴다.
-
-
 
 
 
@@ -149,3 +113,135 @@
   // @ts-check를 사용하면 javaScript에서도 오류를 알려줄 수 있다. 
   sum1(10, "20");
   ```
+
+
+
+##### * typeScript complie
+
+- typeScript는 브라우저에서 실행되기 위해서는 컴파일 작업이 필요하다
+- ts확장자 파일을 js로 변환해주는 complie 작업을 반복하지 않기 위해서는 webpack이용 
+
+1. node기반으로 사용하는 자바스크립트 라이브러리를 설치
+
+   - tsc(typeScript complie)이라고 하는  명령어를 수행하기 위해 localSystem level에 설치
+
+   ```
+   npm install typescript -g
+   ```
+
+2. ts확장자 파일을 js로 변환해주는 complie 작업
+
+   ```
+   tsc 파일명.ts
+   ```
+
+3. complie 작업 완료 후 js확장자 파일이 생긴다.
+
+
+
+##### * typeScript 설정 파일
+
+- 디렉토리에 tsconfig.json파일이 있따면 해당 디렉토리가 TypeScript 프로젝트의 루트가 된다.
+
+- tsconfig.json 파일의 경로를 명시적으로 지정
+
+  ```
+  tsc --project 상대경로
+  tsc -p 상대경로
+
+- typeScript를 javaScript로 변환할 때의 설정을 정의해놓는 파일
+  - complie 작업할 때 부가적인 옵션 부여
+- 프로젝트에서 tsc라는 명령어를 치면 typeScript 설정 파일에 정의된 내용을 기준으로 컴파일 진행
+
+1. compilerOptions
+
+   - 생략될 수 있으며 생략하면 copiler의 기본값이 사용된다
+
+   | 옵션                   | 타입      | 기본값   | 설명                                                         |
+   | ---------------------- | --------- | -------- | ------------------------------------------------------------ |
+   | `--allowJs`            | `boolean` | `false`  | JavaScript 파일의 컴파일을 허용합니다<br />(기존에 존재하는 자바스크립트 프로젝트에 타입스크립트를 점진적으로 적용할 때 사용하면 좋은 속성) |
+   | `--checkJs`            | `boolean` | `false`  | `.js` 파일에 오류를 보고. `--allowJs`와 함께 사용            |
+   | `-noImplicitAny`       | `boolean` | `false`  | `any` 타입으로 암시한 표현식과 선언에 오류를 발생시킵니다.   |
+   | `--charset`            | `string`  | `"utf8"` | 입력 파일의 문자 집합입니다.                                 |
+   | `--diagnostics`        | `boolean` | `false`  | 진단 정보를 보여줍니다.                                      |
+   | `--downlevelIteration` | `boolean` | `false`  | ES5 또는 ES3를 대상으로 할 때 `for..of`, 스프레드와 구조분해할당에서 이터러블을 완전히 지원합니다. |
+
+2. files
+
+   - TypeScript 변환 명령어를 입력할 때 마다 대상 파일의 경로를 지정하지 않고 설정 파일에 미리 정의
+   - 컴파일 대상 경로를 정의하는 속성의 우선 순위
+     - files > include = exclude
+
+   ```typescript
+   {
+     "files": ["app.ts", "./utils/math.ts"]
+   }
+
+3. include
+
+   - files와 같이 파일을 개별로 지정하지 않고 include 옵션으로 변환할 폴더를 지정할 수 있다
+
+   ```typescript
+   {
+     "include": ["src/**/*"]
+   }
+   
+   // 와일드 카드 패턴
+   * : 해당 디렉토리의 모든 파일 검색
+   ? : 해당 디렉토리 안에 파일의 이름 중 한 글자라도 맞으면 해당
+   ** : 하위 디렉토리를 재귀적으로 접근(하위 디렉토리의 하위 디렉토리가 존재하는 경우 반복해서 접근)
+   ```
+
+4. exclude
+
+   - include와 반대로 변환하지 않을 폴더 경로를 지정
+   - 설정하지 않을 시 기본적으로 node_modules, browser_components 같은 폴더를 제외
+
+   ```typescript
+   {
+     "exclude": ["node_modules"]
+   }
+   ```
+
+5. extends
+
+   - 특정 TypeScript 설정 파일에서 다른 TypeScript 설정의 내용을 가져와 추가할 수 있는 속성
+   - 확장자 파일의 내용을 가져다가 덮어쓰거나 새로 정의할 수 있다
+
+   ```typescript
+   // config/base.json
+   {
+     "compilerOptions": {
+       "noImplicitAny": true
+     }
+   }
+   
+   // tsconfig.json
+   {
+     "extends": "./config/base"
+   }
+   ```
+
+6. target
+
+   - TypeScript 파일을 compile 했을 때 빌드 디렉토리에 생성되는 JavaScript의 버전을 의미한다
+     - 기본값인 ex3부터 es6 등 esnext까지 존재
+
+   ```typescript
+   {
+     "target": "esnext"
+   }
+   ```
+
+7. lib
+
+   - TypeScript 파일을 JavaScript로 compile할 때 포함될 라이브러리의 목록
+
+   ```typescript
+   // ex) async 코드를 complie 할 때 Promise 객체가 필요하므로 아래와 같은 설정이 필요
+   // es2015는 프로미스 객체를 타입스크립트에서 인식할 수 있게 필요한 속성
+   // dom 관련 속성은 DOM API를 사용하는 경우 필요
+   {
+     "lib": ["es2015", "dom", "dom.iterable"]
+   }
+
