@@ -245,3 +245,61 @@
      "lib": ["es2015", "dom", "dom.iterable"]
    }
 
+
+
+##### * 변수타입
+
+- 타입표기
+
+  - `:`를 이용하여 javaScript  코드에 type을 정의하는 방식
+
+- 문자열 : string
+
+  ```typescript
+  const str: string = "hello";
+  ```
+
+- 숫자 : number
+
+  ```typescript
+  const num: number = 5;
+  ```
+
+- 진위값 : boolean
+
+  ```typescript
+  const bool: boolean = true;
+  ```
+
+- 배열 : Array
+
+  ```typescript
+  const arr: number[] = [1, 2, 3]; // 배열안에 숫자타입만 들어갈 수 있다
+  
+  // 제네릭 사용
+  const arr1: Array<string> = ["1", "2", "3"]; // 배열안에 문자열 타입만 들어갈 수 있다 
+  ```
+
+- 튜플 : [type1, type2]
+
+  - 배열의 길이가 고정되고 각 요소의 타입이 지정되어 있는 배열 형식
+  - 정의하지 않은 타입, 인덱스로 접근할 경우 오류발생
+
+  ```typescript
+  const arr: [string, number] = ["hello", 10];
+  ```
+
+- 객체 : object
+
+  ```typescript
+  const obj: object = {};
+  
+  // object안에 특정 속성과 속성의 값들 까지 정의
+  const obj: {name: string, age: number} = {
+    name: "dongil",
+    age: 27
+  }
+  ```
+
+
+
