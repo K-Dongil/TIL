@@ -3,10 +3,47 @@
 ##### * TypeScript?
 
 - 타입스크립트는 자바스크립트에 타입을 부여한 언어  (TypeScript is Typed JavaScript at Any Scale)
+
   - 자바스크립트의 확장된 언어
     - JavaScript의 기능들을 제공하면서 그 위에 자체 레이어를 추가
   - TypeScript는 JavaSciprt 위에 레이어로서 자리잡고 있다.
+
 - 자바스크립트와 다르게 브라우저에서 실행하기 위해 컴파일(파일을 한번 변환)해줘야 한다
+
+  - 컴파일 : ts 파일을 js 파일로 변환하는 작업
+
+  - node기반으로 사용하는 자바스크립트 라이브러리를 설치
+
+    - tsc(typeScript complie)이라고 하는  명령어를 수행하기 위해 localSystem level에 설치
+
+    ```
+    npm install typescript -g
+    ```
+
+
+
+##### * typeScript 사용법
+
+- typeScript는 브라우저에서 실행되기 위해서는 컴파일 작업이 필요하다
+- ts확장자 파일을 js로 변환해주는 complie 작업을 반복하지 않기 위해서는 webpack이용 
+
+1. node기반으로 사용하는 자바스크립트 라이브러리를 설치
+
+   - tsc(typeScript complie)이라고 하는  명령어를 수행하기 위해 localSystem level에 설치
+
+   ```
+   npm install typescript -g
+   ```
+
+2. ts확장자 파일을 js로 변환해주는 complie 작업
+
+   ```
+   tsc 파일명.ts
+   ```
+
+3. complie 작업 완료 후 js확장자 파일이 생긴다.
+
+
 
 
 
