@@ -70,3 +70,17 @@
      sum('10', '20'); // 1020
 
 2. 코드 가이드 및 자동 완성(개발 생산성 향상)
+
+   - javaScript는 코드를 작성하는 시점에 변수의 타입을 인지할 수 없다.
+     - 개발자가 스스로 결과를 예상하고 타입을 가정한 상태에서 코딩을 하게 된다.
+
+   ```typescript
+   ex) toLocaleString() : 특정 언어의 표현 방식에 맞게 숫자를 표기하는 API
+   // 만약 타입을 지정하지 않는 javaScript라고 할 때 toLocaleString을 쓰다가 오류가 난다면 브라우저에서 실행했을 때만 오류를 확인할 수 있다.
+   // 타입스크립트로 작성하면 total에 타입이 지정되어 있기 때문에 해당 타입에 대한 API를 미리 보기로 띄어줄 수 있다. -> API를 일일이 치는 것이 아니라 tab으로 빠르고 정확하게 작성가능
+   
+   function sum(a: number, b: number): number {
+     return a + b;
+   }
+   var total = sum(10, 20);
+   total.toLocaleString();
