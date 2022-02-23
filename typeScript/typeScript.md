@@ -123,7 +123,7 @@
 
 1. node기반으로 사용하는 자바스크립트 라이브러리를 설치
 
-   - tsc(typeScript complie)이라고 하는  명령어를 수행하기 위해 localSystem level에 설치
+   - tsc(TypeScript complie)이라고 하는  명령어를 수행하기 위해 localSystem level에 설치
 
    ```
    npm install typescript -g
@@ -151,20 +151,35 @@
 
 - typeScript를 javaScript로 변환할 때의 설정을 정의해놓는 파일
   - complie 작업할 때 부가적인 옵션 부여
-- 프로젝트에서 tsc라는 명령어를 치면 typeScript 설정 파일에 정의된 내용을 기준으로 컴파일 진행
+- 프로젝트에서 tsc라는 명령어를 치면 TypeScript 설정 파일에 정의된 내용을 기준으로 컴파일 진행
 
 1. compilerOptions
 
    - 생략될 수 있으며 생략하면 copiler의 기본값이 사용된다
 
-   | 옵션                   | 타입      | 기본값   | 설명                                                         |
-   | ---------------------- | --------- | -------- | ------------------------------------------------------------ |
-   | `--allowJs`            | `boolean` | `false`  | JavaScript 파일의 컴파일을 허용합니다<br />(기존에 존재하는 자바스크립트 프로젝트에 타입스크립트를 점진적으로 적용할 때 사용하면 좋은 속성) |
-   | `--checkJs`            | `boolean` | `false`  | `.js` 파일에 오류를 보고. `--allowJs`와 함께 사용            |
-   | `-noImplicitAny`       | `boolean` | `false`  | `any` 타입으로 암시한 표현식과 선언에 오류를 발생시킵니다.   |
-   | `--charset`            | `string`  | `"utf8"` | 입력 파일의 문자 집합입니다.                                 |
-   | `--diagnostics`        | `boolean` | `false`  | 진단 정보를 보여줍니다.                                      |
-   | `--downlevelIteration` | `boolean` | `false`  | ES5 또는 ES3를 대상으로 할 때 `for..of`, 스프레드와 구조분해할당에서 이터러블을 완전히 지원합니다. |
+   | 옵션                           | 타입      | 기본값                                                 | 설명                                                         |
+   | ------------------------------ | --------- | ------------------------------------------------------ | ------------------------------------------------------------ |
+   | `allowJs`                      | `boolean` | `false`                                                | *js 파일들 ts에서 import해서 쓸 수 있는지* <br />JavaScript 파일의 컴파일을 허용합니다<br />(기존에 존재하는 자바스크립트 프로젝트에 타입스크립트를 점진적으로 적용할 때 사용하면 좋은 속성) |
+   | `checkJs`                      | `boolean` | `false`                                                | `.js` 파일에 오류를 보고. `--allowJs`와 함께 사용<br />일반 js 파일에서도 에러체크 여부 |
+   | `noImplicitAny`                | `boolean` | `false`                                                | `any` 타입 금지여부<br /> (암시한 표현식과 선언에 오류를 발생) |
+   | `target`                       | `string`  | `"ES3"`                                                | ECMAScript 대상 버전 지정<br />'es3', 'es5', 'es2015', 'es2016', 'es2017','es2018', 'esnext' |
+   | `module`                       | `string`  |                                                        | 모듈 코드 생성 지정<br />무슨 import 문법 쓸건지 "commonjs", "amd", "es2015", "esnext" |
+   | `jsx`                          | `string`  | `"Preserve"`                                           | tsx 파일을 jsx로 어떻게 컴파일할 것인지 'preserve', 'react-native', 'react' |
+   | `declaration`                  | `boolean` | `false`                                                | 컴파일시 .d.ts 파일도 자동으로 함께생성 (현재쓰는 모든 타입이 정의된 파일) |
+   | `outFile`                      | `string`  |                                                        | 모든 ts파일을 js파일 하나로 컴파일해줌 (module이 none, amd, system일 때만 가능) |
+   | `outDir`                       | `string`  |                                                        | js파일 아웃풋 경로바꾸기<br />출력 구조를 디렉토리로 리다이렉트 |
+   | `rootDir`                      | `string`  | 공통 루트 디렉토리는 input files 리스트에서 처리됩니다 | 루트경로 바꾸기 (js 파일 아웃풋 경로에 영향줌)<br /> `outDir`로 출력 디렉토리 구조를 제어하기 위해서만 사용 |
+   | `removeComments`               | `boolean` | `false`                                                | `/*!`로 시작하는 copy-right 헤더 주석을 제외한 모든 주석을 제거 |
+   | `strict`                       | `boolean` | `false`                                                | 모든 엄격한 타입 검사 옵션을 활성화합니다. `strict`를 활성화하면 `noImplicitAny`, `noImplicitThis`, `alwaysStrict`, `strictNullChecks` 및 `strictFunctionTypes`이 가능 |
+   | `strictNullChecks`             | `boolean` | `false`                                                | 엄격한 null 검사 모드에서는 `null`과 `undefined` 값이 모든 타입의 도메인에 있지 않고 그 자체와 `any`만 할당할 수 있습니다(한 가지 예외사항은 `undefined` 또한 `void`에 할당 가능하다는 것입니다). |
+   | `strictFunctionTypes`          | `boolean` | `false`                                                | 함수파라미터 타입체크 강하게                                 |
+   | `strictPropertyInitialization` | `boolean` | `false`                                                | class constructor 작성시 타입체크 강하게<br />`strictNullChecks` 활성화 필수 |
+   | `noImplicitThis`               | `boolean` | `false`                                                | `any` 타입으로 암시한 `this` 표현식에 오류를 보고            |
+   | `alwaysStrict`                 | `boolean` | `false`                                                | 자바스크립트 use strict 모드 켜기                            |
+   | `noUnusedLocals`               | `boolean` | `false`                                                | 쓰지않는 지역변수 있으면 에러                                |
+   | `noUnusedParameters`           | `boolean` | `false`                                                | 쓰지않는  매개 변수에 대한 오류                              |
+   | `noImplicitReturns`            | `boolean` | `false`                                                | 함수의 모든 코드 경로에 반환값이 없을 때 오류를 보고         |
+   | `noFallthroughCasesInSwitch`   | `boolean` | `false`                                                | switch문에 fallthrough 케이스에 대한 오류를 보고             |
 
 2. files
 
@@ -229,7 +244,9 @@
 
    ```typescript
    {
-     "target": "esnext"
+     "compilerOptions": {
+       "target": "esnext"
+     }
    }
    ```
 
