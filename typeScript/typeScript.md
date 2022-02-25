@@ -420,3 +420,62 @@
     function simpleTest(index: number, todo: {test: boolean, test1: number}): void {
       todo.test = true; // todo에는 test가 들어있는지 알 수 있기에 오류X
     }
+
+
+
+##### * 타입별칭
+
+- 정의한 타입에 이름을 부여하는 방법
+
+  ```typescript
+  type Todo = {
+    id: number;
+    title: string;
+    done: boolean;
+  }
+
+
+
+##### * 인터페이스
+
+- `interface`  `정의할이름`  `type정의`
+
+- 상호 간에 정의한 약속 or 규칙
+- TypeScript에서 가능한 약속 정의
+  1. 객체의 스펙(속성과 속성의 타입)
+  2. 함수의 파라미터
+  3. 함수의 스펙(파라미터, 반환 타입 등)
+  4. 배열과 객체를 접근하는 방식
+  5. 클래스
+
+- 변수를 정의하는 인터페이스
+
+  - 변수가 정의된 인터페이스로 타입표기가 된다면, 상호 간에 정의된 규칙(interface)을 따라서 할당되어야 한다.
+
+  ```typescript
+  interface User {
+    name: string;
+    age: number;
+  }
+  
+  // 변수에 사용하는 경우
+  const seho: User = { name: "dongil", age: 27 };
+  ```
+
+- 함수의 매개변수에 인터페이스를 사용하는 경우
+
+  - 함수는 특정 형식(interface의 형식)을 준수하는 데이터만 매개변수로 받는다.
+
+  ```typescript
+  function getUser(user: User): void {
+    console.log(user);
+  }
+  const seho: User = { name: "dongil", age: 27 };
+  getUser(seho);
+  
+  const capt = {name: "test"}
+  getUser(capt) // 오류발생
+  ```
+
+- 함수 구조를 정의하는 인터페이스
+
