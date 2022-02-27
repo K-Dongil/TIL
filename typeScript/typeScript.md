@@ -413,6 +413,14 @@
   // 호출할 때 Developer와 Person 타입이 합쳐진 새로운 타입
   IntersectionTest({ name: "dongil", skill: "ts", age: 27 })
   IntersectionTest({ name: "dongil", skill: "ts"}) // error
+  ```
+
+- never
+
+  - 절대 반환하지 않는 반환타입
+  - 변수 또는 타입 가드에 의해 아무 타입도 얻지 못하게 좁혀질 때 얻게된다.
+  - 어떤 타입도 never에 할당할 수 없다
+    - any도 마찬가지이다.
 
 - 이넘(Enums)
 
@@ -432,20 +440,20 @@
     }
     getX(enumTest); // 이넘 E의 X는 숫자이기 때문에 정상 동작
     ```
-  
+
     - `keyof`를 사용하는 대신 `keyof typeof`를 사용할 것
-  
+
   - ex) 드롭다운 등의 목록이 필요한 형태에서 enum을 정의해서 쓴다
-  
+
   - 숫자형 이넘
-  
+
     - auto-incrementing 존재
-  
+
       - 이넘을 선언할 때 초기값을 주지 않으면 0부터 차례로 1씩 증가
       - 초기값 설정하면 초기값부터 1씩 증가
-  
+
     - 디버깅을 할 때 가끔 불명확하게 나올 때가 존재
-  
+
       ```typescript
       enum Avengers {
         Captain = 0, // 0
@@ -455,29 +463,29 @@
       
       const myHero = Avengers.Captain; // 0
       ```
-  
+
     - 리버스 매핑
-  
+
       - enum의 key로 value를, value로 key를 얻을 수 있다
-  
+
       ```typescript
       enum Enum {
         A
       }
       let a = Enum.A; // 키로 값을 획득 하기
       let keyName = Enum[a]; // 값으로 키를 획득 하기
-  
+
   - 문자형 이넘
-  
+
     - 문자형으로 초기화한 순서부터 전부 특정 문자 또는 다른 enum 값으로 초기화 해야한다.
-  
+
       - enum에 문자와 숫자를 혼합하여 생성이 가능하다
       - 최대한 같은 타입으로 이루어진 enum 사용하는 것이 좋다
-  
+
     - 숫자형 이넘과 다르게 auto-incrementing이 없다
-  
+
     - 디버깅 할 때 항상 명확한 값이 나온다
-  
+
       ```typescript
       enum Avengers {
         Captain = '캡틴',
@@ -720,3 +728,4 @@
 
   - 좋은 소프트웨어는 언제나 확장이 용이해야 한다
   - 가급적 확장 가능한 인터페이스로 선언하면 좋다
+
