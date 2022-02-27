@@ -391,15 +391,14 @@
 
   - `?`를 사용해서 정의된 매개변수의 갯수보다 적게 인자를 보낼 수 있다
 
-  ```typescript
-  function sum(a: number, b?: number): number {
-    return a + b;
-  }
-  sum(10, 20); // 30
-  sum(10, 20, 30); // error, too many parameters
-  sum(10); // 10
-  ```
-
+    ```typescript
+    function sum(a: number, b?: number): number {
+      return a + b;
+    }
+    sum(10, 20); // 30
+    sum(10, 20, 30); // error, too many parameters
+    sum(10); // 10
+  
 - object type
 
   - parameter의 type을 object로 정의할 때 object 내부의 속성을 가져오면 오류가 발생한다
@@ -438,9 +437,10 @@
 
 ##### * 인터페이스
 
-- `interface`  `정의할이름`  `type정의`
+- `interface`  `정의할이름`  `{type정의}`
 
 - 상호 간에 정의한 약속 or 규칙
+
 - TypeScript에서 가능한 약속 정의
   1. 객체의 스펙(속성과 속성의 타입)
   2. 함수의 파라미터
@@ -452,30 +452,116 @@
 
   - 변수가 정의된 인터페이스로 타입표기가 된다면, 상호 간에 정의된 규칙(interface)을 따라서 할당되어야 한다.
 
-  ```typescript
-  interface User {
-    name: string;
-    age: number;
-  }
+    ```typescript
+    interface User {
+      name: string;
+      age: number;
+    }
+    
+    // 변수에 사용하는 경우
+    const seho: User = { name: "dongil", age: 27 };
   
-  // 변수에 사용하는 경우
-  const seho: User = { name: "dongil", age: 27 };
-  ```
-
 - 함수의 매개변수에 인터페이스를 사용하는 경우
+
+  - `interface`  `정의할이름`  `{type정의}`
 
   - 함수는 특정 형식(interface의 형식)을 준수하는 데이터만 매개변수로 받는다.
 
-  ```typescript
-  function getUser(user: User): void {
-    console.log(user);
-  }
-  const seho: User = { name: "dongil", age: 27 };
-  getUser(seho);
-  
-  const capt = {name: "test"}
-  getUser(capt) // 오류발생
-  ```
+    - 인자도 특정 형식(interface의 형식)을 준수해야 한다.
 
-- 함수 구조를 정의하는 인터페이스
+    ```typescript
+    interface User {
+      name: string;
+      age: number;
+    }
+    
+    function getUser(user: User): void {
+      console.log(user);
+    }
+    
+    const seho: User = { name: "dongil", age: 27 };
+    getUser(seho);
+    
+    const capt = {name: "test"}
+    getUser(capt) // 오류발생
 
+- 함수 구조(규칙, 스펙)를 정의하는 인터페이스
+
+  - `interface`  `정의할이름`  `{(매개변수: 타입, ...): 타입}`
+
+  - 함수의 매개변수, 반환타입을 정의할 수 있다.
+
+    ```typescript
+    // 함수의 전체 타입에 사용하는 경우
+    interface SumFunction { // SumFunction이라고 하는 interface
+      (a: number, b: number): number; // 매개변수와, 반환타입 정의
+    }
+    
+    let sum: SumFunction;
+    sum = function (num1: number, num2: number): number {
+      return num1 + num2;
+    };
+    ```
+
+- 인덱싱 방식을 정의하는 인터페이스 (배열의 인덱싱에 사용하는 경우)
+
+  - `interface`  `정의할이름`  `{[index: index타입]: 값타입}`
+
+  - 배열의 index에 type을 지정(속성을 부여할 때 타입 지정)
+
+    ```typescript
+    // 배열의 인덱싱에 사용하는 경우
+    interface TestArray {
+      [index: string]: number; // index는 string, 속성값은 number
+    }
+    
+    let arr: TestArray;
+    arr["0"] = 5;
+    arr["1"] = 10;
+    // arr[7] = 1; error
+    ```
+
+- 딕셔너리 패턴
+
+  - `interface`  `정의할이름`  `{[key: key타입]: 값타입}`
+
+  - 딕셔너의 key에 type을 지정
+
+    ```typescript
+    interface TestDictionary{
+      [key: number]: string; // 정규표현식
+    }
+    
+    const obj: TestDictionary = {
+      0: "Test",
+      1: "Test1",
+      // "2": "Test2" error
+    }
+    ```
+
+
+- 인터페이스 확장(상속)
+
+  - 기존에 존재하는 interface를 상속받아 확장을 할 수 있다.
+
+  - `interface`  `정의할이름` `extends`  `상속받을 interface`
+
+  - extends 키워드를 이용해 상속을 받는다
+
+    ```typescript
+    interface Person {
+      name: string;
+      age?: number; // optional 선택자 ? 동일하게 적용 가능
+    }
+    
+    interface Developer extends Person {
+      language: string;
+    }
+    
+    const preInterface: Person = { name: 'dongil', age: 27}
+    const dongil: Developer = {
+      name: 'dongil', age: 27, language: 'ts'
+    };
+    const dongil1: Developer = {
+      name: 'dongil', language: 'ts'
+    };
