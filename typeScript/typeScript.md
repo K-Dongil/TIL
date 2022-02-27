@@ -360,7 +360,8 @@
     - OR 연산자와 비슷한 의미
   - Union을 사용하는 경우 타입스크립트의 이점을 살릴 수 있다
     - any를 사용하는 경우 자바스크립트로 작성하는 것 처럼 동작을 한다
-  - 두 가지 이상의 type을 Union으로 묶었을 때 발생
+  - 두 가지 이상의 type을 Union으로 묶었을 때 문제발생
+    - Type Guard를 이용하여 타입의 범위를 좁히지 않으면 공토적으로 들어 있는 속성, api들에 대해서만 접근 가능
   - 각 type에서 제공하는 모든 속성, api들에 대해서 접근이 불가
     - Union으로 묶여있는 type들의 공통된 속성, api에 대해서 접근가능
     - type을 검증한 뒤 접근이 가능하다
@@ -412,6 +413,80 @@
   // 호출할 때 Developer와 Person 타입이 합쳐진 새로운 타입
   IntersectionTest({ name: "dongil", skill: "ts", age: 27 })
   IntersectionTest({ name: "dongil", skill: "ts"}) // error
+
+- 이넘(Enums)
+
+  - 특정 값들의 집합을 의미하는 자료형
+
+  - TypeScript에서는 숫자형 , 문자형 이넘을 지원
+
+  - 런타임시에 객체 형태로 존재
+
+    ```typescript
+    enum enumTest {
+      X, Y, Z // 0, 1, 2
+    }
+    
+    function getX(obj: { X: number }) {
+      return obj.X;
+    }
+    getX(enumTest); // 이넘 E의 X는 숫자이기 때문에 정상 동작
+    ```
+  
+    - `keyof`를 사용하는 대신 `keyof typeof`를 사용할 것
+  
+  - ex) 드롭다운 등의 목록이 필요한 형태에서 enum을 정의해서 쓴다
+  
+  - 숫자형 이넘
+  
+    - auto-incrementing 존재
+  
+      - 이넘을 선언할 때 초기값을 주지 않으면 0부터 차례로 1씩 증가
+      - 초기값 설정하면 초기값부터 1씩 증가
+  
+    - 디버깅을 할 때 가끔 불명확하게 나올 때가 존재
+  
+      ```typescript
+      enum Avengers {
+        Captain = 0, // 0
+        Ironman, // 1
+        Hulk, // 2
+      }
+      
+      const myHero = Avengers.Captain; // 0
+      ```
+  
+    - 리버스 매핑
+  
+      - enum의 key로 value를, value로 key를 얻을 수 있다
+  
+      ```typescript
+      enum Enum {
+        A
+      }
+      let a = Enum.A; // 키로 값을 획득 하기
+      let keyName = Enum[a]; // 값으로 키를 획득 하기
+  
+  - 문자형 이넘
+  
+    - 문자형으로 초기화한 순서부터 전부 특정 문자 또는 다른 enum 값으로 초기화 해야한다.
+  
+      - enum에 문자와 숫자를 혼합하여 생성이 가능하다
+      - 최대한 같은 타입으로 이루어진 enum 사용하는 것이 좋다
+  
+    - 숫자형 이넘과 다르게 auto-incrementing이 없다
+  
+    - 디버깅 할 때 항상 명확한 값이 나온다
+  
+      ```typescript
+      enum Avengers {
+        Captain = '캡틴',
+        Ironman = '아이언맨',
+        Hulk = '헐크',
+      }
+      
+      const myHero = Avengers.Captain; // 캡틴
+      ```
 
 
 
