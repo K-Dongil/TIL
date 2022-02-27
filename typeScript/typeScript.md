@@ -354,15 +354,64 @@
   ```
 
 - Union : |
+
   - 두 가지 이상 타입을 쓸 수 있게 해준다
     - 타입을 여러개 연결하는 방식
-    - OR 연산자와 같이 비슷한 의미
-  - Union을 사용하는 경우 타입스클비트의 이점을 살릴 수 있다
+    - OR 연산자와 비슷한 의미
+  - Union을 사용하는 경우 타입스크립트의 이점을 살릴 수 있다
     - any를 사용하는 경우 자바스크립트로 작성하는 것 처럼 동작을 한다
-  - 두 가지 이상의 interface를 Union으로 묶었을 때 발생
-  - 각 interface에서 제공하는 모든 속성들에 대해서 접근이 불가
+  - 두 가지 이상의 type을 Union으로 묶었을 때 발생
+  - 각 type에서 제공하는 모든 속성, api들에 대해서 접근이 불가
+    - Union으로 묶여있는 type들의 공통된 속성, api에 대해서 접근가능
     - type을 검증한 뒤 접근이 가능하다
-    - Union으로 묶여있는 interface들의 공통된 속성에 대해서 접근가능
+
+  ```typescript
+  interface Developer {
+    name: string;
+    skill: string;
+  }
+  
+  interface Person {
+    name: string;
+    age: number;
+  }
+  
+  function unionTest(test: Developer | Person) {
+    test.name; // O
+    // test.age; // X, 타입 검사 후 가능
+  }
+  
+  // 호출할 때 Developer type or Person type
+  unionTest({ name: "dongil", skill: "ts" })
+  unionTest({ name: "dongil", age: 27 })
+
+- Intersection : &
+
+  - 여러 타입을 모두 만족하는 하나의 타입을 의미한다
+  - 여러 개의 타입 정의를 하나로 합치는 방식
+    - AND 연산자와 비슷한 의미
+  - 하나도 겹치지 않는 타입들로 이루어졌을 때 never type이 된다
+
+  ```typescript
+  interface Developer {
+    name: string;
+    skill: string;
+  }
+  
+  interface Person {
+    name: string;
+    age: number;
+  }
+  
+  function IntersectionTest(test: Developer & Person) {
+    test.name;
+    test.skill;
+    test.age;
+  }
+  
+  // 호출할 때 Developer와 Person 타입이 합쳐진 새로운 타입
+  IntersectionTest({ name: "dongil", skill: "ts", age: 27 })
+  IntersectionTest({ name: "dongil", skill: "ts"}) // error
 
 
 
