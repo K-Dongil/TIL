@@ -422,19 +422,6 @@
 
 
 
-##### * 타입별칭
-
-- 정의한 타입에 이름을 부여하는 방법
-
-  ```typescript
-  type Todo = {
-    id: number;
-    title: string;
-    done: boolean;
-  }
-
-
-
 ##### * 인터페이스
 
 - `interface`  `정의할이름`  `{type정의}`
@@ -565,3 +552,35 @@
     const dongil1: Developer = {
       name: 'dongil', language: 'ts'
     };
+
+
+
+##### * 타입별칭(Type Aliases)
+
+- 정의한 타입에 이름(별칭)을 부여하는 방법
+
+  - 타입을 정의할 수 있는 모든 곳에 별칭을 붙일 수 있다
+
+  ```typescript
+  type Todo = {
+    id: number;
+    title: string;
+    done: boolean;
+  }
+  ```
+
+- 특정 type이나 interface를 참조할 수 있는 타입 변수를 의미
+
+  ```typescript
+  // string 타입을 사용할 때
+  const name: string = 'capt';
+  
+  // 타입 별칭을 사용할 때
+  type MyName = string;
+  const name: MyName = 'capt';
+  ```
+
+- 타입별칭은 확장(상속)이 불가능하다
+
+  - 좋은 소프트웨어는 언제나 확장이 용이해야 한다
+  - 가급적 확장 가능한 인터페이스로 선언하면 좋다
