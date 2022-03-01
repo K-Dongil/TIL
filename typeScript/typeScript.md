@@ -86,6 +86,13 @@
    }
    var total = sum(10, 20);
    total.toLocaleString();
+   ```
+   
+3. 컴파일러가 type을 확인하는 데에 도움
+
+4. 협업을 할 때 읽기 쉬운 코드가 된다
+
+5. 유지보수에 장점
 
 
 
@@ -251,11 +258,11 @@
 
 
 
-##### * 타입
+##### * Type annotation
 
 - 타입표기
 
-  - `:`를 이용하여 javaScript  코드에 type을 정의하는 방식
+  - 변수명, 함수명, 객체 속성명 뒤에 `: type`를 이용하여 javaScript  코드에 type을 정의하는 방식
 
 - 문자열 : string
 
@@ -362,6 +369,7 @@
     - any를 사용하는 경우 자바스크립트로 작성하는 것 처럼 동작을 한다
   - 두 가지 이상의 type을 Union으로 묶었을 때 문제발생
     - Type Guard를 이용하여 타입의 범위를 좁히지 않으면 공토적으로 들어 있는 속성, api들에 대해서만 접근 가능
+    - return해서 받는 값도 union type
   - 각 type에서 제공하는 모든 속성, api들에 대해서 접근이 불가
     - Union으로 묶여있는 type들의 공통된 속성, api에 대해서 접근가능
     - type을 검증한 뒤 접근이 가능하다
@@ -728,4 +736,94 @@
 
   - 좋은 소프트웨어는 언제나 확장이 용이해야 한다
   - 가급적 확장 가능한 인터페이스로 선언하면 좋다
+
+
+
+##### * 클래스
+
+- 클래스의 최상단에 맴버변수의 타입을 정의한다
+- 변수의 접근범위를 지정할 수 있다
+  - private, public, protected, readonly
+
+
+
+##### * 제네릭(Generics)
+
+- `<type>`
+- 선언(함수, 인터페이스, 클래스 등)할 때 타입을 미리 지정하지 않고 호출할 때 사용할 타입을 정하여 넘겨준다.
+- generic value : 호출할 때 generic을 이용하여 선언된 부분에 넘겨줄 타입
+
+- 함수에서 사용할 타입을 parameter처럼 값으로 받는다
+
+  - 함수를 호출할 때 인자에 값을 담아 보내는 것처럼 타입을 지정하여 함수로 보낸다
+  - 함수를 호출할 때 함수 안에서 사용할 타입을 넘겨준다
+
+  ```typescript
+  // 파라미터에 값을 넘겨 어떤 값이 들어와도 그대로 반환 : 함수에서 type을 지정X -> 암묵적 any
+  function textFunction(text){
+    console.log(text);
+    return text;
+  }
+  textFunction(10)
+  textFunction("hello")
+  textFunction(true)
+  
+  // 제네릭 기본 문법 적용 : 함수를 호출할 때 함수 안에서 사용할 타입을 넘겨준다
+  function textFunction<T>(text: T): T {
+    return text;
+  }
+  textFunction<number>(10) // 제네릭 값을 number로 넘겼다
+  textFunction<string>("hello") // 제네릭 값을 string으로 넘겼다
+  textFunction<boolean>(true) // 제네릭 값을 boolean으로 넘겼다
+  ```
+
+- interface에 generic 적용
+
+  - 인터페이스를 호출할 때 인터페이스 안에서 사용할  타입을 넘겨준다
+  - 한 개의 interface로 generic을 이용해 여러가지 타입을 커버할 수 있다
+
+  ```typescript
+  // 제네릭을 이용한 인터페이스 선언
+  interface Dropdown<T> {
+    value: T;
+    selected: boolean;
+  }
+  
+  // 인터페이스를 쓸 때 generic value를 넘겨준다
+  const emails_generic: Dropdown<string>[] = [
+    { value: 'naver.com', selected: true },
+    { value: 'gmail.com', selected: false },
+    { value: 'hanmail.net', selected: false },
+  ];
+  
+  const numberOfProducts_generic: Dropdown<number>[] = [
+    { value: 1, selected: true },
+    { value: 2, selected: false },
+    { value: 3, selected: false },
+  ];
+  
+  // 함수 generic
+  function createDropdownItem_generic<T>(item: Dropdown<T>) {
+    const option = document.createElement('option');
+    option.value = item.value.toString();
+    option.innerText = item.value.toString();
+    option.selected = item.selected;
+    return option;
+  }
+  
+  emails_generic.forEach(function (email) {
+    const item = createDropdownItem_generic<string>(email);
+    const selectTag = document.querySelector('#email-dropdown');
+    selectTag.appendChild(item);
+  });
+  
+  numberOfProducts_generic.forEach(function (product) {
+    const item = createDropdownItem_generic<number>(product);
+    const selectTag = document.querySelector('#product-dropdown');
+    selectTag.appendChild(item);
+  });
+  ```
+
+- 타입 제한
+  - ??
 
