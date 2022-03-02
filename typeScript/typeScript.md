@@ -284,7 +284,48 @@
 
 
 
-##### * 타입단언
+##### * 타입단언(type assertion)
+
+- `as type`
+
+- 중간에 연산이나 복잡한 코드들에 의한 바뀐 값에 대해서는 타입추론 불가, 추적불가
+
+  - 중간에 값(타입)이 바뀌어도 처음에 선언 된 타입으로 알고 있다.
+
+  ```typescript
+  let a;
+  a = 5;
+  a = 'hello';
+  let b = a; // 맨 처음 선언 된 타입을 b에 할당하고 있다
+  ```
+
+- 타입 스크립트보다 개발자가 타입을 더 잘 알고 있으니 타입스크립트는 신경X, 개발자가 정의한 타입을 받아들이게 한다
+
+  - as는 코드가 도약하는 시점에 이 값이 어떤 타입일 것이라는 생각을 투영한다
+
+  ```typescript
+  let a;
+  a = 5;
+  a = 'hello';
+  let b = a as string;
+  ```
+
+- DOM API(web Page의 태그정보로 접근, 조작)를 조작할 때 많이 사용된다
+
+  -  document로 접근하는 시점에서 해당 element가 있다는 보장을 해주지 않기 때문에 타입에 대한 값을 보장해줘야 한다
+  - TypeScript Langauge Server에서는 해당 HTML타입 or null값을 반환한다
+
+  ```typescript
+  // <div>hello</div>
+  // querySelector로 접근하는 시점에 document.querySelector가 돌아가는 라인 시점에서 div가 있다는 보장을 해주지 않기 때문에 타입에 대한 값을 보장해줘야 한다
+  const div = document.querySelector('div');  
+  if (div) { // document.querySelector('div')은 HTMLDivElement 혹은 null 타입을 준다
+    div.innerText
+  }
+  
+  // as를 쓰는 시점에서는 코드가 도약하는 시점에 document의 div라는 element가 있을 것이다
+  const div1 = document.querySelector('div') as HTMLDivElement;
+  div1.innerText
 
 
 
@@ -905,6 +946,7 @@
 - 비동기적 코드를 실행할 때, promise의 생성자를 실행하게 되면 Promise까지는 추론이 가능하나 그 안의 타입은 알 수 없다
   - 비동기 함수를 실행하는 시점에서 타입스크립트가  Promise안에 들어오는 비동기 코드에 대해서는 알 수 없다
   - 타입을 추론할 수 있는 것들은 타입스크립트 내부적으로 각각의 타입,api들이 정의되어 있기 때문이다
+    - TypeScript Lanaguage Server
   - 비동기 처리를 통해서 돌려받을 반환값을 명시해야 promise를 제대로 쓸 수 있다
 
 - Promise가 기본적으로는 generic을 이용해 정의되어 있다.
