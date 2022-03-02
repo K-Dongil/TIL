@@ -75,7 +75,11 @@
    - javaScript는 코드를 작성하는 시점에 변수의 타입을 인지할 수 없다.
      - 개발자가 스스로 결과를 예상하고 타입을 가정한 상태에서 코딩을 하게 된다.
    - visual Studio의 intellisense(자동 완성)이 편해진다.
-
+     - 코드를 작성해 나갈 때 코드 자동완성이나 속성, api, 어떤 값들이 있는지에 대한 것
+     - 내부적으로 TypeScript Language Server가 돌아야한다
+       - node_modules에서 tsserver.js파일
+   
+   
    ```typescript
    ex) toLocaleString() : 특정 언어의 표현 방식에 맞게 숫자를 표기하는 API
    // 만약 타입을 지정하지 않는 javaScript라고 할 때 toLocaleString을 쓰다가 오류가 난다면 브라우저에서 실행했을 때만 오류를 확인할 수 있다.
@@ -255,6 +259,32 @@
    {
      "lib": ["es2015", "dom", "dom.iterable"]
    }
+
+
+
+##### * 타입추론(Type Inference)
+
+- 타입스크립트가 코드를 해석해 나가는 동작
+
+- 변수, 속성, 인자의 기본값, 함수의 반환값 등을 설정할 때 타입이 추론된다
+
+- 내부적으로 TypeScript Language Server가 돌아가기 때문에 타입추론이 가능하다.
+
+- 가장 적절한 타입(Best Common Type)
+
+  - 타입은 보통 몇 개의 표현식(코드)을 바탕으로 타입을 추론하고, 표현식을 이용하여 가장 근접한 타입을 추론하게 된다
+  - Union으로 구분해 나간다.
+
+  ```typescript
+  // 아래의 arr의 타입을 추론하기 위해서는 배열의 각 item을 살펴봐야 한다.
+  // item의 type은 크게 number와 null, 이 때 Best Common Type 알고리즘으로 다른 타입들과 잘 호환되는 타입을 선정한다.
+  
+  const arr = [0, 1, true]; // arr의 타입은 (number | boolean)[]이 된다
+  ```
+
+
+
+##### * 타입단언
 
 
 
@@ -793,7 +823,33 @@
 - interface에 generic 적용
 
   - 인터페이스를 호출할 때 인터페이스 안에서 사용할  타입을 넘겨준다
+
   - 한 개의 interface로 generic을 이용해 여러가지 타입을 커버할 수 있다
+
+  - generic이 적용된 interface가 다른 generic이 적용된 interface를 상속받을 때, 제네릭 값은 서로 공유된다.
+
+    ```typescript
+    // DetailedDropdown의 generic value가 Dropdown의 generic value까지 결정하게 된다
+    interface Dropdown<T> {
+      value: T
+      title: string;
+    }
+    interface DetailedDropdown<K> extends Dropdown<K> {
+      description: string;
+      tag: K;
+    }
+    
+    const items: Dropdown<number> = {
+      value: 10,
+      title: 'a'
+    }
+    
+    const detailItems: DetailedDropdown<number> = {
+      value: 5,
+      title: 'a',
+      description: 'b',
+      tag: 5
+    }
 
   ```typescript
   // 제네릭을 이용한 인터페이스 선언
@@ -843,6 +899,8 @@
 
 
 ##### * 비동기 코드(Promise)
+
+- `Promise<반환하는 데이터 타입>`
 
 - 비동기적 코드를 실행할 때, promise의 생성자를 실행하게 되면 Promise까지는 추론이 가능하나 그 안의 타입은 알 수 없다
   - 비동기 함수를 실행하는 시점에서 타입스크립트가  Promise안에 들어오는 비동기 코드에 대해서는 알 수 없다
