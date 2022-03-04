@@ -19,6 +19,6 @@ if (div) { // document.querySelector('div')은 HTMLDivElement 혹은 null 타입
   div.innerText
 }
 
-// as를 쓰는 시점에서는 
+// as를 쓰는 시점에서는 코드가 도약하는 시점에 document의 div라는 element가 있을 것이다
 const div1 = document.querySelector('div') as HTMLDivElement;
 div1.innerText
