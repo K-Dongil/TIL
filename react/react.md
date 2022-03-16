@@ -15,6 +15,34 @@
 
 
 
+##### * Client-side render
+
+- 리액트는 client-side render
+
+  - 사용자의 행동에 따라 필요한 부분만 다시 읽어들인다
+
+  - page 전체를 요청하지 않고 페이지에 필요한 부분만 변경한다
+
+    - 모바일 네트워크에서도 빠른 속도로 렌더링 가능
+
+  - lazy loading 지원
+
+  - 브라우저가 자바스크립트를 가져와서, Client-Side의 자바스크립트가 모든 UI를 만든다
+
+    1. 브라우저가 HTML을 가져올때 비어있는 div를 가져온다
+    2. 브라우저가 모든 자바스크립트를 요청한다
+    3. 브라우저가 자바스크립트와 react.js를 실행한다
+    4. 앱이 유저에게 보여진다(UI 만들어짐)
+
+    - 유저가 보는 것은 <div id="root"></div> 이 부분
+    - 유저가 브라우저에서 자바스크립트를 비활성하면 noscript 태그를 본다
+
+  - Server Side Rendering이 따로 필요X, 일관성 있는 코드 작성 가능
+
+  - 페이지를 읽고, 자바스크립트를 읽은 후 화면을 그리는 시간까지 모두 마쳐야 콘텐츠가 사용자에게 보여지기 때문에 초기구동 속도가 느리다
+
+
+
 ##### * [내가 사용한 react 세팅 & 실행](https://ko.reactjs.org/docs/create-a-new-react-app.html)
 
 1. Node.js
@@ -255,10 +283,54 @@
      - 반복문,조건문,중첩된 함수 내에서 Hook 실행 불가
   2. React 함수 컴포넌트 내, 커스텀 Hook내에서만 Hook호출 가눙
      -  JavaScript 함수에서 Hook 호출 불가
+  
 - Custom Hook
   - 직접 만든 Hook
+  
   - 작명을 보통 맨 앞에 use가 붙은 use00000으로 한다.
-
+  
+    ```react
+    import { useMemo } from "react";
+    import {
+      useParams,
+      useLocation,
+      useHistory,
+      useRouteMatch,
+    } from "react-router-dom";
+    import queryString from "query-string";
+    
+    // Hook
+    function useRouter() {
+      const params = useParams();
+      const location = useLocation();
+      const history = useHistory();
+      const match = useRouteMatch();
+      // Return our custom router object
+      // Memoize so that a new object is only returned if something changes
+      return useMemo(() => {
+        return {
+          // For convenience add push(), replace(), pathname at top level
+          push: history.push,
+          replace: history.replace,
+          pathname: location.pathname,
+          // Merge params and parsed query string into single "query" object
+          // so that they can be used interchangeably.
+          // Example: /:topic?sort=popular -> { topic: "react", sort: "popular" }
+          query: {
+            ...queryString.parse(location.search), // Convert string to object
+            ...params,
+          },
+          // Include match, location, history objects so we have
+          // access to extra React Router functionality if needed.
+          match,
+          location,
+          history,
+        };
+      }, [params, match, location, history]);
+    }
+    
+    export default useRouter;
+  
 - Hook API
 
   - useState : state관리
@@ -317,8 +389,6 @@
       - 컴포넌트가 렌더링될 때마다 새로운 함수를 생성해서 자식 컴포넌트의 속성값으로 입력되는 경우를 방지
       - 두 번째 매개변수는 의존성 배열
         - 의존성 배열이 변경되지 않으면 이전에 생성한 함수가 재사용된다
-
-​			
 
 
 
@@ -1205,6 +1275,34 @@
     ```react
     <Nav.Link as={Link} to="/">Home</Nav.Link> // Nav.Link 태그를 Link태그처럼 쓰이게 한다
     <Nav.Link as={Link} to="/detail">Detail</Nav.Link>
+    ```
+  
+- Link 태그에 to속성만 걸어서 사용이 가능하다
+
+  ```react
+  <Link to="/">Home</Link>
+  ```
+
+- Link태그를 사용할 때 style를 주기
+
+  1. styled-component
+
+     ```react
+     const StyledLink = styled(Link)`
+     	text-decoration: none;
+     	color: black;
+     `;
+     ```
+
+  2. Link 태그에 className 지정하고 css작업
+
+  ```react
+  .link_css{
+      text-decoration: none;
+  	color: black;
+  }
+  
+  <Link to="/" clssName="link_css">Home</Link>
 
 ##### - history
 
@@ -1319,12 +1417,12 @@
     }
     ```
 
+
+
 ##### * 중첩 라우팅(Nested Routing)
 
 - Route 컴포넌트에 의해 렌더링 되는 두 개 이상의 컴포넌트를 동시에 렌더링한다
 - Route 컴포넌트에 의해 렌더링 된 컴포넌트 내에서 한 번 더 Route 컴포넌트를 구현한다
-
-
 
 
 
