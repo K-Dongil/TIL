@@ -88,16 +88,29 @@
 
 
 
-##### * pages의 구성
-
-- index
-  - 프로젝트의 홈페이지로 연결
-    - localhost:3000 (O), localhost:3000/index (X)
+##### * pages
 
 - url (NextJS의 route)
+
+- `index.js`
+  - `/` (기본 url)
+  - `pages`에서 `index.js`
+    - 프로젝트의 홈페이지로 연결
+      - localhost:3000 (O), localhost:3000/index (X)
+  - 특정 폴더 안에서 `index.js`는 특정 폴더의 url를 가진다
+    - ex) `pages >> test 폴더 >> index.js`
+      - localhost:3000/test
+
   - pages 폴더에 react.js component를 export하고 있는 파일을 pages 폴더 안에 두면 next.js가 파일의 이름을 가져다가 url의 이름으로 쓴다
     - 파일의 이름이 중요, component의 이름은 연관X
     - export default로 export하지 않으면, react component가 아니라는 에러가 뜬다
+
+
+
+
+##### * Dynamic Routes
+
+- 파일 이름을 `[Code에서 사용하고자 하는 변수명].js`로 만든다
 
 
 
@@ -217,6 +230,7 @@
 - 작성한 style은 작성한 module안에서만 적용되고 다른 module에 영향을 주지 않는다
 
   - 독립적이다
+  - style은 컴포넌트 내로 한정 되어 있다.
 
 - 태그를 선택해서 style을 주면 브라우저에서 확인할 때 className이 무작위로 생성되어 적용되는 것을 확인할 수 있다
 
@@ -251,3 +265,52 @@
         </nav>
       )
     }
+
+- `global`
+  - styles를 global(전역)에 추가하고 싶을 때
+  - 한 페이지에서 global을 줘서 Component에 styles를 적용해도 다른 페이지에서 똑같은 Component를 불러왔을 때, 다른페이지에서 불러온 Component에 대해서는 적용X
+
+
+
+##### * Custom App
+
+- pages에서 `_app.js` 파일을 만든다
+
+  - NextJs는 page 파일이 렌더링 되기 전에 `_app.js`을 먼저 불러온다
+    - NexJS는 `_app.js`에 있는 함수를 불러온다
+  - `_app.js`는 blue print
+
+- 두 개의 props가 존재한다
+
+  1. Component
+  2. pageProps
+
+  ```
+  export default function App({Component, pageProps}){ ....... }
+
+- 받아온 Component, pageProps 및 다른 값들도 추가가능, 새로운 Component를 반환
+
+  - 리액트의 hoc와 비슷하다
+
+  ```react
+  import NavBar from "../component/NavBar";
+  
+  export default function App({Component, pageProps}){
+    const test = "Hello";
+    return (
+      <div>
+        <NavBar />
+        <Component {...pageProps} />
+        <span>Test</span>
+      </div>
+    )
+  }
+
+- 모든 페이지에 styles를 적용할 수 있게 해준다
+  - global css
+    - `styles/globals.css`파일은 `_app.js`파일에서만 import가 가능하다
+
+
+
+##### * Layout Patterns
+
