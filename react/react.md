@@ -45,6 +45,8 @@
 
 ##### * react-create-app을 이용하지 않는 방법
 
+- react-creat-app을 사용했을 때 useState같은 기능을 사용하려면 react를 import해야한다.
+
 
 
 ##### * [내가 사용한 react 세팅 & 실행](https://ko.reactjs.org/docs/create-a-new-react-app.html)
@@ -2153,6 +2155,33 @@
 
 
 ##### * react-helmet
+
+
+
+##### * 조건부 렌더링
+
+- 논리 연산자 `&&`, `?`를 사용하여 element를 조건부로 넣을 수 있다
+- JavaScript에서 `true && expression`은 항상 `expression`으로 평가,  `false && expression`은 항상 `false`로 평가
+  - 따라서 `&&` 뒤의 엘리먼트는 조건이 `true`일때 출력
+- 조건부 연산자인 `condition ? true: false`를 사용
+
+- 변수 뒤에 `?`를 넣으면 변수가 비어있는 값일 시 동작하지 않는다
+
+  - `변수?.map`등 여러가지 경우를 생각해본다
+
+  ```react
+  movies = [1, 2, 3, 4, 5] # movies = []라면 밑에 코드는 동작X
+  
+  return(
+    <div>
+    	{movies?.map((movie) => {
+    	  <div>Test입니다</div>
+    	})}
+    </div>
+  )
+  ```
+
+
 
 
 
