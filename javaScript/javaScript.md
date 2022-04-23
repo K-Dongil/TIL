@@ -608,22 +608,43 @@
 
 
 
+##### * 호출 스택
+
+- 함수의 호출, 자료구조의 스택
+- 자바스크립트는 위쪽에서 아래로, 왼쪽에서 오른쪽으로 실행된다
+- 자바스크립트가 동기적 코드로 실행될 때 순서를 파악하기 위함
+  - 비동기적 코드는 호출스택만으로 설명이 불가능하다
+- Anonymous은 가상의 전역 Context(항상 있다고 생각하는게 좋다)
+  - 기본적으로 파일이 실행될 때, Anonymous가 처음에 쌓인다
+- 함수 호출 순서대로 쌓이고, 역순으로 실행 됨
+  - 밑에서부터 쌓이고 위에서부터 빠져나간다
+- 함수 실행이 완료되면 스택에서 빠진다
+- LIFO(Last In First Out)구조라서 스택이라고 불린다
+
+
+
 ##### * Concurrency model
 
 - Event loop를 기반으로 하는 동시성 모델
 
-1. Call stack
+1. Call stack(호출 스택)
    - 요청이 들어올 때마다 해당 요청을 순차적으로 처리하는 Stack(LIFO)형태의 자료 구조
-2. WebAPI(Browser API)
+2. WebAPI(Browser API) - 백그라운드?
    - JavaScript 엔진이 아닌 브라우저 영역에서 제공하는 API
      - js는 한번에 하나(스택에서 한개의 일)만 수행 Stack에서 처리할 수 없는 일에 대해서는 Web API로 보낸다
    - setTimeout(), DOM events, AJAX로 데이터를 가져오는 시간이 소요되는 일들을 처리
      - setTimeout()의 설정시간은 출력을 보장하는 것이 아니라, TaskQueue로 넘어가는데 시간
+     - setTimeout이 0초여도 무조건 WebAPI로 넘어온다
+   - WebAPI(백그라운드)에서는 누가 먼저 실행될 지 모른다
+     - 먼저 끝난 쪽이 TaskQueue로 넘어간다
 3. TaskQueue(Event Queue, Message Queue)
    - 비동기 처리된 callback 함수가 대기하는 Queue(FIFO)형태의 자료 구조
      - WebAPI에서 처리되는 event들이 바로 Call Stack으로 Push되지않고 TaskQueue에서 대기
+   - Call Stack이 비어있을 때 TaskQueue에서 넘어갈 수 있다
    - main  thread가 끝난 후 실행되어 후속 JavaScript코드가 차단 되는 것을 방지
-   
+   - Promise가 SetTimeout보다 우선순위가 높다
+     - SetTimeout이 먼저 TaskQueue로 넘어와도 뒤늦게 넘어온 Promise가 먼저 실행
+   - Process의 nextTick가 SetTimeout보다 우선순위가 높다
 4. Event Loop
    - Call Stack이 비어있는지 확인
    - 비어 있는 경우 Task Queue에서 실행 되기 중인 callback함수가 있는지 확인
@@ -817,7 +838,10 @@
 - Promise based HTTP client for the browser and Node.js
   - 응답을 Promise 객체로 준다
   - Promise 객체에는 config, data, headers, request, status, statusText 등 값들이 존재
+  
 - 브라우저를 위한 Promise 기반의 클라이언트
+
+- Priomise 내부까지는 동기, then & catch를 만나는 순간 비동기
 
 - 원래는 "XHR"이라는 브라우저 내장 객체를 활용해 AJAX 요청을 처리하는데, 이보다 편리한 AJAX 요청이 가능하도록 도움을 준다
   - 확장 가능한 인터페이스와 함께 패키지로 사용이 간편한 라이브러리를 제공
@@ -1488,3 +1512,30 @@
        
        var bindTest = functionTest.bind(test);
        bindTest(); // {test: f}
+       ```
+
+
+
+##### * 조건부 렌더링
+
+- 논리 연산자 `&&`, `?`를 사용하여 element를 조건부로 넣을 수 있다
+- JavaScript에서 `true && expression`은 항상 `expression`으로 평가,  `false && expression`은 항상 `false`로 평가
+  - 따라서 `&&` 뒤의 엘리먼트는 조건이 `true`일때 출력
+- 조건부 연산자인 `condition ? true: false`를 사용
+
+- 변수 뒤에 `?`를 넣으면 변수가 비어있는 값일 시 동작하지 않는다
+
+  - `변수?.map`등 여러가지 경우를 생각해본다
+
+  ```react
+  movies = [1, 2, 3, 4, 5] # movies = []라면 밑에 코드는 동작X
+  
+  return(
+    <div>
+    	{movies?.map((movie) => {
+    	  <div>Test입니다</div>
+    	})}
+    </div>
+  )
+  ```
+
