@@ -648,6 +648,30 @@
       - 콜백패턴을 프로미스 패턴으로 바꿔준다
       - 콜백이 (error, data) => {}형식이여야 한다
 
+11. fs
+
+    - 파일 시스템에 접근하는 모듈
+      - 브라우저에서는 제한적이었으나 노드는 권한을 가지고 있음
+    - 파일/폴더 생성, 삭제, 읽기, 쓰기 가능
+
+    ```javascript
+    const fs = require('fs'); // 뒤에 promises 메서드 붙이면 promise화 된다
+    
+    fs.readFile('./readme.txt', (err, data) => {
+      if (err) {
+        throw err;
+      }
+      console.log(data); 
+      console.log(data.toString());
+    });
+    
+    // readme.txt
+    저를 읽어주세요.
+    
+    // 결과
+    <Buffer ec a0 80 eb a5 bc 20 ec 9d bd ec 96 b4 ec a3 bc ec 84 b8 ec 9a 94 2e>
+    저를 읽어주세요.
+
 
 
 ##### * child_process
@@ -655,16 +679,20 @@
 - 다른 프로그램(언어) 호출하는 방법
 
   ```javascript
-  const exec = require('child_process').exec; // exec는 node안에서 터미널창 띄워주는 효과
+  const spawn = require('child_process').spawn;
   
-  var process = exec('dir');
+  var process = spawn('python', ['test.py']);
   
-  process.stdout.on('data'm function(data){
+  process.stdout.on('data', function(data) {
     console.log(data.toString()); // 0101같은 컴퓨터 데이터를 toString
-  });
-  process.stderr.on('data'm function(data){
-    console.log(data.toString());
-  });
+  }); // 실행 결과
+  
+  process.stderr.on('data', function(data) {
+    console.error(data.toString());
+  }); // 실행 >에러
+  
+  // python.py
+  print('hello python')
 
 
 
@@ -828,3 +856,233 @@
 
 
 
+##### * 파일 시스템 접근하기
+
+1. fs
+
+   - 파일 시스템에 접근하는 모듈
+     - 브라우저에서는 제한적이었으나 노드는 권한을 가지고 있음
+   - 파일/폴더 생성, 삭제, 읽기, 쓰기 가능
+
+   - ex) fs 예제
+
+     ```javascript
+     const fs = require('fs');
+     
+     fs.readFile('./readme.txt', (err, data) => {
+       if (err) {
+         throw err;
+       }
+       console.log(data); 
+       console.log(data.toString());
+     });
+     
+     // readme.txt
+     저를 읽어주세요.
+     
+     // 결과
+     <Buffer ec a0 80 eb a5 bc 20 ec 9d bd ec 96 b4 ec a3 bc ec 84 b8 ec 9a 94 2e>
+     저를 읽어주세요.
+
+   - ex) fs의 promise화
+
+     ```javascript
+     const fs = require('fs').promises;
+     
+     fs.writeFile('./writeme.txt', '글이 입력됩니다')
+     .then(() => {
+       return fs.readFile('./writeme.txt');
+     })
+     .then((data) => {
+       console.log(data.toString());
+     })
+     .catch((err) => {
+       console.error(err);
+     });
+     ```
+
+   - ex) fs의 동기적 코드
+
+     ```javascript
+     const fs = require('fs');
+     
+     console.log('시작');
+     let data = fs.readFileSync('./readme2.txt');
+     console.log('1번', data.toString());
+     data = fs.readFileSync('./readme2.txt');
+     console.log('2번', data.toString());
+     data = fs.readFileSync('./readme2.txt');
+     console.log('3번', data.toString());
+     console.log('끝');
+     ```
+
+   - ex) 비동기 방식 유지 & 순서 유지
+
+     ```javascript
+     const fs = require('fs').promises;
+     
+     async function main() {
+       let data = await fs.readFile('./readme.txt');
+       console.log('1번', data.toString());
+       data = await fs.readFile('./readme.txt');
+       console.log('2번', data.toString());
+       data = await fs.readFile('./readme.txt');
+       console.log('3번', data.toString());
+       data = await fs.readFile('./readme.txt');
+       console.log('4번', data.toString());
+     }
+     main();
+
+
+
+##### * 버퍼와 스트림
+
+- 버퍼 : 일정한 크기로 모아두는 데이터
+
+  - 일정한 크기가 되면 한 번에 처리
+  - 버퍼링 : 버퍼에 데이터가 찰 때까지 모으는 작업
+  - `Buffer` 클래스로 버퍼를 직접 다뤄볼 수 있다
+    - from(문자열) : 문자열을 버퍼로 바꿔준다
+    - toString(버퍼) : 버퍼를 다시 문자열로 바꿔준다
+    - concat(배열) : 배열 안에 든 버퍼들을 하나로 합친다
+    - alloc(바이트) : 빈 버퍼를 생성
+
+  ```javascript
+  const buffer = Buffer.from('저를 버퍼로 바꿔보세요');
+  console.log('from():', buffer);
+  console.log('length:', buffer.length);
+  console.log('toString():', buffer.toString());
+  
+  const array = [Buffer.from('띄엄 '), Buffer.from('띄엄 '), Buffer.from('띄어쓰기')];
+  const buffer2 = Buffer.concat(array);
+  console.log('concat():', buffer2.toString());
+  
+  const buffer3 = Buffer.alloc(5);
+  console.log('alloc():', buffer3);
+  
+  // $ node buffer
+  from(): <Buffer ec a0 80 eb a5 bc 20 eb b2 84 ed 8d bc eb a1 9c 20 eb b0 94 ea bf 94 eb b3 b4 ec 84 b8 ec 9a 94>
+  length: 32
+  toString(): 저를 버퍼로 바꿔보세요
+  concat(): 띄엄 띄엄 띄어쓰기
+  alloc(): <Buffer 00 00 00 00 00>
+
+- 스트림 : 데이터의 흐름
+
+  - 일정한 크기로 나눠서 여러 번에 걸쳐서 처리
+
+    - 나눠진 조각을 chunk라고 한다
+
+  - 버퍼(청크)의 크기를 작게 만들어서 주기적으로 데이터를 전달
+
+  - 스트리밍 : 일정한 크기의 데이터를 지속적으로 전달하는 작업
+
+    - 메모리 관리 효율이 높다
+
+  - 대용량 파일서버를 작업할 때는 스트림 방식이 필수적
+
+  - `createReadStream('파일경로', 버퍼의 크기)`
+
+    - 용량이 큰 파일을 여러 조각으로 나눠준다
+
+    ```javascript
+    // 읽기
+    const fs = require('fs');
+    
+    const readStream = fs.createReadStream('./readme3.txt', { highWaterMark: 16 });
+    const data = [];
+    
+    readStream.on('data', (chunk) => {
+      data.push(chunk);
+      console.log('data :', chunk, chunk.length);
+    });
+    
+    readStream.on('end', () => {
+      console.log('end :', Buffer.concat(data).toString());
+    });
+    
+    readStream.on('error', (err) => {
+      console.log('error :', err);
+    });
+    
+    // 쓰기
+    const fs = require('fs');
+    
+    const writeStream = fs.createWriteStream('./writeme2.txt');
+    writeStream.on('finish', () => {
+      console.log('파일 쓰기 완료');
+    });
+    
+    writeStream.write('이 글을 씁니다.\n');
+    writeStream.write('한 번 더 씁니다.');
+    writeStream.end();
+
+  ![image-20220424025520462](nodeJS.assets/image-20220424025520462.png)
+
+- pipe
+
+  - 파일 복사
+
+  - 파이핑 : 스트림끼리 연결하는 것
+
+  - createReadStream으로 파일 읽고, 스트림을 전달받아 createWirteStream으로 파일 쓰기
+
+    ```javascript
+    const fs = require('fs');
+    
+    const readStream = fs.createReadStream('readme4.txt');
+    const writeStream = fs.createWriteStream('writeme3.txt');
+    readStream.pipe(writeStream);
+
+
+
+
+
+##### * 스레드풀
+
+- Node는 기본적으로 백그라운드에서 동시에 4개가 동시에 돌아갈 수 있다
+
+- fs, crypto, zlib 모듈의 메서드를 실행할 떄는 백그라운드에서 동시에 실행
+  - 스레드풀이 동시에 처리해준다
+
+
+
+
+
+##### * 예외 처리하기
+
+- 예외 : 처리하지 못한 에러
+
+- Node는 기본적으로 Single Thread
+
+  - 예외 발생 시 Node는 Thread를 멈춘다
+  - 에러 처리가 필수
+
+- 기본적으로 try catch문으로 예외를 처리
+
+- 모든 에러를 기록해주는 코드 `process.on('uncaughtExeption', (err) => {...})`
+
+  ```
+  process.on('uncaughtException', (err) => {
+    console.error('예기치 못한 에러' error))
+  })
+  ```
+
+- 프로세스 종료하기
+
+  ```
+  // 윈도우
+  $ netstat -ano | findstr 포트 
+  $ taskkill /pid 프로세스아이디 /f
+  
+  // 맥/리눅스
+  $ lsof -i tcp:포트
+  $ kill -9 프로세스아이디
+
+
+
+// 정리 수정할 것..
+
+
+
+#####
