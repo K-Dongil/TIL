@@ -1085,4 +1085,74 @@
 
 
 
-#####
+##### * HTTP 서버 만들기
+
+-  HTTP 요청에 응답하는 Node 서버
+
+  - createServer로 요청 이벤트에 대기
+  - req 개체는 요청에 관한 정보가, res 객체는 응답에 관한 정보가 담겨 있음
+  - `res.write` & `res.end`는 스트림 과정
+  - 포트는 서버 내에서 프로세스를 구분하는 번호
+    - 기본적으로 http 서브는 80번 포트 사용(생략가능, https는 443)
+  - 하나의 도메인(호스트)에 Port번호를 다르게 하면 여러개의 프로그램을 동시에 연결할 수 있다
+  - localhost는 컴퓨터 내부 주소
+    - 외부에서 접근 불가
+
+  - ex) 8080 포트에서 서버연결
+
+    ```javascript
+    const http = require('http');
+    
+    http.createServer((req, res) => {
+      res.write('<hi>Hello Node!</h1>')
+      res.write('<p>Hello Server!</p>')
+      res.end('<p>Good</p>')
+    })
+      .listen(8080, () => {
+        console.log('8080란 포트에서 대기 중입니다')
+      })
+    ```
+
+  - HTML을 보내줬는데 어떤 브라우저에서는 HTML인지 문자열인지 모르는 브라우저가 존재
+
+    - 직접 HTML이라는 것을 알려줘야 한다
+    - Content-Type 설정
+
+    - `res.writeHead(statusCode, { 'Content-Type': 'text/html; charset=utf-8'});`
+
+  - 응답에 StatusCode 넣어주기
+
+    `res.writeHead(statusCode, {option})` 
+
+    ```javascript
+    const http = require('http');
+    
+    http.createServer((req, res) => {
+      res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8'})
+      res.write('<hi>Hello Node!</h1>')
+      res.write('<p>Hello Server!</p>')
+      res.end('<p>Good</p>')
+    })
+      .listen(8080, () => {
+        console.log('8080란 포트에서 대기 중입니다')
+      })
+
+- ex) fs로 HTML읽어 제공하기
+
+  ```javascript
+  const http = require('http');
+  
+  const server = http.createServer(async (req, res) => {
+    try{
+      res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8'})
+      const data = await fs.readFile('./server2.html')
+      res.end(data)
+    }catch (err){
+      console.log(err);
+      res.writeHead(400, { 'Content-Type': 'text/html; charset=utf-8'})
+      res.end(err.message)
+    }
+  })
+    .listen(8080, () => {
+      console.log('8080란 포트에서 대기 중입니다')
+    })
