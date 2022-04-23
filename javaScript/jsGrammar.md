@@ -594,6 +594,11 @@
 
     <img src="jsGrammar.assets/image-20220110014043807.png" alt="image-20220110014043807" style="zoom:50%;" />
 
+- 함수 호출
+
+
+  - `함수명();` & `함수명``;`
+
 - 함수 선언식과 표현식 비교
 
   <img src="jsGrammar.assets/image-20220110014142043.png" alt="image-20220110014142043" style="zoom: 50%;" />
@@ -1174,12 +1179,22 @@
 
      - 객체를 정의할 때 key의 이름을 표현식을 이용하여 동적으로 생성 가능
 
-       <img src="jsGrammar.assets/image-20211028164724779.png" alt="image-20211028164724779" style="zoom:80%;" />
-
+       ```
+       const key = 'regions'
+       const vlaue = ['광주', '대전', '구미', '서울']
+       
+       const ssafy = {
+         [key + 5]: value,
+       }
+       
+       console.log(ssafy5) // {regions: Array(4)}
+       console.log(ssafy5.regions) // ["광주", "대전", "구미", "서울"]
+       ```
+  
   4. 구조 분해 할당(destructing assignment)
-
+  
      - 배열 또는 객체를 분해하여 속성을 변수에 쉽게 할당할 수 있는 문법
-
+  
        ![image-20211028164907260](jsGrammar.assets/image-20211028164907260.png)
 
 ##### * JSON(JavaScript Object Notation)
