@@ -650,6 +650,22 @@
 
 
 
+##### * child_process
+
+- 다른 프로그램(언어) 호출하는 방법
+
+  ```javascript
+  const exec = require('child_process').exec; // exec는 node안에서 터미널창 띄워주는 효과
+  
+  var process = exec('dir');
+  
+  process.stdout.on('data'm function(data){
+    console.log(data.toString()); // 0101같은 컴퓨터 데이터를 toString
+  });
+  process.stderr.on('data'm function(data){
+    console.log(data.toString());
+  });
+
 
 
 ##### * worker_threads
@@ -664,6 +680,9 @@
   - `worker.on('message')`를 사용한 부모 스레드에서 사용 가능
 - `parentPort.on('message')`
   - `worker.postMessage(data)`를 사용한 부모 스레드로부터 보내진 메세지를 받아온다
+- `workerData`
+  - new Worker를 호출할 떄 두 번째 인수의 workerData속성으로 원하는 데이터를 보낼 수 있다
+  - Worker에서는 workerData로 부모로부터 데이터를 받는다
 
 1. Main Thread안에서 Worker Thread 생성
 2. Worker Thread들한테 일을 분배
@@ -678,16 +697,51 @@
   if (isMainThread) {
     const worker = new Worker(__filename);
     worker.on('message', (value) => console.log('워커로부터', value))
-    worker.on('exit', ()=> console.log('워커 끝'))
+    worker.on('exit', ()=> console.log('워커 끝~'))
     worker.postMessage('ping');
   } else {
     parentPort.on('message', (value) => {
-      console.log('노드로부터', value);
+      console.log('부모로부터', value);
       parentPort.postMessage('pong');
       parentPort.colse();
     })
   }
+  
+  // 결과
+  부모로부터 ping
+  워커로부터 pong
+  워커 끝~
   ```
+
+  ```javascript
+  const { Worker, isMainThread, parentPort, workerData } = require('worker_threads');
+  
+  if (isMainThread) {
+    const threads = new Set();
+    threads.add(new Worker(__filename, {
+      workerData: {start: 1},
+    }));
+    threads.add(new Worker(__filename, {
+      workerData: {start: 2},
+    }));
+    for (let worker of threads) {
+      worker.on('message', (value) => console.log('워커로부터', value))
+      worker.on('exit', ()=> {
+        threads.delete(worker);
+          if (threads.size === 0) {
+            console.log('워커 끝~')
+          }
+      });
+    }
+  } else {
+    const data = workerData;
+    parentPort.postMessage(data.start + 100);
+  }
+  
+  // 결과
+  워커로부터 101
+  워커로부터 102
+  워커 끝~
 
 - ex) Worker Thread간의 데이터 송수신 Main Thread에서 중계
 
@@ -713,9 +767,64 @@
   worker2 received message: 'message from worker1'
   ```
 
+- ex) 2부터 1,000만까지의 숫자 중에 소수가 몇개 있는지 알아내기
 
-
-
+  ```javascript
+  const { Worker, isMainThread, parentPort, workerData } = require('worker_threads');
+  
+  const min = 2;
+  let primes = [];
+  
+  function findPrimes(start, range) {
+    let isPrime = true;
+    let end = start + range;
+    for (let i = start; i < end; i++) {
+      for (let j = min; j < Math.sqrt(end); j++) {
+        if (i !== j && i % j === 0) {
+          isPrime = false;
+          break;
+        }
+      }
+      if (isPrime) {
+        primes.push(i);
+      }
+      isPrime = true;
+    } 
+  }
+  
+  if (isMainThread) {
+    const max = 10000000;
+    const threadCount = 8;
+    const threads = new Set();
+    const range = Math.ceil((max - min) / threadCount);
+    let start = min;
+    console.time('prime');
+    for (let i = 0; i < threadCount - 1; i++) {
+      const wStart = start;
+      threads.add(new Worker(__filename, { workerData: { start: wStart, range } }));
+      start += range;
+    }
+    threads.add(new Worker(__filename, { workerData: { start, range: range + ((max - min + 1) % threadCount) } }));
+    for (let worker of threads) {
+      worker.on('error', (err) => {
+        throw err;
+      });
+      worker.on('exit', () => {
+        threads.delete(worker);
+        if (threads.size === 0) {
+          console.timeEnd('prime');
+          console.log(primes.length);
+        }
+      });
+      worker.on('message', (msg) => {
+        primes = primes.concat(msg);
+      });
+    }
+  } else {
+    findPrimes(workerData.start, workerData.range);
+    parentPort.postMessage(primes);
+  }
+  ```
 
 
 
