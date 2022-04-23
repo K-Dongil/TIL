@@ -833,6 +833,16 @@
 
 
 
+##### * Promise
+
+- 내용이 실행은 되었지만 결과를 아직 반환하지 않은 객체
+- Then을 붙이면 성공된 Return값의 결과를 반환
+- 실행이 완료되지 않았으면 완료된 후에 Then 내부 함수가 실행됨
+- Catch을 붙이면 실패된 Return값을 반환
+- Finally는 무조건 실행
+
+
+
 ##### * [Axios](https://axios-http.com/kr/docs/intro)
 
 - Promise based HTTP client for the browser and Node.js
