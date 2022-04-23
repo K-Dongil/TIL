@@ -501,3 +501,221 @@
     - 코드가 없거나 0이면 정상 종료
     - 이외의 코드는 비정상 종료를 의미한다
 
+
+
+##### * Node의 내장 모듈
+
+1. os(operation system)
+
+   - 운영체제의 정보를 담고 있음
+   - 모듈은 require로 가져옴(내장 모듈이라 경로대신 이름만 적어도 된다)
+
+   <img src="nodeJS.assets/image-20220424002115811.png" alt="image-20220424002115811" style="zoom:67%;" />
+
+2. path
+
+   - 폴더와 파일의 경로를 쉽게 조작하도록 도와주는 모듈
+   - 운영체제별로 경로 구분자가 다르다(Windows : `\` , POSIX : `/`)
+
+   ```javascript
+   const path = require('path');
+   
+   path.join(__dirname, '/파일이름.js');
+   path.join(__dirname, '..', '/파일이름.js');
+   path.resolve(__dirname, '..', '/파일이름.js');
+   ```
+
+3. url 모듈
+
+   - 인터넷 주소를 쉽게 조작하도록 도와주는 모듈
+
+   - url 처리에 크게 두가지 방식이 있음(기존 노드 방식 vs WHATWG 방식)
+
+   - 아래 그림에서 가운데 주소를 기준으로 위쪽은 노드방식, 아래쪽은 WHATWG방식
+
+     ![image-20220424003051098](nodeJS.assets/image-20220424003051098.png)
+
+4. searchParams
+
+   - WHATWG 방식에서 쿼리스트링(search) 부분 처리를 도와주는 객체
+     - 쿼리스트링 : url(주소)에 데이터가 담겨있는 부분
+
+   | get ALL(key)       | key에 해당하는 모든 값들을 가져온다.<br />category 키에는 두가지 값, 즉 nodejs와 javascript의 값이 들어 있다 |
+   | ------------------ | ------------------------------------------------------------ |
+   | get(key)           | key에 해당하는 첫 번째 값만 가져온다                         |
+   | has(key)           | 해당 key가 있는지 없는지를 검사한다                          |
+   | keys()             | searchParams의 모든 키를 반복가능한(iterator, ES2015 문법)객체로 가져온다 |
+   | values()           | searchParams의 모든 값을 반복가능한 객체로 가져온다          |
+   | append(key, value) | 해당 키를 추가한다. 같은 key의 값이 있다면 유지하고 하나 더 추가 |
+   | set(key, value)    | append와 비슷하지만 같은 키의 값들을 모두 지우고 새로 추가   |
+   | delete(key)        | 해당 키를 제거                                               |
+   | toString()         | 조작한 searchParams 객체를 다시 문자열로 만든다. <br />이 문자열을 search에 대입하면 주소 객체 반영된다 |
+
+5. queryString
+
+   - 기존 노드 방식에서는 url querystring을 querystring 모듈로 처리
+
+   - querystring.parse(쿼리) : url의 query 부분을 자바스크립트 객체로 분해
+
+   - querystring.stringify(객체) : 분해된 query 객체를 문자열로 다시 조립
+
+     ```javascript
+     const url = require('url');
+     const querystring = require('querystring');
+     
+     const parseUrl = url.parse('http://www.gilbut.co.kr/?page=3&limit=100&category=nodejs&category=javascript');
+     const query = querystring.parse(parseUrl.query)
+     
+     // console1
+     console.log(query);
+     [Object: null prototype] {
+       page: '3',
+       limit: '10',
+       category: ['nodejs', javascript]
+     }
+     
+     // console2
+     console.log(queryStringify(query))
+     page=3&limit=100&category=nodejs&category=javascript
+     ```
+
+6. 단방향 암호화(crypto)
+
+   - CPU를 많이 잡아먹어서 멀티 스레드로 돌아간다
+
+   - 암호화는 가능하지만 복호화는 불가능
+
+     - 암호화 : 평문을 암호로 만듬
+     - 복호화 : 암호를 평문으로 만듬
+
+   - 단방향 암호화의 대표 주자는 해시 기법
+
+     - 문자열을 고정된 길이의 다른 문자열로 바꾸는 방식
+     - 비밀번호같은 경우 암호화된 정보가 DB에 저장된다
+
+     ![image-20220424004648125](nodeJS.assets/image-20220424004648125.png)
+
+7. Hash 사용하기(sha512)
+
+   - createHash(알고리즘) : 사욜할 해시 알고리즘을 넣어준다
+
+     - md5, sha1, sha256, sha512 등이 가능
+
+     - Node에서는 pbkdf2와 scrypt 지원
+
+       <img src="nodeJS.assets/image-20220424005541323.png" alt="image-20220424005541323" style="zoom: 80%;" />
+
+   - update(문자열) : 변환할 문자열을 넣어준다
+
+   - digest(인코딩) : 인코딩할 알고리즘을 넣어준다
+
+     - base64, hex, latin1이 주로 사용(base64가 결과 문자열이 가장 짧아 애용)
+
+   ```javascript
+   const crypto = require('crypto');
+   crypto.createHash('sha512').update('테스트').digest('base64');
+   ```
+
+8. pbkdf2 인수로 순서대로 비밀번호, salt, 반복 횟수, 출력 바이트, 알고리즘
+
+   ```javascript
+   const crypto = require('crypto');
+   
+   crypto.randomBytes(64, (err, buf) => {
+     const salt = buf.toString('base64');
+     console.log('salt:', salt);
+     crypto.pbkdf2('비밀번호', salt, 1000000, 64, 'sha512', (err, key) => {
+       console.log('password:', key.toString('base64'));
+     })
+   })
+   ```
+
+9. 양방향 암호화
+
+   - 대칭형 암호화(암호문 복호화 가능)
+   - Key가 사용된다
+   - 암호화할 떄와 복호호화 할 때 같은 Key를 사용해야 함
+     - Key가 훔쳐질 관리가 있으므로 보안에 취약하다
+
+10. util
+
+    - 각종 편의 기능을 모아둔 모듈
+    - deprecated 
+      - 함수가 deprecated 처리되었음을 알려준다
+      - 배포된 코드가 다른 사람이 쓰고있을 때 수정된 경우 사용
+      - 예전 코드를 쓰는 사람에게 경고문을 띄어준다
+    - promisify
+      - 콜백패턴을 프로미스 패턴으로 바꿔준다
+      - 콜백이 (error, data) => {}형식이여야 한다
+
+
+
+
+
+##### * worker_threads
+
+- 노드에서 멀티 스레드 방식으로 작업할 수 있다
+- `Worker` : 독립적인 자바스크립트 실행 스레드
+- `isMainThread` : 현재 코드가 메인 스레드에서 실행되는지, 워커 스레드에서 실행되는지 구분
+- `parentPort` : Main Thread로 접근이 가능한 메세지 포트 인스턴스
+- 메인 스레드에서는 new Worker를 통해 현재 파일(__filename)을 워커 스레드에서 실행
+- `Worker.on, Worker.postMessage`로 부모 스레드와 다른 스레드간 메세지를 주고받을 때 사용
+- `parentPort.postMessage(data)`
+  - `worker.on('message')`를 사용한 부모 스레드에서 사용 가능
+- `parentPort.on('message')`
+  - `worker.postMessage(data)`를 사용한 부모 스레드로부터 보내진 메세지를 받아온다
+
+1. Main Thread안에서 Worker Thread 생성
+2. Worker Thread들한테 일을 분배
+3. Worker Thread가  일을 마치면 Main Thread로 결과물을 다시 보냄
+4. Main Thread에서 Worker Thread에서 보내준 것들을 합친다
+
+- ex) File 1개에서 Main Thread와 Worker Thread 작업
+
+  ```javascript
+  const { Worker, isMainThread, parentPort } = require('worker_threads');
+  
+  if (isMainThread) {
+    const worker = new Worker(__filename);
+    worker.on('message', (value) => console.log('워커로부터', value))
+    worker.on('exit', ()=> console.log('워커 끝'))
+    worker.postMessage('ping');
+  } else {
+    parentPort.on('message', (value) => {
+      console.log('노드로부터', value);
+      parentPort.postMessage('pong');
+      parentPort.colse();
+    })
+  }
+  ```
+
+- ex) Worker Thread간의 데이터 송수신 Main Thread에서 중계
+
+  ```javascript
+  // main.js
+  const {Worker} = require('worker_threads');
+  const worker1 = new Worker('./worker1.js');
+  const worker2 = new Worker('./worker2.js');
+  worker1.on('message', message => worker2.postMessage(message))
+  
+  //worker1.js
+  const {parentPort} = require('worker_threads');
+  parentPort.postMessage('message from worker1');
+  
+  //worker2.js
+  const {parentPort} = require('worker_threads');
+  parentPort.on('message', message => {
+    consol.elog('worker2 received message: %o', message)
+  })
+  
+  // console
+  $ node main.js
+  worker2 received message: 'message from worker1'
+  ```
+
+
+
+
+
+
+
