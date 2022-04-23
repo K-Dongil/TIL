@@ -1197,6 +1197,65 @@
   
        ![image-20211028164907260](jsGrammar.assets/image-20211028164907260.png)
 
+
+
+##### * 비구조화 할당
+
+- `const {변수} = 객체;`로 객체 안의 속성을 변수명으로 사용이 가능
+  - this를 쓰는 객체는 안 쓰는게 좋다
+  - count처럼 속성 안의 속성도 변수명으로 사용이 가능하다
+
+- 객체는 key가 똑같아야 한다
+
+  ```javascript
+  const example = { a: 123, b: { c: 5, d: 55} }
+  const a = example.a;
+  const b = example.b;
+  
+  const { a, b: {d} } = example;
+  console.log(a); // 123
+  console.log(d); // 55
+
+- 배열은 자리가 똑같아야 한다
+
+  ```javascript
+  arr = [1, 2, 3, 4, 5];
+  const x = arr[0];
+  const y = arr[1];
+  const z = arr[4];
+  
+  const [x,y,,,z] = arr;
+
+
+
+##### * [클래스](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Classes)
+
+- 클래스는 함수(생성자 메서드)
+- 클래스 내부에서 정의한 메서드는 Class.prototype에 저장된다
+
+- 프로토타입 문법을 깔금하게 작성할 수 있는 Class 문법 도입
+  - Constructor(생성자), Extends(상속) 등을 깔끔하게 처리할 수 있음
+  - 코드가 그룹화되어 가독성이 향상됨
+- Constructor()는 객체의 기본 상태를 설정해주는 생성자 메서드
+  - new에 의해 자동으로 호출된다
+
+- `class 클래스명 { constructor() {...} method() {...} }`
+
+  ```javascript
+  class MyClass {
+    // 여러 메서드를 정의할 수 있음
+    constructor() { ... }
+    method1() { ... }
+    method2() { ... }
+    method3() { ... }
+    ...
+  }
+  ```
+
+- `new 정의된 클래스명` 를 호출하면 내부에서 정의한 메서드가 들어 있는 객체가 생성된다
+
+
+
 ##### * JSON(JavaScript Object Notation)
 
 - key-value쌍의 형태로 데이터를 표기하는 언어 독립적 표준 포맷
