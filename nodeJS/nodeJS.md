@@ -284,3 +284,220 @@
 
 
 
+##### * REPL
+
+- 자바스크립트는 스크립트 언어라서 즉석에서 코드를 실행할 수 있다
+
+- REPL이라는 콘솔
+
+  - R(Read), E(Evaluate), P(Print), L(Loop)
+
+  ![image-20220423225847258](nodeJS.assets/image-20220423225847258.png)
+
+- window에서는 명령 프롬프트, Mac & 리눅스에서는 터미널에 node 입력
+
+  - `node 자바스크립트 파일 경로`로 실행
+
+
+
+##### * 모듈 만들기
+
+- Node는 자바스크립트 코드를 모듈로 만들 수 있다
+
+  - 모듈 : 특정한 기능을 하는 함수나 변수들의 집합
+
+  - 모듈로 만들면 여러 프로그램에서 재사용 가능
+
+    ![image-20220423230221709](nodeJS.assets/image-20220423230221709.png)
+
+- 파일 끝에 module.exports로 모듈로 만들 값을 지정
+
+  ```javascript
+  // test.js
+  const odd = "Test입니다.";
+  const even = "Test중입니다.";
+  
+  module.exports = {
+    odd,
+    even,
+  };
+
+- 다른 파일에서 require(파일경로)로 모듈의 내용 가져올 수 있음
+
+  - require함수는 node에서 기본적으로 제공한다
+
+  ```javascript
+  // test.js와 같은 경로에 존재
+  const value = require(./test);
+  console.log(value); // { odd: "Test입니다.", even: "Test중입니다."}
+  
+  // 구조분해
+  const { odd, even } = require("./test.js")
+  ```
+
+- 자바스크립트 자체 모듈 시스템 문법
+
+  - require대신 import, module.exports대신 export default를 사용
+
+
+
+##### * 노드 내장 객체
+
+1. global
+   - 노드의 전역 객체
+   - 브라우저의 window와 비슷한 역할
+   - 모든 파일에서 접근 가능
+   - window처럼 생략도 가능(console, require도 global의 속성)
+
+2. global 속성 공유
+
+   - global 속성에 값을 대입하면 다른 파일에서도 사용 가능
+
+   ```javascript
+   //globalA.js
+   module.exports = () => global.message;
+   
+   //globalB.js
+   const A = require('./globalA');
+   
+   global.message = "안녕하세요";
+   console.log(A());
+   
+   // console창
+   $ node globalB
+   안녕하세요
+   ```
+
+3. console 객체
+
+   - 브라우저의 console 객체와 매우 유사
+   - console.time, console.timeEnd : 시간 로깅
+   - console.error : 에러 로깅
+   - console.log : 평범한 로그
+   - console.dir : 객체 로깅
+   - console.trace : 호출스택 로깅
+
+4. 타이머 메서드
+
+   - set 메서드에 clear 메서드가 대응됨
+   - set 메ㅔ서드의 리턴 값(아이디)을 clear 메서드에 넣어 취소
+   - setTimeout(콜백함수, 밀리초): 주어진 밀리초(1000분의 1초) 이후에 콜백 함수를 실행
+   - setInterval(콜백함수, 밀리초): 주어진 밀리초마다 콜백 함수를 반복 실행
+   - setImmendiate(콜백함수) : 콜백 함수를 즉시 실행
+     - setTimeout 0초와 비슷
+   - clearTimeout(아이디): setTimeout을 취소
+   - clearInterval(아이디): setInterval을 취소
+   - clerImmediate(아이디): setImmediate를 취소
+     - 즉시 실행되지만 백그라운드 -> TaskQueue -> 호출스택 과정에서 취소가능
+
+5. `__filename` `__dirname`
+
+   -  `__filename` : 현재 파일경로
+   - `__dirname` : 현재 폴더(디렉터리)경로
+
+6. module, exports
+
+   - module.exports 외에도 exports로 모듈을 만들 수 있음
+
+   - module.exports와 exports는 참조관계
+
+   - 객체가 아닌 값을 넣으면 참조관계가 깨진다
+
+     ```javascript
+     // 깨지지 않는 유형
+     exports.odd = odd;
+     exports.even = even;
+     
+     module.exports = {
+       odd,
+       even,
+     }
+     
+     // 깨지는 유형
+     module.exports = function(){...}
+     ```
+
+7. Node에서 this
+
+   - 최상위 스코프의 this는 module.exports를 가르킨다
+   - 그 외에는 브라우저의 자바스크립트와 동일
+   - 함수 선언문 내부의 this는 global(전역) 객체를 가리킴
+
+   ```javascript
+   // this.js
+   conosole.log(this); // {}
+   console.log(this === module.exports); // true
+   conosole.log(this === exports); // true
+   
+   function whatIsThis() {
+     console.log('function', this === exports, this === global);
+   }
+   whatIsThis(); // function false true
+   ```
+
+8. require
+
+   - require.main : 어떤파일을 실행한건지 알아낼 수 있다(노드 실행 시 철 모듈 가르킴)
+   - requrie.cache : require로 한번 읽은 모듈을 cache에 저장해두고 두번째 불러올 때부터는 cache(메모리 영역)에서 불러온다 
+     - caching : 하드디스크에 있는 정보를 메모리로 불러온다
+   - require가 제일 위에 올 필요는 없다
+     - import는 맨 위에 있어야 한다
+   - 순환참조
+     - 두 개의 모듈이 서로를 require하는 상황을 조심해야 한다
+     - 두 개의 모듈이 서로를 require하면 한 쪽이 빈 객체가 된다(무한 반복 막기위함)
+
+9. process
+
+   - 현재 실행중인 노드 프로세스에 대한 정보를 담고 있음
+     - 컴퓨터마다 출력값이 다를 수 있다
+     - version, arch`프로세스 아키텍처 정보`, platform`운영체제 플랫폼 정보`, pid`현재 프로세스의 아이디`, uptime()`프로세스가 시작된 후 흐른 시간`, exexpath`노드의 경로`, cwd()`현재 프로세스가 실행되는 위치`, cpuUsage()`현재 cpu사용량`
+
+10. process.env
+
+    - 시스템 환경 변수들이 들어있는 객체
+
+    - 비밀키(DB 비밀번호, 서드파티 앱 키 등)를 보관하는 용도로도 쓰임
+
+    - 환경 변수는 process.env로 접근가능
+
+      ```javascript
+      const secretId = process.env.SECRET_ID;
+      const secretCode = process.env.SECRET_CODE;
+      ```
+
+    - 일부 환경 변수는 노드 실행시 영향을 미친다
+
+      - ex) NODE_OPTIONS(노드 실행 옵션), UV_THREADPOOL_SIZE(스레드풀 개수)
+      - max-old-space-size는 노드가 사용할 수 있는 메모리를 지정하는 옵션
+
+11. process.nextTick(콜백)
+
+    - 이벤트 루프가 다른 콜백 함수들보다 nextTick의 콜백 함수를 우선적으로 처리
+    - 너무 남용할 시 다른 콜백 함수들의 실행이 늦어짐
+      - 비슷한 경우로 promise가 있음(nextTick처럼 우선순위가 높다)
+
+    ```javascript
+    setImmediate( () => {
+      console.log('immediate');
+    });
+    process.nextTick( () => {
+      console.log('nextTick');
+    });
+    setTimeout( () => {
+      console.log('timeout');
+    }, 0);
+    Promise.resolve().then( () => console.log('promise'));
+    
+    // 결과
+    nextTick
+    promise
+    timeout
+    immediate
+    ```
+
+12. process.exit(코드)
+
+    - 현재의 프로세스를 멈춤
+    - 코드가 없거나 0이면 정상 종료
+    - 이외의 코드는 비정상 종료를 의미한다
+
