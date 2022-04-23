@@ -833,16 +833,6 @@
 
 
 
-##### * Promise
-
-- 내용이 실행은 되었지만 결과를 아직 반환하지 않은 객체
-- Then을 붙이면 성공된 Return값의 결과를 반환
-- 실행이 완료되지 않았으면 완료된 후에 Then 내부 함수가 실행됨
-- Catch을 붙이면 실패된 Return값을 반환
-- Finally는 무조건 실행
-
-
-
 ##### * [Axios](https://axios-http.com/kr/docs/intro)
 
 - Promise based HTTP client for the browser and Node.js
@@ -1191,7 +1181,9 @@
 
 ##### * Promise
 
-- Promise객체는 axios.get(URL)에 대한 응답의 결과
+- 내용이 실행은 되었지만 결과를 아직 반환하지 않은 객체
+
+- axios.get(URL)에 대한 응답의 결과도 Promise객체
 
   ```javascript
   const myPromise = axios.get(URL)
@@ -1258,7 +1250,50 @@
   - 무조건 실행되어야 하는 절에서 활용
     - .then()과 .catch() 블록에서의 코드 중복을 방지
 
-- Promise methods
+- `Promise.all(배열)` : 여러 개의 Promise를 동시에 실행
+
+  - 하나라도 실패하면 catch로 넘어감
+  - allSettled로 실패한 것만 추려낼 수 있다
+
+  ```javascript
+  [ㅐ]const promise1  = Promise.resolve("성공1");
+  const promise2  = Promise.resolve("성공2");
+  Promise.all([promise1, promise2])
+    .then((result) => {
+      console.log(result); // ['성공1', '성공2'];
+    }
+    .catch((error) => {
+      console.log(error);
+    });
+  ```
+
+- `.resolve(value)` : 주어진 값으로 이행하는 Promise.then 객체를 반환
+
+  - `value`가 Promise에 의해 결정되는 인수
+
+- `.reject(reason)` : 주어진 이유(reason)로 거부된 Promise 객체를 반환
+
+  - `reason`이 Promise를 거부한 이유
+
+  ```javascript
+  const condition = true; // true면 resolve, false면 reject
+  const promise = new Promise((resolve, reject) => {
+    if (condition) {
+      resolve("성공");
+    } else {
+      reject("실패");
+    }
+  });
+  
+  promise
+    .then((message) => {
+      console.log(message); // 성공
+    })
+    .catch((error) => {
+      console.log(error); // 실패
+    })
+
+- then() & catch()
 
   - .then() 블록은 서로 다른 promise를 반환
 
@@ -1397,6 +1432,21 @@
     - fetchDogImage함수가 서버에서 사용자 정보를 가져오는 HTTP 통신코드라 가정
 
     <img src="javaScript.assets/image-20220115000754508.png" alt="image-20220115000754508" style="zoom:80%;" />
+
+- for await (변수 of Promise배열)
+
+  - resolve된 Promise가 변수에 담겨 나옴
+
+  - await을 사용하기 때문에 async 함수 안에서 해야한다
+
+    ```javascript
+    const promise1 = Promise.resolve("성공1");
+    const promise2 = Promise.resolve("성공2");
+    (async() => {
+      for await (promise of [promise1, promise2]) {
+        console.log(promise);
+      }
+    })
 
 
 
