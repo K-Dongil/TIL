@@ -1149,10 +1149,801 @@
       res.end(data)
     }catch (err){
       console.log(err);
-      res.writeHead(400, { 'Content-Type': 'text/html; charset=utf-8'})
+      res.writeHead(404)
       res.end(err.message)
     }
   })
     .listen(8080, () => {
       console.log('8080란 포트에서 대기 중입니다')
     })
+
+
+
+##### * REST API
+
+- 서버에 요청을 보낼 때는 주소를 통해 요청의 내용을 표현
+  - /index.html이면 index.html을 보내달라는 뜻
+    - 항상 html을 요구할 필요는 없다
+  - 서버가 이해하기 쉬운 주소가 좋음
+- 서버의 자원을 정의하고 자원에 대한 주소를 지정하는 방법
+  - /user이면 사용자 정보에 관한 정보를 요청하는 것
+  - /post이면 게시글에 관련된 자원을 요청하는 것
+  - REST API로 구조를 잘 잡으면 해커들이 추측이 가능할 수 있다
+- HTTP 요청 메서드
+  - GET : 서버 자원을 가져오려고 할 때 사용
+  - POST : 서버에 자원을 새로 등록하고자 할 때 사용
+  - PUT : 서버의 자원을 요청에 들어있는 자원으로 치환하고자 할 때 사용
+  - PATCH : 서버 자원의 일부만 수정하고자 할 때 사용
+  - DELETE : 서버의 자원을 삭제하고자할 때 사용
+
+
+
+##### * HTTP 프로토콜
+
+- Client가 누구든 Server와 HTTP 프로토콜로 소통 가능
+  - IOS, 안드로이드, 웹이 모두 같은 주소로 요청 보낼 수 있음
+  - Server와 Client의 분리
+- RESTful
+  - REST API를 사용한 주소 체계를 이용하는 서버
+  - ex) GET / user는 사용자를 조회하는 요청, POST /user는 사용자를 등록하는 요청
+
+
+
+
+
+##### * 웹 소켓
+
+- 실시간 양방향 데이터 전송을 위한 기술
+
+- ws 프로토콜 사용
+
+  - 브라우저가 지원해야 한다
+  - 최신 브라우저는 대부분 웹 소켓을 지원함
+  - Node는 ws나 Socket.IO같은 패키지를 통해 웹 소켓 사용 가능
+
+- 한 번 열결하면 끊기전까지 연결이 유지된다
+
+  - 연결 통로가 생성되는데 요청과 응답을 여러번 보낼 수 있다
+
+-  HTTP와 포트 공유가능
+
+- 성능이 좋다
+
+- 웹 소켓 이전에는 폴링이라는 방식 사용
+
+  - HTTP가 클라이언트에게서 서버로만 요청이 가기 때문에 주기적으로 서버에 요청을 보내 업데이트가 있는지 확인
+
+  ![image-20220425112346206](nodeJS.assets/image-20220425112346206.png)
+
+
+
+##### * Server Sent Events
+
+- EventSource라는 객체를 사용
+
+- 처음에 한 번만 연결하면 서버가 Clien에 지속적으로 데이터를 보내줌
+
+- Client에서 Server로는 데이터를 보낼 수 없음
+
+  ![image-20220425113008759](nodeJS.assets/image-20220425113008759.png)
+
+
+
+##### * Socket.io
+
+- 호환되는 기술 자동 선택
+
+  - ajax, polling, long polling, 웹 소켓
+
+- Server는 HTTP기반으로 동작
+
+  - HTTP, Socket.io Server & HTTP, Socekt.io Client
+
+  <img src="nodeJS.assets/image-20220425135914508.png" alt="image-20220425135914508" style="zoom: 50%;" />
+
+- 설치
+
+  ```
+  npm install socket.io
+  ```
+
+1. HTTP or Express 서버와 socket.io 서버 준비
+
+   ```javascript
+   // HTTP
+   const http = require('http');
+   const server = http.createServer(function(req, res) {
+     res.end('socket.io Sample');
+   })
+   server.listen(3000);
+   
+   // Express
+   const express = require('express');
+   const http = require('http');
+   
+   const app = express();
+   const server = http.Server(app);
+   server.listen(8080);
+   ```
+
+2. socket.io 서버 생성
+
+   ```javascript
+   const Server = require('socket.io');
+   const io = new Server(httpServer);
+   
+   // 축약 형태
+   const io = require('socket.io')(server);
+   ```
+
+3. socker.io Client 준비
+
+   - HTTP Server에게 socket.io 초기화 HTML 요청
+
+     - Server가 scoket.io 초기화를 해주는 코드를 제공
+     - Socket.io Client를 만드는 코드는 HTML안에 들어있다
+
+   - HTML 로딩 - 스크립트 로딩
+
+     - 서버 모듈 로딩 or CDN
+
+     ```javascript
+     <script src="/socket.io/socket.io.js"><script>
+     <script src="https://cdn.socket.io/socket.io-1.3.7.js"></script>
+     ```
+
+   - 소켓 생성, socket.io 서버연결
+
+     - 클라이언트 소켓 클래스 : `IO(url:String, opts:Object):Socket`
+
+     ```javascript
+     <script>
+       const socket = io(); // Client 초기화
+       
+       socket.on('connect', function(arg){
+         console.log('server connect');
+       });
+     </script>
+
+   - Server의 socket.io Client html 응답
+
+     ```javascript
+     app.get('/', function(req, res){
+       res.sendFile(__dirname + '/client.html');
+     })
+     ```
+
+   - Client Event
+
+     - `connect` : Server와 연결
+     - error : 연결 에러
+     - disconnect : 연결 끊김
+     - reconnect, reconnectiong, reconnect_error, ... : 재접속
+       - 서버와 연결 끊어지면 자동 재접속 시도
+
+- ex) Server와 Client 연결
+
+  ```javascript
+  // Server
+  const io = require('socket.io')(server);
+  io.on('connection', function(socket) {
+    console.log('Client Connect');
+  });
+  
+  // Client
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    
+    socket.on('connect', function(arg){
+      console.log('server Connect');
+    });
+  </script>
+  ```
+
+  
+
+##### * Socket.io의 데이터 교환 (이벤트 기반)
+
+- 메시지 전송
+
+  - 이벤트 발생 : `socket.emit('Event이름', data);`
+
+  - Server에서의 이벤트 발생
+
+    ```
+    // 소켓 하나에 이벤트 발생 (1:1)
+    socket.emit('Direct Event', [데이터]);
+    
+    // 연결된 모든 소켓에 이벤트 발생 (1:N)
+    // 소켓에 연결된 모든 Client에 이벤트를 발생\
+    // Server에서만 가능(Client쪽에서는 불가능) 
+    socket.emit('Broadcast Event', [데이터]); //io.emit으로도 가능
+
+- 메세지 수신
+
+  - 이벤트 리스너 등록 : `socket.on('Event이름', function(data){...});`
+
+- 서버에 이벤트 등록 : 클라이언트에서 이벤트 발생
+
+  - Client에서 Server Message 전송
+
+- 클라이언트에 이벤트 등록 : 서버에서 이벤트 발생
+
+  - Server에서 Client로 Message 전송
+
+- ex) 이벤트를 이용하여 데이터 주고 받기
+
+  ```javascript
+  // 보내기 & 받기
+  socket.emit('hello', {message:"Welcome"});
+  
+  socket.on('howAreYou', function(data){
+    const msg = data['message'];
+  });
+  
+  // 받기 & 보내기
+  socket.on('hello', function(data){
+    const msg = data['message'];
+  });
+  
+  socket.emit('howAreYou', {message: "Welcome"});
+  ```
+
+- ex) 실습
+
+  ```javascript
+  // Server
+  const express = require("express");
+  const http = require('http');
+  const app = express();
+  
+  const server = http.createServer(app);
+  server.listen(3000);
+  
+  app.get('/', function(req, res){
+    res.sendFile(__dirname + '/client.html')
+  });
+  
+  const io =require('socket.io')(server);
+  io.on('connect', function(socket){
+    console.log('클라이언트 접속');
+    
+    socket.on('discount', functino(){
+      console.log('클라이언트 접속 종료')
+    });
+  
+    setInterval(function(){
+      socket.emit('message', '메시지';)
+    }, 3000)
+  });
+  
+  // Client
+  <html>
+  <head>
+      <meta charset="UTF8">
+      <script src="/socket.io/socket.io.js"></script>
+      <script>
+        const socket = io();
+  
+        socket.on('connect', function(){
+          console.log('서버와 연결');
+        });
+      </script>
+  </head>
+  <body>
+  	<h1>Socket.IO Sample></h1>
+  	<ul>
+          <script>
+              socket.on('message', function(msg){
+              document.writeln('<li>');
+              document.writeln(msg);
+              document.writeln('</li>');
+          })
+          </script>
+  	</ul>
+  </body>
+  </html>
+
+
+
+##### * 네임스페이스
+
+- socket.io를 연결할 때 네임스페이스를 이용하여 연결
+
+  - 같은 네임스페이스에서만 메시지 주고 받는다
+
+- 기본 네임 스페이스: `/`
+
+  ```javascript
+  // Server
+  const io = require('socket.io')(server);
+  
+  // Client
+  const socket = io();
+
+- Custom 네임스페이스 : `/NAME-SPACE`
+
+  ```javascript
+  // Server
+  const io = require('socket.io')(server);
+  const nsp = io.of('/Custom-Namespage');
+  
+  // Client
+  const socket = io();
+  const nps = io('/Custom-Namespage');
+  ```
+
+- ex) NameSpace를 이용한 커넥션과 통신
+
+  ```javascript
+  // Server
+  const io = require('socket.io')(server);
+  
+  const system = io.of('/system');
+  system.on('connection', function(socket) {
+    console.log('System Client Connect');
+  });
+  system.emit('message', 'Notice');
+  
+  // Client
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    
+    const sysNsp = io('http:/myserver.com/system');
+    sysNsp.on('connect', function(arg){
+      console.log('System server Connect');
+    });
+    sysNsp.on('message', function(data){
+      alert('System message:' + data);
+    })
+  </script>
+
+
+
+##### * 룸
+
+- 네임스페이스 내 채널(작은 그룹)
+- 같은 룸에서만 데이터 교환
+- Server에서만 동작
+  - Server에서 Client를 룸에 입장시키고 떠나게한다
+- 룸에 입장(join), 여러 룸에 입장 가능
+  - `Socket#join(name:String[,fn:Function]):Socket` : 특정 룸에 입장
+- 룸에서 떠나기(leave)
+  - `Socket#leave(name:String[,fn:Function]):Socket` : 룸에서 떠나기
+- 룸 이벤트
+  - `Socket#to(room:String):Socket` : 특정 룸에만 이벤트 발생
+
+- ex) 룸을 이용한 통신
+
+  ```javascript
+  // Server
+  const io = require('socket.io')(server);
+  
+  const system = io.of('/system');
+  
+  let room;
+  system.on('joinRoom', function(data) {
+    // 기존 방에서 나오기
+    system.leave(room);
+    
+    // 새로운 채팅방 입장
+    room = data.room;
+    socket.join(room);
+  });
+  // 채팅 메시지, 룸으로(to) 전송
+  system.on('chatInput', function(data){
+    io.to(room).emit('chatMessage', chat);
+  });
+  
+  // Client
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    
+    const sysNsp = io('http:/myserver.com/system');
+    
+    // 룸에 입장
+    sysNsp.emit('joinRoom', {room:room});
+    
+    // 채팅 메시지 수신
+    sysNsp.on('chatMessage', function(data){
+      const msg = data['msg'];
+      const nick = data['nick'];
+      const str = nick + ":" + msg;
+      
+      //채팅 메시지
+      $('#messages').append($'<li>').text(str);
+    });
+  </script>
+
+
+
+##### * 데이터베이스
+
+- 관련성을 가지며 중복이 없는 데이터들의 집합
+- DBMS : 데이터베이스를 관리하는 시스템
+- RDBMS : 관계형 데이터베이스를 관리하는 시스템
+- 서버의 하드 디스크나  SSD 등의 저장 매체에 데이터를 저장
+- 서버 종료 여부와 상관 없이 데이터를 계속 사용가능
+- 여러 사람이 동시에 접근할 수 있고, 권한을 따로 줄 수 있음
+
+- 콘솔(CMD)에서 MySQL이 설치된 경로로 이동
+  - 기본 경로는 `C:\Program Files\MySQL\MySQL Server 버젼\bin`
+  - 편의를 위해 기본 경로를 환경변수로 등록해준다
+-  MySQL Prompt 실행 : `mysql -h localhost -u root -p`
+  - -h는 호스트, -u는 사용자, -p는 비밀번호
+  - `exit` : MySQL 빠져나오는 명령어
+
+- DB 생성 : `CREATE SCHEMA DB이름;`
+  - ex) `CREATE SCHEMA `nodejs` DEFAULT CHARACTER SET utf8;`
+
+- DB 선택 : `user DB이름;`
+  - ex) `user nodejs;`
+- Table  생성 : `CREATE TABLE DB이름.TABLE이름(OPTIONS)`
+
+
+
+##### * [시퀄라이즈 ORM](https://sequelize.org/docs/v6/)
+
+- MySQL 작업을 쉽게 할 수 있도록 도와주는 라이브러리
+
+  - ORM : Object Relational Mapping : 객체와 데이터를 Mapping (1:1)
+  - MySQL 외에도 다른 RDB(Maria, SQLite, MSSQL)와 호환가능
+  - 자바스크립트 문법으로 DB 조각 가능
+
+- 시퀄라이즈에서는 1:N관계에서 참조당하는 쪽을 hasMany로 표현
+
+  - 반대의 입장(다른 Table의 column을 참조하는 쪽)에서는 belongsTo(속해있다)로 표현
+
+  - belongsTo상태인 Table에 foreignKey column이 생긴다
+
+  - `1 :  N => belongsTo : hasMany`
+
+    ```javascript
+    // foreignKey가 targetKey를 참조할 것이다
+    // belongsTo인 Table쪽에 foreignKey가 생성된다
+    static associate(db) {
+      db.Table이름.belongsTo(db.Table이름, { foreignKey: "", targetKey: ""});
+    }
+      
+    // foreignKey가 sourceKey를 참조하고 있다
+    static associate(db) {
+      db.Table이름.hasMany(db.Table이름, { foreignKey: "", sourceKey: ""});
+    }
+    ```
+
+    ![image-20220428152356009](nodeJS.assets/image-20220428152356009.png)
+
+- 시퀄라이즈에서는 1:N관계에서 참조당하는 쪽을 hasOne로 표현
+
+  - 반대의 입장(다른 Table의 column을 참조하는 쪽)에서는 belongsTo(속해있다)로 표현
+
+  <img src="nodeJS.assets/image-20220428153516313.png" alt="image-20220428153516313" style="zoom:67%;" />
+
+- DB특성상 다대다(N:M) 관계는 중간 테이블이 생긴다
+
+  - 두 테이블 모두 중간 테이블을 참조하므로 belongsToMany
+
+  - ex) Post와 Hashtag의 관계
+
+    ![image-20220428154016100](nodeJS.assets/image-20220428154016100.png)
+
+- 시퀄라이즈 명령어 사용하기 위한 sequelize-cli 설치
+
+  - mysql2는 MySQL DB가 아닌 드라이버(NodeJS와 MySQL 이어주는 역할)
+  - sequelize-cli : sequelize 명령어 사용할 수 있게해주는 package
+  - sequelize : sequelize  본체
+  - `npm i express morgan nunjucks sequelize sequelize-cli mysql2`
+  - `npm i -D nodemon`
+
+- 시퀄라이즈 구조 생성
+
+  - `npx sequelize init`
+
+    - sequelize-cli으로부터 명령어가 가능해진다
+    - config, models, migrations, seeders foler들이 생성된다
+
+  - models 폴더의 index.js
+
+    - mysql squelize nodejs 연동
+
+      ```javascript
+      const Sequelize = require('sequelize');
+      
+      const env = process.env.NODE_ENV || 'development';
+      const config = require('../config/config')[env];
+      const db = {};
+      
+      const sequelize = new Sequelize(config.database, config.username, config.password, config); // 연결 객체
+      
+      db.sequelize = sequelize;
+      db.Sequelize = Sequelize;
+      
+      module.exports = db;
+      ```
+
+  - config폴더에서 config.json에서 `username`, `database`, `password`를 연동하려는 DB의 값으로 설정해준다
+
+- app.js작성해서 sequelize.sync로 연결
+
+  ```javascript
+  const express = require('express');
+  const path = require('path');
+  const morgan = require('morgan');
+  const nunjucks = require('nunjucks');
+  
+  const { sequelize } = require('./models');
+  
+  const app = express();
+  app.set('port', process.env.PORT || 3001);
+  app.set('view engine', 'html');
+  nunjucks.configure('views', {
+    express: app,
+    watch: true,
+  });
+  
+  // sync를 통해서 node에서 database로 연결이 가능
+  sequelize.sync({ force: false })
+    .then(() => {
+      console.log('데이터베이스 연결 성공');
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  
+  app.use(morgan('dev'));
+  app.use(express.static(path.join(__dirname, 'public')));
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: false }));
+  
+  app.use('/', indexRouter);
+  
+  app.use((req, res, next) => {
+    const error =  new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
+    error.status = 404;
+    next(error);
+  });
+  
+  app.use((err, req, res, next) => {
+    res.locals.message = err.message;
+    res.locals.error = process.env.NODE_ENV !== 'production' ? err : {};
+    res.status(err.status || 500);
+    res.render('error');
+  });
+  
+  app.listen(app.get('port'), () => {
+    console.log(app.get('port'), '번 포트에서 대기 중');
+  });
+
+- 연결 테스트 : `npm start`
+  - `SELECT 1+1 AS RESULT`가 나오면 연결 성공
+
+
+
+##### * 모델(테이블) 생성
+
+- `models`폴더의 `Table이름.js`파일에서 Code로 Table생성
+
+- 생성된 Table은 `models`폴더의 `index.js`에서 추가
+
+  - ex) user와 comment Table추가
+
+    - 두 테이블은 관계성 Table
+
+    ```javascript
+    const Sequelize = require('sequelize');
+    const User = require('./user'); // 추가된 코드
+    const Comment = require('./comment'); // 추가된 코드
+    
+    const env = process.env.NODE_ENV || 'development';
+    const config = require('../config/config')[env];
+    const db = {};
+    
+    const sequelize = new Sequelize(config.database, config.username, config.password, config);
+    
+    db.sequelize = sequelize;
+    db.Sequelize = Sequelize;
+    
+    db.User = User; // 추가된 코드
+    db.Comment = Comment; // 추가된 코드
+    
+    User.init(sequelize); // init으로 sequelize와 연결, 추가된 코드
+    Comment.init(sequelize); // 추가된 코드
+    
+    User.associate(db); // 관계설정
+    Comment.associate(db); // 관계설정
+    
+    module.exports = db;
+
+- Sequelize은 id column을 자동으로 만들어준다
+
+  - id column 생략가능
+
+- Sequelize와 MYSQL에서의 표현차이가 있다
+
+  - Sequelize에서 여러개의 DB를 지원해주기 때문이다
+
+    ![image-20220428151429796](nodeJS.assets/image-20220428151429796.png)
+
+- ex)
+
+  ```javascript
+  const Sequelize = require('sequelize');
+  
+  module.exports = class 모델이름 extends Sequelize.Model {
+    static init(sequelize){
+      return super.init({
+        // init에 column들을 정의해 넣을 수 있다
+        column이름: {
+          type: Sequelize.타입,
+          allowNull: Boolean,
+          unique: Boolean,
+          ...
+        }
+      }, {
+        // model에 대한 설정
+        sequelize,
+        timestamps: Boolean, // createdAt, updateAt 여부
+        underscored: Boolean, // sequelize에서 자동으로 만들어주는 것들에 대한 이름설정
+        paranoid: Boolean, // deleteAt(제거날짜) 여부, true일 때 soft delete
+        modelName: "모델 이름", // 보통 단수형
+        tableName: "테이블 이름", // 모델이름의 복수형
+        charset: String, // utf8mb4, utf8
+        collate: String, // utf8mb4_general_ci, utf8_general_ci
+      });
+    }
+    
+      
+    // 관계 column(foreignKey, pk)
+    // foreignKey가 targetKey를 참조할 것이다
+    // belongsTo인 Table쪽에 foreignKey가 생성된다
+    static associate(db) {
+      db.Table이름.belongsTo(db.Table이름, { foreignKey: "", targetKey: ""});
+    }
+    
+    // foreignKey가 sourceKey를 참조하고 있다
+    static associate(db) {
+      db.Table이름.hasMany(db.Table이름, { foreignKey: "", sourceKey: ""});
+    }
+  }
+
+
+
+##### * 시퀄라이즈 쿼리
+
+- Sequelize Query는 비동기
+
+  - await을 써야한다
+  - 결과값이 자바스크립트 객체
+
+- sequelize를 통해 sql query를 쓸 수 있다
+
+  - `await sequelize.query(query 문장);`
+
+  ```javascript
+  const [result, metadata] = await sequelize.query('SELECT * from comments');
+  console.log(result);
+
+- include로 JOIN과 비슷한 기능 수행이 가능(관계 엮는 것 엮을 수 있다)
+
+  - inclue로 가져오면 성능상 문제가 생길 수 있다
+
+  ```javascript
+  const user = await User.findOne({
+    include: [{
+      model: Comment,
+    }]
+  });
+  console.log(user.Comments);
+  ```
+
+- `get모델명`으로 관계 있는 데이터 로딩 가능
+
+  ```
+  const user = await User.findOne({});
+  const comments = await user.getComments();
+  console.log(comments);
+  ```
+
+- `include`, `get모델명`을 통한 관계 쿼리 메서드에도 where나 attributes 쓸 수 있다
+
+- `as`로 모델명 변경 가능
+
+- 생성 쿼리
+
+  - ex) item이 드롭되고 주인이 정해질 때
+
+    ```javascript
+    const user = await User.findOne({});
+    const item = await Item.create();
+    
+    await user.addItem(item);
+    await user.addItem(item.id);
+
+- N:M 모델은 다음과 같이 접근
+
+  - `db.sequelize.models.PostHashtag`
+
+- 수정 : `set모델명`, 삭제 : `remove모델명`
+
+- SQL과 SEQUELIZE 쿼리비교
+
+  ```javascript
+  INSERT INTO nodejs.users (name, age, married) VALUES ('zero', 24, 0);
+  const { User } = require('../models');
+  await User.create({
+    name: 'zero',
+    age: 24, 
+    married: false,
+  })
+  
+  SELECT * FROM nodejs.users;
+  await User.findAll({});
+  
+  SELECT name, married FROM nodejs.users;
+  await User.findAll({
+    attributes: ['name', 'married'],
+  });
+  
+  // 특수한 기능들 Sequelize의 Op객체에 들어있다 (gt: >, lt: <, gte: >=, lte: <=)
+  SELECT name, age FROM nodejs.users WHERE married = 1 AND age > 30;
+  const { Op } = require('sequelize');
+  const { User } = require('../models');
+  await User.findAll({
+    attributes: ['name', 'age'],
+    where: {
+      married: true,
+      age: { [Op.gt]: 30},
+    }
+  });
+  
+  SELECT id, name FROM users WHERE married = 0 OR age > 30;
+  const { Op } = require('sequelize');
+  const { User } = require('../models');
+  await User.findAll({
+    attributes: ['id', 'name'],
+    where: {
+      [Op.or]: [{ married: 0}, { age: { [Op.gt]: 30 }}],
+    },
+  });
+  
+  
+  SELECT id, name FROM users ORDER By age DESC;
+  await User.findAll({
+    attributes: ['id', 'name'],
+    order: [['age', 'DESC']],
+  });
+  
+  SELECT id, name FROM users ORDER BY age DESC LIMIT 1;
+  await User.findAll({
+    attributes: ['id', 'name'],
+    order: [['age', 'DESC']],
+    limit: 1,
+  })
+  
+  SELECT id, name FROM users ORDER BY age DESC LIMIT 1 OFFSET 1;
+  await User.findAll({
+    attributes: ['id', 'name'],
+    order: ['age', 'DESC'],
+    limit: 1,
+    offset: 1,
+  });
+  
+  // 수정
+  UPDATE nodejs.users SET comment = '바꿀 내용' WHERE id = 2;
+  await User.update({
+    comment: '바꿀 내용',
+    },{
+    where: { id: 2},
+  });
+  
+  // 삭제
+  DELTE FROM nodejs.users WHERE id = 2;
+  await User.destory({
+    where: {id: 2},
+  });
+  ```
+
+  
