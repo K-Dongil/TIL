@@ -1599,3 +1599,20 @@
   )
   ```
 
+
+
+##### * 주소창에 한글 입력하면 서버가 처리하지 못하는 경우 발생
+
+- encodeURIComponent로 한글 감싸줘서 처리
+- decodeURIComponent로 서버에서 한글 해석
+
+
+
+##### * HTML 태그에 데이터를 저장하는 방법
+
+- 서버의 데이터를 Frontend로 내려줄 때 사용
+- 태그 속성으로 data-속성명
+  - 속성 : id, user-job
+- 자바스크립트에서 태그.dataset.속성명으로 접근 가능
+  - data-user-job => dataset.userJob으로 접근
+  - data-id => dataset.id로 접근
