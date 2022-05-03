@@ -1947,3 +1947,47 @@
   ```
 
   
+
+##### * express
+
+- http 모듈로 웹 서버를 만들 때 코드가 보기 안 좋고, 확장성도 떨어진다
+  - 프레임워크로 해결
+    - 대표적 프레임 워크 : Express, Koa, Hapi
+    - 코드 관리 용이, 편의성 높아진다
+
+- `package.json`만들기
+
+  ```
+  npm i express
+  npm i -D nodemon
+
+- `app.js`
+
+  - 서버 구동의 핵심이 되는 파일
+  - `app.set('port', 포트)`로 서버가 실행될 포트 지정
+  - `app.get('주소', 라우터)`로 GET 요청이 올 때 어떤 동작을 할지 지정
+  - `app.post('주소', 라우터)`로 POST 요청이 올 때 어떤 동작을 할지 지정
+  - `app.listen('포트', 콜백)`으로 몇 번 포트에서 서버를 실행할지 지정
+
+  ```javascript
+  // app.js
+  const express = require('express');
+  
+  const app = express();
+  app.set('port', process.env.PORT || 3000);
+  
+  app.get('/', (req,res) => {
+    res.send('Hello Express');
+  });
+  
+  app.listen(3000, () => {
+    console.log('3000번 포트에서 Express 서버 실행');
+  });
+  
+  
+  // server에 속성추가. port라는 속성을 3000으로 세팅
+  app.set('port', process.env.PORT || 3000)
+  
+  app.listen(app.get('port'), () => {
+    console.log(app.get('port'), '번 포트에서 대기 중');
+  });
