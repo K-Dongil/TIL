@@ -330,6 +330,10 @@
   // as를 쓰는 시점에서는 코드가 도약하는 시점에 document의 div라는 element가 있을 것이다
   const div1 = document.querySelector('div') as HTMLDivElement;
   div1.innerText
+  
+  // EventTarget 속성에 id값이 없으므로 타입단언 필요
+  const idTest = event.target.id // EventTarget 속성에 id없다고 경고
+  const idTest1 = (event.target as HTMLButtonElement).id
 
 
 
@@ -970,3 +974,10 @@
 
 - Promise가 기본적으로는 generic을 이용해 정의되어 있다.
   - Promise 자체 타입이 generic을 받게끔 내부적으로 구현이 되어있다
+
+
+
+##### * React에서의 TypeScript
+
+- useState 타입지정
+  - `useState<type>()`
