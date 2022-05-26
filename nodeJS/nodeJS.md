@@ -1825,6 +1825,7 @@
   ```javascript
   const [result, metadata] = await sequelize.query('SELECT * from comments');
   console.log(result);
+  ```
 
 - include로 JOIN과 비슷한 기능 수행이 가능(관계 엮는 것 엮을 수 있다)
 
