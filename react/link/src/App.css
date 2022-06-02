@@ -2,13 +2,6 @@
   text-align: center;
 }
 
-.background {
-  background-image: url('./background.jpg');
-  background-position : center;
-  color:white;
-  height: 30vmax;
-}
-
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -42,9 +35,4 @@
   to {
     transform: rotate(360deg);
   }
-}
-
-.link_css{
-  color: red;
-  text-decoration: none;
 }
