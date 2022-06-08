@@ -17,8 +17,8 @@ def dfs_f(s):
     ST.append(s)
     while ST: # len(ST) > 0
         s = ST.pop(-1)
-        if not visited[i]:
-            visited[i] = True
+        if not visited[s]:
+            visited[s] = True
             print(s, end= '')
             for i in grap[s]:
                 if not visited[i]:
