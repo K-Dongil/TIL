@@ -103,16 +103,6 @@ ex ) `random` 모듈을 활용하는 것을 배웠다. `print` 함수는 출력�
 
   * ~~취소선~~
 
-  
-
-## 리눅스 기본 명령어들
-
-- ls : List 목록
-- cd : change directory 폴더이동
-- mkdiv : make directory 폴더 생성
-- touch : 비어있는 파일 생성 (ex: touch 파일이름.확장자)
-- rm : remove 삭제
-
 
 
 
