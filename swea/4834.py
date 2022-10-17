@@ -29,3 +29,24 @@ for rc in range(1, TC+1):
     maxpos = getMaxPost() #최대값이 들어 있는 위치를 구해서 return
 
     print('#{} {} {}'.format())
+
+#==========================
+tc = int(input())
+
+for t in range(tc):
+    cardNum = int(input())
+    inputNums = list(map(int, input()))
+    numList = [0] * 11
+    maxV = 1
+    maxP = numList[1]
+
+    for inputNum in inputNums:
+        numList[int(inputNum)] += 1
+    
+    for i in range(2, 11):
+        if maxP <= numList[i]:
+            maxV = i
+            maxP = numList[i]
+	
+    print('#{} {} {}'.format(t+1, maxV, maxP))
+    
