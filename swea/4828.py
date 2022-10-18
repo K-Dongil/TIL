@@ -10,5 +10,15 @@ for i in range(T):
     print(f'#{i+1} {num_list[-1]-num_list[0]}')
 
 
+################################################
 
+tc = int(input())
 
+for t in range(tc):
+    n = int(input())
+    numList = list(map(int, input()))
+    minV = min(numList)
+    maxV = max(numList)
+    diffV = maxV - minV
+
+    print(f'#{t+1} {diffV}')
