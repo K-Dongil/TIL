@@ -17,3 +17,24 @@ for i in range(T):
                 sum_list[head], sum_list[body] = sum_list[body], sum_list[head]
 
     print('#{} {}'.format(i+1, sum_list[-1] - sum_list[0]))
+
+#===============================================
+tc = int(input())
+
+for t in range(tc):
+    nRange, nSelect = map(int, input().split())
+    nList = list(map(int, input().split()))
+    sumMaxV = 0
+    sumMinV = 100 * 10000 * 10
+
+    for i in range(0, nRange-nSelect+1):
+        nowSumV = 0
+        for j in range(nSelect):
+            nowSumV += nList[i+j]
+        if sumMaxV < nowSumV:
+            sumMaxV = nowSumV
+        if nowSumV < sumMinV:
+            sumMinV = nowSumV
+
+    diffV = sumMaxV - sumMinV
+    print('#{} {}'.format(t+1, diffV))
