@@ -71,19 +71,24 @@ tc = int(input())
 for t in range(tc):
     goEnergy, end, rechargeStation = map(int, input().split())
     rechargeStations = list(map(int, input().split()))
-
+    rechargeStations.append(end)
+    
     nowEnergy = goEnergy
     nowStation = 0
     rechargeNumber = 0
+    
 
-    for i in range(end+1):
-        if i in rechargeStations and nowEnergy < rechargeStations[0]-i:
-            if nowEnergy < rechargeStations[0]-i:
+    for i in range(0, end):
+        if i != 0:
+            nowEnergy -=1
+        if i in rechargeStations:
+            print(i)
+            if nowEnergy < rechargeStations[1]-i:
                 rechargeNumber += 1
+                nowEnergy = goEnergy
             rechargeStations.pop(0)
-        nowEnergy -= 1
         if nowEnergy == 0:
             rechargeNumber = 0
             break
-    
+            
     print('#{} {}'.format(t+1, rechargeNumber))
