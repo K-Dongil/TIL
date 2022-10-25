@@ -33,3 +33,25 @@ for i in range(t): # 테스트 케이스 개수만큼 반복
 #             if i & (1<<j): # j번째 bit가 0인지 1인지 check
 #                 sumV += lst[j]
 #                 cnt += 1
+
+#============================================
+tc = int(input())
+elementList = list(range(1, 13))
+
+for t in range(1, tc+1):
+    num, numSum = map(int, input().split())
+    total = 0
+
+    for i in range(1<<12):
+        count = 0
+        partSum = 0
+
+        for j in range(12):
+            if i & (1<<j):
+                count += 1
+                partSum += elementList[j]
+        
+        if num == count and numSum == partSum:
+            total += 1
+
+    print('#{} {}'.format(t, total))
