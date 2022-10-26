@@ -34,3 +34,40 @@ for i in range(t):
     result = winner(a_result, b_result)
 
     print('#{} {}'.format(i+1, result))
+
+
+#==================================
+def binary_search(allPage, findPage):
+    leftPage = 1
+    rightPage = allPage
+    middlePage = allPage//2
+    cnt = 1
+
+    while leftPage <= rightPage:
+        if middlePage < findPage:
+            leftPage = middlePage
+        elif middlePage > findPage:
+            rightPage = middlePage
+        else:
+            return cnt
+
+        middlePage = (leftPage + rightPage)//2
+        cnt += 1
+
+    return 0
+
+tc= int(input())
+
+for t in range(1, tc+1):
+    allPage, aFindPage, bFindPage = map(int, input().split())
+    win = 0
+
+    aFind = binary_search(allPage, aFindPage)
+    bFind = binary_search(allPage, bFindPage)
+
+    if aFind < bFind:
+        win = 'A'
+    elif aFind > bFind:
+        win = 'B'
+
+    print('#{} {}'.format(t, win))
