@@ -1,23 +1,11 @@
-def lenSort():
-    for i in range(unit):
-        for j in range(i, unit):
-            if len(words[i]) > len(words[j]):
-                words[i], words[j] = words[j], words[i]
+strNum = int(input())
+strList = list(set([input() for _ in range(strNum)]))
+result = ''
 
-def alphaSort():
-    memory = 0
-    for i in range(unit):
-        for j in range(i, unit):
-            
-            momory = words[i] 
-            if words[i] > words[j]:
-                words[i], words[j] = words[j], words[i]
+strList.sort() # 사전순 문자열 정렬
+strList.sort(key = len) # 길이순 문자열 정렬
 
-unit = int(input())
-words = [''] * unit
-for i in range(unit):
-    words[i] = input()
+for l in strList:
+    result += l + '\n'
 
-solve()
-# words.sort()
-print(words)
+print(result)
