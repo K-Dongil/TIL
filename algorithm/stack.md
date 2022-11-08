@@ -516,11 +516,11 @@
     				visited[w] = 1
     				print(node[w])
     				break
+    		else:
+    			if stack:
+    				i = stack.pop()
     			else:
-    				if stack:
-    					i = stack.pop()
-    				else:
-    					i = 0
+    				i = 0
     
     # adj배열은 각 노드들간의 관계를 표현하였다.
     adj =[[0, 0, 0, 0, 0, 0, 0, 0],
