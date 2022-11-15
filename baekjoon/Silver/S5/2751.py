@@ -33,5 +33,7 @@ def merge(left, right):
 
 N = int(input())
 numList = [int(input()) for _ in range(N)]
-sortList = divide(numList)
-print(sortList)
+sortNum = divide(numList)
+
+for num in sortNum:
+    print(num)
