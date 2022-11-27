@@ -69,16 +69,26 @@
 
 - 스택의 push 알고리즘
 
-  - Appen 메소드를 통해 리스트의 마지막에 데이터를 삽입
+  - Append 메소드를 통해 리스트의 마지막에 데이터를 삽입
 
-  ```
-  def push(item):
-  	s.append(item)
-  ```
+    ```python
+    def push(item):
+    	s.append(item)
+
+  - 직접 구현
+
+    ```python
+    def push(v):
+        global nowIdx
+        st[nowIdx] = v
+        nowIdx += 1
+    
+    st = [0] * 100000
+    nowIdx = 0
 
 - 스택의 pop 알고리즘
 
-  ```
+  ```python
   def pop():
   	if len(s) == 0: # 디버깅 용도, 보통 스택이 비어있는지 비어있지 않은지 먼저 검사한 후 pop실행
   		# underflow : 모자라는데 꺼낼 때
@@ -87,16 +97,52 @@
   		return s.pop(-1) # 배열의 마지막에 있는 데이터 
   ```
 
+  ```python
+  def pop():
+      global nowIdx
+      if nowIdx:
+          nowIdx -= 1
+          v = st[nowIdx]
+          st[nowIdx] = 0
+          return v
+      return '-1'
+
 - 스택의 peak 알고리즘
 
-  ```
+  ```python
   def peak():
   	if len(s) != 0:
   		return stack[-1]
+  ```
+
+  ```python
+  def peak():
+      global nowIdx
+      if nowIdx:
+          return st[nowIdx-1]
+      return -1
+  ```
+
+- 스택의 empty 알고리즘
+
+  ```python
+  def empty():
+      global nowIdx
+      if nowIdx:
+          return 0
+      return 1
+  ```
+
+- 스택의 size 알고리즘
+
+  ```python
+  def size():
+      global nowIdx
+      return nowIdx
 
 - ex)
 
-  ```
+  ```python
   def push(n):
       s.append(n)
   
