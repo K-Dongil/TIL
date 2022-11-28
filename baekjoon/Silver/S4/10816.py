@@ -1,10 +1,13 @@
-def divide(lst):
+from sys import stdin
+
+def mergeSort(lst):
     if len(lst) == 1:
         return lst
-    divideNum = len(lst) // 2
-    leftDivide = divide(lst[:divideNum])
-    rightDivide = divide(lst[divideNum:])
-    result  = merge(leftDivide, rightDivide)
+    divideV = len(lst)//2
+    leastLeft = mergeSort(lst[:divideV])
+    leastRight = mergeSort(lst[divideV:])
+    result = merge(leastLeft, leastRight)
+
     return result
 
 def merge(left, right):
@@ -12,23 +15,62 @@ def merge(left, right):
     mergeList = []
 
     while l != len(left) and r != len(right):
-        if int(left[l][0]) <= int(right[r][0]):
+        if left[l] <= right[r]:
             mergeList.append(left[l])
             l += 1
-        elif int(right[r][0]) < int(left[l][0]):
+        elif right[r] < left[l]:
             mergeList.append(right[r])
             r += 1
-
+    
     if l != len(left):
-        for list in left[l:]:
-            mergeList.append(list)
+        for num in left[l:]:
+           mergeList.append(num)
     elif r != len(right):
-        for list in right[r:]:
-            mergeList.append(list)
-
+         for num in right[r:]:
+           mergeList.append(num)
+    
     return mergeList
 
-cardNum = int(input())
-cardList = list(map(int, input().split()))
-myCardNum = int(input())
-myCardList = list(map(int, input().split()))
+def binarySearch(v):
+    start = 0
+    end = len(sortCards) - 1
+    middle = end//2
+    cnt = 0
+    front = 0
+    back = 0
+
+    while start <= end:
+        middle = (start + end) // 2
+        if sortCards[middle] < v:
+            start = middle + 1
+        elif sortCards[middle] > v:
+            end = middle - 1
+        else:
+            front = middle
+            back = middle
+            while 0 < front:
+                if sortCards[front - 1] != v:
+                    break
+                else:
+                    front -= 1
+            while back < cardNum-1:
+                if sortCards[back + 1] != v:
+                    break
+                else:
+                    back += 1
+            cnt = back - front + 1
+            break
+
+    return cnt
+
+cardNum = int(stdin.readline())
+cards = list(map(int, stdin.readline().split()))
+myCardNum = int(stdin.readline())
+myCards = list(map(int, stdin.readline().split()))
+sortCards = mergeSort(cards)
+result = ''
+
+for card in myCards:
+    result += str(binarySearch(card)) + ' '
+
+print(result)
