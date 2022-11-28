@@ -1,5 +1,3 @@
-from sys import stdin
-
 def mergeSort(lst):
     if len(lst) == 1:
         return lst
@@ -33,7 +31,7 @@ def merge(left, right):
 
 def binarySearch(v):
     start = 0
-    end = len(sortCards) - 1
+    end = cardNum - 1
     middle = end//2
     cnt = 0
     front = 0
@@ -63,14 +61,17 @@ def binarySearch(v):
 
     return cnt
 
-cardNum = int(stdin.readline())
-cards = list(map(int, stdin.readline().split()))
-myCardNum = int(stdin.readline())
-myCards = list(map(int, stdin.readline().split()))
-sortCards = mergeSort(cards)
+cardNum = int(input())
+cards = list(map(int, input().split()))
+myCardNum = int(input())
+myCards = list(map(int, input().split()))
+sortCards = sorted(cards)
+countRecord = {}
 result = ''
 
 for card in myCards:
-    result += str(binarySearch(card)) + ' '
+    if card not in countRecord:
+        countRecord[card] = str(binarySearch(card))
+    result += countRecord[card] + ' '
 
 print(result)
