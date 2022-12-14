@@ -1,33 +1,42 @@
-def dfs(V):
-    visited[V] = 1
-    print(V, end=' ')
+def dfs(v):
+    visited = [False]*(nodeNum+1)
+    st = [v]
+    result = ''
+
+    while st:
+        nowNode = st.pop()
+        if not visited[nowNode]:
+            visited[nowNode] = True
+            result += str(nowNode) + ' '
+            for i in range(nodeNum, 0, -1):
+                if graph[nowNode][i] == 1 and (not visited[i]):
+                    st.append(i)
+
+    return result
+
+def bfs(v):
+    visited = [False]*(nodeNum+1)
+    visited[v] = True
+    queue = [v]
+    result = str(v)
     
-    for i in range(1,N+1):
-        if(visited[i]==0 and matrix[V][i]==1):
-            dfs(i)
-
-            
-def bfs(V):
-    queue = [V]
-    visited[V] = 0
-
     while queue:
-        V = queue.pop(0)
-        print(V, end=' ')
-        for i in range(1, N + 1):
-            if(visited[i] == 1 and matrix[V][i] == 1):
+        nowNode = queue.pop(0)
+        for i in range(1, nodeNum+1):
+            if graph[nowNode][i] == 1 and (not visited[i]):
                 queue.append(i)
-                visited[i] = 0
-                
-N, M, V = map(int, input().split())
-matrix=[[0] * (N + 1) for i in range(N + 1)]
-visited = [0] * (N + 1)
+                visited[i] = True
+                result += ' ' + str(i)
 
-for i in range(M):
-    a, b = map(int, input().split())
-    matrix[a][b] = matrix[b][a] = 1
+    return result
 
+nodeNum, lineNum, start = map(int, input().split())
+graph = [[0]*(nodeNum+1) for _ in range(nodeNum+1)]
 
-dfs(V)
-print()
-bfs(V)
+for i in range(lineNum):
+    node1, node2 = map(int, input().split())
+    graph[node1][node2] = 1
+    graph[node2][node1] = 1
+
+print(dfs(start))
+print(bfs(start))
