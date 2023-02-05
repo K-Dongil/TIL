@@ -16,8 +16,16 @@ def bfs(x, y):
         for i in range(4):
             newX = x + dx[i]
             newY = y + dy[i]
-            if 0 <= newX < width and 0 <= newY < height and visited[newY][newX] == False and maze[newY][newX] == '1':
-                queue.append((newX, newY, cnt+1))
+            if newX < 0 or width <= newX:
+                continue
+            elif newY < 0 or height <= newY:
+                continue
+            elif visited[newY][newX]:
+                continue
+            elif maze[newY][newX] == '0':
+                continue
+            
+            queue.append((newX, newY, cnt+1))
     
     return cnt
         
