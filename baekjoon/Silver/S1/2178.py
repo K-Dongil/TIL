@@ -11,8 +11,10 @@ def bfs(x, y):
 
     while queue:
         x, y, cnt = queue.popleft()
-        visited[y][x] = True
 
+        if x == width-1 and y == height-1:
+            break
+        
         for i in range(4):
             newX = x + dx[i]
             newY = y + dy[i]
@@ -26,6 +28,7 @@ def bfs(x, y):
                 continue
             
             queue.append((newX, newY, cnt+1))
+            visited[newY][newX] = True
     
     return cnt
         
