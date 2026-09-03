@@ -10,7 +10,6 @@ void setup() { // 시작과 동시에 한 번만 실행, 주로 아두이노에�
 void loop() { // 포함하는 코드를 무한히 반복 실행 (while(1)과)
   // put your main code here, to run repeatedly:
 
-  if()
   // K -.-
   LED_long();
   LED_short();
