@@ -658,3 +658,270 @@
   - 다양한 관점을 통합하는 AI Scientist
   - 전문가 대화형 AI, 관점 기반 논의 + 보고서 생성 기능을 실습
 
+
+
+#### * 생성형 AI로 보는 인공지능의 과거와 현재
+
+- 머신러닝 문제 유형에 따라 알맞은 알고리즘(모델)을 선택하는 의사결정 트리(Decision Tree) - 과거
+
+  1. Unsupervised Learning : Clustering (비지도학습 : 군집화)
+     - **진입 조건:** 정답(라벨)이 없는 데이터(`Labelled Data` ➔ No)를 비슷한 특성끼리 묶어줄 때 선택
+     - **알고리즘 선택 기준**
+       - 카테고리형(범주형) 변수 위주라면 `K-Modes`, 일반적인 수치형 데이터에 그룹 수(K)를 지정하려면 `K-Means`를 씁니다. 확률 기반 방식이 선호된다면 `Gaussian Mixture Model`을 선택
+       - 미리 그룹 수(K)를 지정하기 어렵다면 데이터 밀도 기반의 `DBSCAN`이나 계층적 구조의 `Hierarchical` 방식
+  2. Unsupervised Learning : Dimension Reduction (비지도학습 : 차원 축소)
+     - **진입 조건:** 정답이 없는 데이터에서 중요도가 낮은 특성을 쳐내고 데이터의 크기(차원)를 줄여 핵심만 남기고 싶을 때(`Dimension Reduction` ➔ Yes) 선택
+     - **알고리즘 선택 기준**
+       - 텍스트의 핵심 주제를 뽑아내는 토픽 모델링(`Topic Modelling`) 분야라면 확률 기반의 `Latent Dirichlet Analysis(LDA)`나 `Singular Value Decomposition(SVD)`을 씀
+       - 그 외 일반적인 데이터의 차원 축소에는 가장 대표적인 `Principal Component Analysis(PCA, 주성분 분석)`를 활용
+  3. Supervised Learning : Classification (지도학습 : 분류)
+     - **진입 조건:** 라벨(정답)이 있는 데이터(`Labelled Data` ➔ Yes)이면서, 예측하려는 값이 숫자가 아닐 때(`Prediction Numeric` ➔ No) 선택
+     - **알고리즘 선택 기준:**
+       - **속도 vs 정확도:** 속도가 중요하다면 `Linear SVM`이나 대용량 데이터일 경우 `XG Boost`를 선택합니다. 설명 가능성(`Explainable`)이 중요하다면 `Decision Trees`나 `Logistic Regression`을 씀
+       - **정확도 극대화:** 속도보다 정확도가 중요하다면 `Kernel SVM`, `Random Forest`, `k-Nearest Neighbor(k-NN)`, 그리고 우리가 앞서 배운 `Neural Network(신경망/딥러닝)`을 선택
+  4. Supervised Learning : Regression (지도학습 : 회귀)
+     - **진입 조건:** 라벨이 있는 데이터이면서, 예측하려는 값이 연속적인 '숫자'일 때(`Prediction Numeric` ➔ Yes) 선택 (예: 주가 예측, 집값 예측 등)
+     - **알고리즘 선택 기준:**
+       - **속도 우선:** 빠른 연산이 필요하면 `Decision Trees`나 `Linear Regression`을 씀
+       - **정확도 우선:** 더 정밀한 예측이 필요하면 `Random Forest`나 `Neural Network(신경망/딥러닝)`을 활용
+
+  ![image-20261016003554599](./AiCaseStudies.assets/image-20261016003554599.png)
+
+
+
+- 과적합(Overfitting) : AI 모델이 학습 데이터에 **너무 과하게 최적화되어, 정작 실제 새로운 데이터가 들어왔을 때는 엉뚱한 예측을 하는 현상**
+
+  - XGBoost의 과적합 방지 메커니즘
+    - 정규화 (L1 / L2 Regularization) : 모델이 너무 복잡해지지 않도록 **가중치(Weight)의 크기를 강제로 억제**하는 패널티(벌점) 시스템
+    - 조기 종료 (Early Stopping) : 학습을 반복하다가 **최적의 타이밍에 컴퓨터가 학습을 스스로 멈추게 하는 기능**
+
+- XGBoost / GBDT 작동 방식
+
+  1. 약한 결정 트리 (Weak Learner)를 순차적으로 학습
+     - 하나하나의 트리는 대단한 성능을 내지 못하고 정답률이 다소 떨어지는 단순한 트리 구조
+     - 이를 한 번에 병렬로 만드는 것이 아니라, **첫 번째 트리 ➔ 두 번째 트리 ➔ 세 번째 트리처럼 차례대로(순차적으로)** 이어 붙이며 학습
+  2. 이전 트리의 오차를 다음 트리가 보완
+     - 첫 번째 트리가 데이터를 분류하거나 예측하고 나면 반드시 틀린 부분(오차)이 생김
+     - 두 번째 트리는 처음부터 다시 공부하는 게 아니라, **첫 번째 트리가 흘린 오차 데이터만을 타깃으로 삼아** 이를 해결하는 데 집중, 세 번째 트리는 앞선 트리들이 또 틀린 오차를 해결함. 이 과정이 반복되면서 모델의 전체적인 성능이 정밀해
+  3. Gradient Descent (경사하강법)의 활용
+     - **오차를 가장 효과적으로 줄일 수 있는 수학적 방향(Gradient, 기울기)**을 계산, 그 방향으로 다음 트리를 설계하여 오차를 빠르게 0에 가깝게 깎아 내려감
+     - \(\theta _{new}=\theta _{old}-\alpha \nabla _{\theta }L(\theta _{old})\)
+       - **θ (파라미터):** 우리가 구하고자 하는 모델의 **가중치(w)**와 **편향(b)**
+       - **\(\nabla_{\theta} L(\theta)\) (기울기, Gradient):** 현재 위치에서 오차가 가장 크게 늘어나는 방향, 오차를 줄여야 하므로 이 값 앞에 **마이너스(-) 부호**를 붙여 **반대 방향(내리막길)**으로 이동
+       - **α (학습률, Learning Rate):** 한 번에 가중치를 얼마나 크게 바꿀지 결정하는 **보폭**
+         - **보폭이 너무 크면:** 최저점을 지나쳐 반대편 언덕으로 튕겨 나갑니다(발산)
+         - **보폭이 너무 작으면:** 하염없이 조금씩 내려가느라 학습이 너무 오래 걸림
+
+- XGBoost 코드
+
+  ~~~python
+  # XGBoost 알고리즘 사용하기 위해 패키지 가져오기
+  import xgboost as xgb
+  # 머신러닝 연습용 데이터 중 하나인 유방암 진단 데이터셋 불러오는 기능
+  from sklearn.datasets import load_breast_cancer
+  # 전체 데이터를 학습용·검증용 데이터로 쪼개주는 유용한 함수
+  from sklearn.model_selection import train_test_split
+  # 학습이 끝난 후 모델이 얼마나 잘 맞췄는지 정확도 점수를 계산해주는 도구
+  from sklearn.metrics import accuracy_score
+  
+  # 데이터 로딩
+  # X(Feature/특성), y(taget/정답)
+  data = load_breast_cancer()
+  X, y = data.data, data.target
+  
+  # 데이터 분할(과적합 방지)
+  # test_size = 0.2 : 학습데이터 80%, 시험데이터20%
+  # random_state = 42 : 데이터를 섞어서 무작정 나눌 때, 코드를 다시 실행해도 똑같은 규칙으로 쪼개지도록 고정하는 일종의 '시드 번호'
+  X_train, X_test, y_train, y_test= train_test_split(X, y, test_size=0.2, random_state=42)
+  
+  # XGBoost분류기 모델 생성
+  # use_label_encoder=False: 경고 메시지가 뜨는 것을 방지하기 위해 구버전 기능을 끄는 설정
+  # eval_metric='logloss': 앞서 배운 "오차를 계산하여 트리들을 구성한다"고 했을 때, 그 오차(손실)를 계산하는 수학적 방식으로 logloss(로그 손실)를 채택하겠다고 지정한 것
+  model = xgb.XGBClassifier(use_label_encoder=False, eval_metric='logloss'
+  
+  # 학습
+  model.fit(X_train, y_train)
+  # 예측
+  y_pred= model.predict(X_test)
+  # 정확도 출력
+  print("Accuracy:", accuracy_score(y_test, y_pred))
+  Accuracy: 0.956140350877193
+
+- 학습 알고리즘(최적화, Optimization)
+
+  1. **순전파:** 현재 가지고 있는 가중치와 편향을 이용해 입력데이터를 넣고 일단 예측 결과를 낸다
+  2. **오차 계산:** 모델의 예측값과 실제 정답을 비교하여 **오차(Loss/Cost)**를 계산
+  3. **역전파:** 오차를 줄이려면 가중치를 어느 방향으로 얼마나 수정해야 하는지 **미분(기울기, Gradient)을 통해 뒤에서부터 거꾸로 계산**
+  4. **가중치 업데이트:** 역전파로 알아낸 기울기를 바탕으로, **경사하강법 수식을 이용해 가중치를 내리막길 방향으로 조금씩 수정**
+
+- Transformer모델 아키텍처
+
+  - 인코더(Eoncoder)
+    - Input Embedding : 입력 단어를 고정된 크기의 벡터로 변환
+    - Positional Encoding : Transformer는 RNN처럼 순서를 자동으로 기억하지 못하므로, 각 단어의 위치 정보 추가
+    - Multi-Head Attention : 입력 문장 내 단어들끼리 서로 어떤 관계가 있는지 파악(ex : 문장 내 `he`가 가리키는 대상이 앞선 단어인 `doctor`임을 찾아내는 맥락 이해)
+    - Add & Norm (안정화) : Layer Normalization + 잔차 연결(residual connection) 수행
+      - **층 정규화(Layer Normalization):** 데이터의 값들이 너무 튀지 않도록 평균과 분산을 맞추어 균일하게 정렬
+      - **잔차 연결(Residual Connection):** 입력된 신호를 변형하지 않고 뒤로 그대로 한 번 더 더해주는(`Add`) 기술, 딥러닝 학습 단계 중 **역전파 과정에서 신호(기울기)가 끊기지 않고 맨 앞 층까지 안전하게 전달**되도록 도움
+      - Encoder Layer(Nx) : 안정화를 여러 층(N번) 반복하여 쌓음으로써 깊고 강력한 문맥 이해 능력을 갖추게 됨
+    - Feed Forwar : 맥락을 파악한 데이터를 각 위치별로 동일한 작은 신경망을 통과시켜 비선형 특징을 추출
+  - 디코더(Decodr)
+    - Masked Multi-Head Attention (컨닝 방지용 첫 번째 어텐션)
+      - **미래 단어 가리기:** 디코더는 단어를 순차적으로 생성해야 하므로, 학습할 때 **아직 생성되지 않은 미래의 단어들을 볼 수 없도록 가림막(`masking`) 처리**
+      - **이유:** 문장을 학습할 때 뒤에 올 정답 단어들을 미리 봐버리면(컨닝하면), 실전에서 스스로 단어를 예측하는 능력을 기를 수 없기 때문입니다. 오직 **현재 예측 시점 이전의 단어들만** 보고 다음 단어를 맞추도록 훈련함
+    - Multi-Head Attention (인코더와 연결되는 두 번째 어텐션)
+      - 왼쪽의 인코더가 원문(입력 문장)을 분석해서 넘겨준 정보를 바탕으로, 현재 내가 생성하고 있는 단어가 전체 맥락과 잘 맞아떨어지는지 다시 한번 대조하며 집중하는 단계
+    - Feed Forward : '자신이 지금까지 생성한 단어들'과 '인코더가 넘겨준 정보'가 결합된 데이터를 처리
+    - Linear + Softmax (최종 확률 계산)
+      - **확률 기반 예측의 실체:** 모든 신경망 연산(`Feed Forward`)과 안정화(`Add & Norm`)를 거친 데이터는 맨 위에서 확률로 바뀜
+      - **역할:** 사전에 등재된 수만 개의 단어 후보들 중 **"지금 문맥상 다음에 올 확률이 가장 높은 단어가 무엇인가"**를 0과 1 사이의 확률 분포로 계산해 내고, 그중 가장 높은 단어 하나를 최종 출력(`Outputs`)으로 채택
+
+  ![image-20261016012316509](./AiCaseStudies.assets/image-20261016012316509.png)
+
+- Transformer의 핵심 기술
+
+  - 토크나이저(Tokenizer)
+    - 트랜스포머 인코더와 디코더의 가장 첫 입구(`Embedding` 직전 단계)와 가장 마지막 출구(`Softmax` 직후 단계)에 위치
+    - **입력 시:** 사람이 준 문장을 트랜스포머가 계산할 수 있는 숫자 조각(**토큰**, 정보를 처리할 수 있는 단위)으로 잘게 쪼개서 넘겨줌
+    - **출력 시:** 트랜스포머 디코더가 최종 계산해서 뱉어낸 숫자 조각들을 다시 사람이 읽을 수 있는 언어로 합성(복호화)
+  - 자기회귀 디코딩(Auto-regressive Decoding) -> 트랜스포머 구동방식
+    - 트랜스포머의 오른쪽 기둥인 **디코더(Decoder)**가 문장을 출력하는 방식 그 자체
+    - 첫 단어를 확률 기반으로 예측해 낸 뒤, **그 단어를 다시 디코더의 입력창에 집어넣어서** 두 번째 단어를 예측하고, 또 그 두 단어를 입력창에 넣어 세 번째 단어를 예측하는 방식
+      - 꼬리에 꼬리를 무는 이 반복 구동 방식이 바로 트랜스포머 디코더의 문장 생성 원리
+
+- Transformer 모델을 적용한 번역코드
+
+  ~~~python
+  # transformers : 허깅페이스(Hugging Face)에서 제공하는 AI 모델 저장소이자 라이브러리
+  # torch : AI 연산의 뼈대가 되는 페이스북의 파이토치(PyTorch) 딥러닝 프레임워크
+  # sentencepiece : 구글에서 만든 텍스트 분석 도구로, 단어를 서브워드(Subword) 단위로 잘게 쪼개는 역할
+  # from transformers import ...: 트랜스포머 계열 번역 모델의 아키텍처 구조인 MarianMTModel과 글자-숫자 변환기인 MarianTokenizer 구조를 파이썬으로 불러옴
+  !pip install transformers torch sentencepiece
+  from transformers import MarianMTModel, MarianTokenizer
+  
+  # 영어 → 한국어용 사전학습 모델 (Helsinki-NLP 기반)
+  model_name= "Helsinki-NLP/opus-mt-en-ko"
+  
+  # 토크나이저 및 모델 로드
+  # from_pretrained()이 함수를 실행하면 전 세계 서버에서 해당 번역 모델의 '인코더-디코더 신경망 구조'와 '최적화된 가중치 파일(파라미터)'을 내 컴퓨터나 코랩 환경으로 쏙 다운로드해 와서 메모리에 올림
+  tokenizer = MarianTokenizer.from_pretrained(model_name)
+  model = MarianMTModel.from_pretrained(model_name)
+  
+  # 번역할 영어 문장
+  english_text= "The weather is nice today."
+  
+  # 토큰화 및 번역 수행
+  # 토크나이저의 역할: 트랜스포머는 수학 계산기이므로 글자를 숫자로 바꿔야 함. 이 함수가 영어 문장을 잘게 쪼개어 고유한 숫자 배열(토큰 아이디)로 매핑
+  # return_tensors="pt": 결괏값을 파이토치(PyTorch)가 연산할 수 있는 특수한 수학 행렬 형태인 텐서(Tensor) 데이터 구조로 반환
+  # padding=True: 여러 문장을 한 번에 처리할 때 문장 길이를 똑같이 맞춰주는 채우기(Padding) 옵션
+  tokens = tokenizer(english_text, return_tensors="pt", padding=True)
+  # 내부 인코더가 숫자로 변환된 영어 단어들의 맥락을 뼈대까지 파악, 그 후 디코더가 자기회귀(Auto-regressive) 방식과 확률 기반 예측을 사용해 첫 단어부터 문장이 끝날 때까지 꼬리에 꼬리를 물며 한국어에 해당하는 숫자 조각(토큰)들을 하나씩 예측하여 조립
+  translated = model.generate(**tokens)
+  
+  # 번역 결과 디코딩
+  korean_text= tokenizer.decode(translated[0],
+  skip_special_tokens=True)
+  print("원문 (영어):", english_text)
+  print("번역 (한국어):", korean_text)
+
+
+
+- ML/DL + 생성형 AI 서비스 시나리오
+
+  1. 스마트 의료 상담
+     - 기존의 ML 기반 질병 예측 모델 + LLM 기반 대화형 증상 상담
+  2. 제조 품질 이상 감지 + 리포트 자동 생성
+     - CNN 기반 결함 감지 + GPT 기반 리포트/ 알람 문서 생성
+  3. 금융 사기 탐지 + 자동 설명 생성
+     - ML랜잭션 기반 ML모델 + LLM이 사기 사유 설명
+  4. HR 채용 필터링 + 면접 질문 생성
+     - 이력서 필터링 ML 모델 + 적합한 질문을 생성형AI로 생성
+  5. 교육 개인화 추천 + 맞춤 콘텐츠 생성
+     - 학습 행동 기반 추천 시스템 + GPT로 문제/자료 자동 생성
+
+- 평가 지표 Pool(실무 기획이나 AI 과제 제안서(RFP)를 작성할 때 평가 지표는 보통 3개)
+
+  - 기능성 : 요구된 기능이 잘 동작하는 지 여부
+
+  - 사용성 : 요구된 기능 사용성 적합도 판단
+
+  - 시장성 : 현재 또는 미래 수요와 진입 기회
+
+  - 경제성 : 기술 구현비용 대비 수익성
+
+  - 효율성 : 자원 사용 대비 생산성 제고
+
+  - 효과성 : 사용자 만족도, 문제 해결 능력
+
+  - 유지보수성 : 운영을 고려한 유지보수 능력
+
+  - 이식성 : 타 플랫폼 이식 및 이전 용이
+
+  - 첫 번째 선택 기준 : 기술의 본질이 잘 작동하는가? (기술 관점)
+
+    - **추천 지표 Pool:** **기능성, 유지보수성, 이식성**
+    - **설명:** AI 모델이 기술적으로 사기나 불량을 잘 잡는지, 생성형 AI가 헛소리(환각)를 안 하는지 검증합니다. 이게 무너지면 서비스 자체가 성립하지 않습니다.
+
+    두 번째 선택 기준 : 도입했을 때 진짜 이득이 되는가? (비즈니스 관점)
+
+    - **추천 지표 Pool:** **효율성, 경제성, 시장성**
+    - **설명:** 이 시스템을 구축하기 위해 들어간 서버 비용(GPU 비용, API 비용) 대비 업무 시간이 단축되거나 매출이 늘어나는지 계산하는 공급자 중심의 지표입니다.
+
+    세 번째 선택 기준 : 사람이 쓰기에 안전하고 만족스러운가? (사용자 관점)
+
+    - **추천 지표 Pool:** **효과성, 사용성**
+    - **설명:** 아무리 똑똑하고 경제적인 AI라도 현장 직원이 쓰기 어렵거나(사용성), 환자나 고객이 불안해하면(효과성) 폐기됩니다. 실제 인간과의 상호작용을 평가
+
+
+
+- ML 모델과 생성형 AI 결합 사례
+
+  - 위에서 시장성+경제성+효과성을 기반으로 교육 개인화 시나리오 선정
+  - 선정된 시나리오에 대해 개인화 추천 + GPT 기반 맞춤 문제를 생성
+
+  ~~~python
+  import pandas as pd
+  from sklearn.ensemble import RandomForestClassifier
+  from sklearn.model_selection import train_test_split
+  # 예시 데이터: 학생 점수
+  data = pd.DataFrame({
+  "math": [40, 65, 80, 30, 90],
+  "science": [35, 60, 75, 25, 85],
+  "english": [70, 80, 85, 60, 95],
+  # 목표 변수, 수학 낙제 여부 (1 = 낙제, 0 = 통과)
+  "fail_math": [1, 0, 0, 1, 0]
+  })
+  
+  # 입력 변수(X): 과학, 영어 점수, 출력 변수(y): 수학 낙제 여부
+  X = data[["science", "english"]]
+  y = data["fail_math"]
+  X_train, X_test, y_train, y_test= train_test_split(X, y)
+  # 여러 개의 결정 트리를 앙상블해 예측을 수행하는 모델
+  model = RandomForestClassifier()
+  model.fit(X_train, y_train)
+  
+  
+  # 새로운 학생 예측
+  # 과학 50점, 영어 60점인 학생의 데이터를 모델에 입력
+  new_student= pd.DataFrame({"science": [50], "english": [60]})
+  prediction = model.predict(new_student)
+  # 예측 결과: 1이면 낙제, 0이면 통과
+  print("수학 낙제 예측:", prediction[0])
+  
+  
+  # gpt prompt 생성 구조로 결합 서비스 구성
+  import openai
+  # 클라이언트 인스턴스를 생성
+  client = openai.OpenAI(api_key="your-api-key") 
+  prompt = """
+  수학에서 함수 단원을 어려워하는 고등학생에게 적합한 연습 문제를 3문제 생성하라.
+  각 문제는 난이도 중간, 짧은 설명 포함.
+  ""
+  
+  response = client.chat.completions.create(
+  model="gpt-4",
+  messages=[
+  {"role": "user", "content": prompt}
+  ]
+  )
+  print(response.choices[0].message.content)
