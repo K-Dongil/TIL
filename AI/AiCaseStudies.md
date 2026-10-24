@@ -1497,3 +1497,305 @@
 | **제어 대상**    | 대화의 규칙, 톤앤매너, 추론 방식 (CoT, ReAct 등) | 데이터의 가공, 검색 범위, 청크 크기, 대화 메모리 수명       |
 | **최적화 주체**  | 주로 **인간 사용자**가 프롬프트 문구를 수정      | 주로 **엔지니어(시스템)**가 RAG 파이프라인으로 구현         |
 | **실패 시 현상** | AI가 지시를 무시하거나 형식을 안 지킴            | AI가 낡은 정보(과거 지식)를 말하거나 엉뚱한 데이터를 참조함 |
+
+- 프롬프트 엔지니어링 미래
+
+  ![image-20261024141001186](./AiCaseStudies.assets/image-20261024141001186.png)
+
+
+
+#### * RAG Chain 및 AI Agent 이해
+
+- **LangChain과 AI 생태계는 발전 속도가 기형적으로 빠르기 때문에, 버전을 고정(Locking)해두지 않으면 불과 몇 달, 심지어 몇 주 전 코드가 실행되지 않고 에러를 뿜는 일이 다반사**
+
+- LangChain
+
+  - LLM 기반의 애플리케이션(특히 RAG 시스템 및 자율형 에이전트)을 개발할 때, 데이터 수집부터 프롬프트 제어, 모델 연동까지의 전 과정을 사슬(Chain)처럼 연결하여 쉽게 개발할 수 있도록 도와주는 표준 프레임워크(라이브러리)
+
+    - LLM을 활용한 연쇄 작업을 구축하는 프레임워크
+    - 핵심 : **"LLM(두뇌) + 벡터 DB(기억) + 외부 도구(발과 손) + 프롬프트 엔지니어링(지시서)"**을 서로 연결하는 접착제 역할
+
+  - 프레임워크 특징
+
+    - 생성형 AI 애플리케이션 개발 통합 환경 제공
+    - 다양한 컴포넌트들 모듈식으로 결합
+
+  - LECEL(LangChain Expression Language)
+
+    - LangCahin 표현언어
+
+    - LCEL은 LangChain에서 여러 컴포넌트를 **리눅스/유닉스 파이프 기호(**`|`**)를 사용해 아주 직관적으로 사슬(Chain)처럼 엮어주는 특수 문법(표현식)**
+
+      - 파이프 연산자(`|`)를 사용해 앞 단계의 출력을 뒷 단계의 입력으로 자연스럽게 넘겨줌
+      - 순차적인 흐름을 직관적으로 코딩할 수 있게 해줌
+      - `prompt`의 결과물이 자동으로 `model`의 입력으로 들어가고, `model`이 뱉은 텍스트가 자동으로 `output_parser`로 들어가 정제
+
+    - **동작 방식:** `A | B | C` 구조로 짜여있다면, **A가 끝나야 B가 실행되고, B가 끝나야 C가 실행**
+
+      ~~~python
+      # 1단계(프롬프트) 완료 후 2단계(모델)로, 2단계 완료 후 3단계(파서)로 순차 전달
+      chain = prompt_template | llm_model | output_parser
+      
+      # 첫 단추를 끼우면(invoke) 알아서 순서대로 흘러감
+      final_result = chain.invoke({"topic": "인공지능"})
+      ~~~
+
+    - LangChain을 쓰는 이유
+
+      - **LangChain 안 쓰면:** 프롬프트 문자열 조립, API 결과 추출, JSON 파싱을 매번 수동 코딩해야 함
+
+        ~~~python
+        # ❌ LangChain을 안 쓰고 순수 Python으로 구현할 때
+        import openai
+        
+        # 1. 프롬프트 템플릿 역할을 하는 파이썬 f-string (직접 변수 대입)
+        topic = "양자역학"
+        raw_prompt = f"{topic}에 대해 쉽게 설명해주세요. 응답은 무조건 JSON 형식이어야 합니다."
+        
+        # 2. 모델 직접 호출 (API 응답 구조를 일일이 파고들어야 함)
+        client = openai.OpenAI(api_key="YOUR_KEY")
+        response = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[{"role": "user", "content": raw_prompt}]
+        )
+        raw_text = response.choices[0].message.content # 텍스트 추출 복잡
+        
+        # 4. 아웃풋 파서 직접 구현 (글자에서 JSON 영역을 직접 코드로 잘라내기)
+        import json
+        clean_json_str = raw_text.replace("```json", "").replace("```", "").strip()
+        final_data = json.loads(clean_json_str) # 텍스트를 파이썬 딕셔너리로 수동 변환
+
+      - **LangChain을 쓰면:** 이 과정을 `Prompt`, `Model`, `Parser`라는 표준 부품(템플릿)으로 나눠 깔끔하게 관리함.
+
+      - **LCEL(`|`)을 쓰면:** 그 표준 부품들을 가독성 좋게 한 줄로 연결하여 데이터를 자동 전달함
+
+    - LangChain 내부 템플릿의 데이터 흐름
+
+      ~~~python
+      # LangChain 표준 템플릿 구성 (LCEL 방식)
+      from langchain_core.prompts import ChatPromptTemplate
+      from langchain_openai import ChatOpenAI
+      from langchain_core.output_parsers import StrOutputParser
+      
+      # [프롬프트 템플릿 설계] (딕셔너리 입력 ➔ 프롬프트 객체 출력)
+      prompt = ChatPromptTemplate.from_template("{topic}에 대해 설명해줘.")
+      
+      # [llm 연결 모델 정의] (프롬프트 객체 입력 ➔ AI 메시지 출력)
+      model = ChatOpenAI(model="gpt-4o", temperature = 0.2)
+      
+      # [Output Parser] (AI 메시지 입력 ➔ 깔끔한 문자열 출력)
+      output_parser = StrOutputParser()
+      
+      # [체인구성 : 프롬프트 + LLM + Output Parser] 이 표준 부품들을 파이프(|)로 묶어 '템플릿 체인' 완성
+      chain = prompt | model | output_parser
+      
+      # [체인 실행 및 결과 처리]
+      # 딱 한 번의 호출(invoke)로 모든 단계가 연쇄 실행됨
+      #.content는 AI가 답변한 메시지 주머니(객체)에서 다른 부가 정보(메타데이터)를 다 버리고, "순수한 텍스트 내용물(글자)"만 쏙 빼내기 위해 사용하는 파이썬 문법
+      result = chain.invoke({"question": "Transformer 모델의 핵심 아이디어는 무엇인가?"})
+      print("응답:\n", result.content)
+
+  - 앞 단계와 뒷 단계를 연결하는 구성요소
+
+    1. 프롬프트 템플릿(Prompt Template) - 지시서
+       - 사용자의 입력값을 받아 LLM이 이해할 수 있는 형태의 프롬프트(주문서)를 완성하고 다음 단계로 넘김
+    2. 모델 (LLM/ Chat Model) - AI 두뇌
+       - 앞 단계에서 완성된 프롬프트를 받아 문장을 생성(추론)하고, 그 텍스트 결과물을 다음 단계로 넘김
+    3. Retrieval / Vector DB - 외부 데이터 검색
+       - 필요하다면 LLM에 넘겨주기 직전에 **"벡터 DB에서 관련 문서 찾기"** 단계를 사이에 끼워 넣어, 외부 지식을 포함한 프롬프트를 다음 단계(LLM)로 넘김
+    4. Output Parser - 출력 형식 변환
+       - LLM이 뱉은 가공되지 않은 텍스트를 받아서, 뒷단 프로그램이 바로 쓸 수 있는 구조화된 데이터(예: JSON, List)로 깔끔하게 정제해 최종 마무리
+
+  - LangChain 활용 RAG 파이프라인 구성
+
+    1. 문서 로딩 및 분할
+       - 다양한 형식의 문서를 로드하고 적절한 크기로 분할
+    2. 임베딩 생성
+       - 문서 조각을 벡터로 변환하여 벡터 저장소에 저장
+    3. 관련 문서 검색
+       - 질의와 유사한 문서를 벡터 유사도 기반으로 검색
+       - LangChain 요소: `Retrieval / Vector DB`
+    4. 응답 생성 및 후처리
+       - 검색 결과를 통합하여 정확한 응답을 생성하고 파싱
+       - LangChain 요소: `Prompt Template` + `LLM` + `Output Parser`
+         - **프롬프트 템플릿:** 3단계에서 찾아온 '관련 문서'와 사용자의 '질문'을 솜씨 좋게 합쳐서 하나의 큰 지시서(프롬프트)로 만듬
+         - **LLM:** 이 지시서를 읽고 문서 내용을 기반으로 정답을 추론(생성)
+         - **아웃풋 파서:** LLM이 생성한 답변을 깔끔하게 파싱(가공)하여 최종 사용자에게 보여줌
+
+    - RAG 파이프라인 LCEL 구현 흐름 노트
+
+      1. 라이브러리 가져오기 (Import)
+
+         - LangChain과 OpenAI 패키지들을 불러오기
+
+         ~~~python
+         from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+         from langchain_community.vectorstores import FAISS  # v0.3 기준 임포트 경로 표준화
+         from langchain_core.prompts import ChatPromptTemplate
+         from langchain_core.runnables import RunnablePassthrough
+         from langchain_core.output_parsers import StrOutputParser
+         from langchain_text_splitter import RecursiveCharacterTextSplitter
+         from langchain_core.documents import Document
+         ~~~
+
+      2. 문서 준비 및 텍스트 분할 (Data Preparation)
+
+         - AI에게 학습시킬 회사 규정이나 문서를 준비하고, 검색이 잘 되도록 적절한 크기(`chunk_size=100`)로 분할
+
+         ~~~python
+         documents = [
+             Document(page_content="Transformers use self-attention to process tokens in parallel."),
+             Document(page_content="The attention mechanism allows the model to focus on relevant parts of the input."),
+             Document(page_content="Positional encoding is used to retain order information in Transformers."),
+         ]
+         
+         # 텍스트 분할기 설정 및 실행
+         splitter = RecursiveCharacterTextSplitter(chunk_size=100, chunk_overlap=10)
+         docs = splitter.split_documents(documents)
+         ~~~
+
+      3. 벡터 DB 연결 및 검색기(Retriever) 설정
+
+         - 분할된 문서를 숫자로 변환(임베딩)하여 가상 메모리 데이터베이스(`FAISS`)에 저장한 뒤, **사용자 질문과 가장 연관성이 높은 문서 조각을 3개(**`k=3`**)씩 쏙쏙 뽑아올 검색기(Retriever)**를 만든다
+
+         ~~~python
+         # 벡터 DB 생성 및 문서 저장
+         embeddings = OpenAIEmbeddings()
+         vectorstore = FAISS.from_documents(docs, embeddings)
+         
+         # 검색기(Retriever) 구성
+         retriever = vectorstore.as_retriever(
+             search_type="similarity",
+             search_kwargs={"k": 3}
+         )
+         ~~~
+
+      4. 프롬프트 템플릿과 LLM 연결
+
+         - AI가 가져온 문서(context)만 참고해서 대답할 수 있도록 지시서틀(Prompt)을 짜고 모델을 연결
+
+         ~~~python
+         # 프롬프트 템플릿 설계 ({context}와 {question} 자리를 비워둠)
+         prompt = ChatPromptTemplate.from_template(
+             "다음 문맥을 참고하여 질문에 답하세요.\n\n문맥:\n{context}\n\n질문:\n{question}"
+         )
+         
+         # LLM 모델 연결 (창의성을 낮추고 정확도를 높이기 위해 temperature=0 설정)
+         model = ChatOpenAI(model="gpt-4o", temperature=0)
+         ~~~
+
+      5. RAG Chain 구성 (LCEL 방식 핵심)
+
+         - 사용자가 질문을 던졌을 때, `context`와 `question` 자리에 데이터가 어떻게 들어가는지 사슬을 엮어주기
+
+         ~~~python
+         rag_chain = (
+             {
+                 # 사용자의 질문을 벡터 DB에 집어넣어 관련 문서를 찾아와 context에 매칭
+                 "context": retriever,
+                 # 사용자의 질문 그대로를 패스(Pass)시켜서 question에 매칭
+                 # 사용자가 입력한 질문(문자열)을 아무런 변형 없이 그대로 통과(Pass)시켜서 뒷단계로 전달해 주는 '직통 통로' 역할
+                 "question": RunnablePassthrough() # 
+             }
+             | prompt              # 조립된 딕셔너리가 프롬프트로 들어감
+             | model               # 완벽해진 프롬프트가 LLM 뇌로 들어감
+             | StrOutputParser()   # AI 상자에서 순수 텍스트(.content)만 싹 뜯어냄
+         )
+         ~~~
+
+      6. 질문 예시 및 실행
+
+         - 완성된 RAG 사슬에 질문을 넣어 실행하고 결과를 확인
+
+         ~~~python
+         question = "Transformer에서 self-attention은 왜 중요한가요?"
+         answer = rag_chain.invoke(question)
+         
+         print("질문:", question)
+         print("답변:", answer)
+
+- LangGraph
+
+  -  조건에 따라 이리저리 얽히고설키는 복잡한 논리를 '그래프 구조(노드와 엣지)'로 짜기 위해 탄생한 LangChain의 공식 확장 라이브러리
+
+    - 조건에 따라 다시 앞으로 돌아가기도 하고, 빙글빙글 돌기도 하는 순환 구조(Loop)의 조립 라인
+    - LangGraph는 LangChain을 기반(Dependency)으로 삼아 그 위에 빌드된 상위 프레임워크
+    - LangChain :  **앞에 거 끝나면 그다음 거로 물 흐르듯 흘러가는 '일직선 파이프라인(Chain)'**
+
+  - 구성요소
+
+    - Nodes : 각각의 작업 단계
+
+      - 특정 AI 모델 호출, 파이썬 코드 실행, 외부 도구 사용 등 실제 무언가를 '해결'하는 주체 (각각의 정거장)
+
+    - Edges : 작업의 이동 경로
+
+      - 노드와 노드를 연결하는 선. 특히 조건에 따라 다음 목적지를 결정하는 **'조건부 엣지(Conditional Edges)'**
+
+        가 핵심
+
+    - State : 공유되는 메모리
+
+      - 그래프를 돌아다니는 데이터 가방. 노드들이 실행되면서 이 가방에 정보를 넣거나 업데이트하며, 모든 노드가 이 상태를 공유함
+
+- Agent
+
+  - 사용자가 부여한 목표를 달성하기 위해 스스로 계획을 세우고, 외부 도구를 사용하며, 자율적으로 판단하여 행동하는 소프트웨어 시스템
+
+  - 핵심 구성 요소
+
+    1. **계획 수립 (Planning)**
+       - 큰 목표를 작은 단위의 태스크로 분리
+       - 예시의 1번 단계: '날씨를 먼저 알고 나서 곱하기를 해야겠다'고 전략을 세우는 능력
+    2. **기억력 (Memory)**
+       - **단기 기억:** 루프를 돌면서 "방금 날씨가 15도라고 나왔지?" 하고 다음 단계로 데이터를 이어주는 능력
+       - **장기 기억:** 과거의 대화나 학습한 외부 문서(Vector DB 등)를 필요할 때 꺼내오는 능력
+    3. **도구 사용 (Tools / Tool Calling)**
+       - LLM은 원래 글자만 쓰는 모델이라 계산이나 실시간 검색 불가능
+       - 에이전트는 외부 API, 파이썬 인터프리터, 계산기 등을 **인간이 스마트폰 앱을 켜듯 필요할 때 호출**하여 자신의 한계를 극복
+
+  - 에이전트를 정의할 때 반드시 포함하는 4가지 핵심 속성
+
+    1. **자율성 (Autonomy):** 인간의 매 단계 개입 없이, 스스로 다음 행동(Next Action)을 결정하고 제어
+    2. **환경 인지 (Perception):** 사용자 입력, 도구의 실행 결과, 데이터베이스 값 등 주변의 상태를 받아들이고 파악
+    3. **도구 활용 (Tool Use):** LLM(뇌)의 한계를 극복하기 위해 웹 검색, 계산기, API, Vector DB 등의 외부 무기를 스스로 선택해 사용
+    4. **목표 지향성 (Goal-Directed):** 단순히 일회성 답변을 출력하는 데 그치지 않고, 복잡한 최종 목표가 완수될 때까지 "생각 ➔ 행동 ➔ 관찰"의 루프를 유지
+
+  - Ex) 오늘 서울 날씨에 10을 곱하면 얼마야?
+
+    1. **생각 (Thought):** 오늘 날씨를 알아야 하네? 내가 가진 `날씨 검색 도구`를 쓰자.
+    2. **행동 (Action):** 날씨 검색 도구 호출 ➔ 결과: "15도"
+    3. **관찰 (Observation):** 도구 결과를 확인하고 다음 단계를 판단 ('이제 15에 10을 곱해야 하네?')
+    4. **행동 (Action):** `계산기 도구` 호출 ➔ 결과: "150"
+    5. **최종 답변 (Final Answer):** "오늘 서울 날씨는 15도이며, 여기에 10을 곱한 값은 150입니다."
+
+  - 멀티 에이전트(Multi-Agent)
+
+    - 각자 전문 분야를 가진 여러 에이전트가 협업하는 구조
+
+      ~~~
+      멀티 에이전트 예시 (회사 조직도와 유사)
+      • [에이전트 A: 기획자] 사용자 질문을 분석하고 보고서 목차를 잡음.
+      • [에이전트 B: 리서처] 인터넷과 DB를 뒤져서 필요한 데이터를 긁어옴.
+      • [에이전트 C: 에디터] B가 찾은 자료를 바탕으로 가독성 좋은 글로 다듬음.
+      ~~~
+
+- 일반 AI(챗봇) vs AI 에이전트 차이점
+
+  | 구분            | 일반 AI (예: 기본 ChatGPT, 단순 체인)         | AI 에이전트 (Agent)                                     |
+  | --------------- | --------------------------------------------- | ------------------------------------------------------- |
+  | **인간의 역할** | 질문을 던지고 답변을 기다림.                  | **목표(Goal)**를 부여하고 결과물을 받음.                |
+  | **행동 방식**   | 아는 지식 선에서 한 번에 답변을 생성함.       | 모르는 것이 나오면 검색하고 계산하며 **단계를 밟아감**. |
+  | **도구 사용**   | 텍스트 생성만 가능 (외부 연동 없음).          | 컴퓨터 제어, API 호출, 파일 생성 등 **실제 행동**을 함. |
+  | **실패 대처**   | 잘못된 정보를 그럴듯하게 답함 (할루시네이션). | 결과가 이상하면 **스스로 계획을 수정**하여 다시 시도함  |
+
+- LangGraph로 에이전트를 개발할 때, 두 도구의 역할 분담
+
+  - LangChain이 하는 일 (개별 부품 제공)
+    - OpenAI나 Anthropic 같은 AI 모델을 쉽게 호출하는 일 (`ChatOpenAI`)
+    - 사용자의 입력을 정제하는 일 (`ChatPromptTemplate`)
+    - 데이터를 벡터화하고 가져오는 일 (`VectorStoreRetriever`)
+  - LangGraph가 하는 일 (거대한 지도와 규칙 제공)
+    - "1단계(LangChain 모델)가 끝나면, 결과에 따라 2단계(도구 실행)로 갈지 아니면 3단계(최종 답변)로 갈지" **분기점(Conditional Edge)을 제어**
+    - 여러 단계를 거치는 동안 대화 기록이나 데이터를 잃어버리지 않게 **상태(State)를 기억**
+    - AI가 헤매지 않고 똑같은 단계를 최대 몇 번까지 반복할 수 있는지 **루프(Loop) 한계를 지정**
